@@ -8,16 +8,11 @@ validate password
 import React, { ChangeEvent, useState } from "react";
 import "./login.css";
 import logoPic from "./images/PET logo.jpg";
-import { ReactComponent as EyeSlashPic } from "./images/eyeSlash.svg";
+import { ReactComponent as EyeSlashPic } from "./images/EyeSlash.svg";
+import "@fontsource/rubik";
 
-function forgotPassword() {
-  alert("You clicked login");
-}
 function addAccount() {
   alert("You clicked login");
-}
-function noAccount() {
-  alert("You noAccount");
 }
 
 export default function Login() {
@@ -60,15 +55,11 @@ export default function Login() {
                 <EyeSlashPic />
               </button>
             </div>
-            <form>
-              <button
-                type="button"
-                className="accountAdjustButton"
-                onClick={forgotPassword}
-              >
-                Forgot Password?
-              </button>
-            </form>
+            <a href="google.com">
+              <div className="accountAdjustButton">
+                <div className="boldAccount">Forgot password?</div>
+              </div>
+            </a>
 
             <form>
               <button
@@ -79,16 +70,14 @@ export default function Login() {
                 Log In
               </button>
             </form>
-
-            <form>
-              <button
-                type="button"
-                className="accountAdjustButton"
-                onClick={noAccount}
-              >
-                Don&apos;t have an account? Create Account
-              </button>
-            </form>
+            <p>
+              <a href="google.com">
+                <div className="accountAdjustButton">
+                  Don&apos;t have an account?&nbsp;
+                  <div className="boldAccount">Create Account</div>
+                </div>
+              </a>
+            </p>
           </div>
         </div>
       </div>

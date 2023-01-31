@@ -54,6 +54,13 @@ input{
 
     
 }
+a:link { text-decoration: none; }
+a:visited { text-decoration: none; }
+a:hover { text-decoration: none; }
+a:active { text-decoration: none; }
+.boldAccount{
+    font-weight: bold;
+}
 .loginButton{
     align-self: center;
     /* login button font */
@@ -72,4 +79,5 @@ input{
 }
 .eyeSlash{
     vertical-align: top;
+
 }
