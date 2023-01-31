@@ -1,18 +1,31 @@
 .login_card{
     display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.login_box{
+    display:flex;
+    flex-direction:column;
+    width: 640px;
+    height: 697px;
     border-width: 0.5px;
     border: 1px solid #C4C4C4;
-    flex-direction:column;
-    /* padding: 25%; */
-    /* align-items: center; */
 }
 .logo{
     align-self: center;
     /* PET_FINAL logo 1 */
     width: 135px;
     height: 226px;
-    left: 688px;
-    top: 164px;
+}
+.insideLoginPanel{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction:column;
+}
+.beneathLogo{
+    display:flex;
+    flex-direction:column;
 }
 h1{
     font-family: 'Rubik';
@@ -23,11 +36,11 @@ h1{
     color: #011338;
 }
 input{
-    align-self: center;
-    width: 436px;
+    align-self: left;
     height: 55px;
+    /* width: 436px;
     left: 538px;
-    top: 447px;
+    top: 447px; */
 }
 .accountAdjustButton{
     display: flex;
@@ -58,98 +71,5 @@ input{
     background: #1B4C5A;
 }
 .eyeSlash{
-    /* EyeSlash */
-
-position: absolute;
-width: 32px;
-height: 29px;
-left: 920px;
-top: 568px;
-
-
-
-/* EyeSlash */
-
-position: absolute;
-left: 0%;
-right: 0%;
-top: 0%;
-bottom: 0%;
-
-
-
-/* EyeSlash */
-
-position: absolute;
-width: 32px;
-height: 29px;
-left: 0px;
-top: 0px;
-
-
-
-/* Vector */
-
-position: absolute;
-left: 0%;
-right: 0%;
-top: 0%;
-bottom: 0%;
-
-
-
-/* Vector */
-
-position: absolute;
-left: 18.75%;
-right: 18.75%;
-top: 15.63%;
-bottom: 15.62%;
-
-border: 2px solid #314D89;
-
-
-/* Vector */
-
-position: absolute;
-left: 34.38%;
-right: 39.49%;
-top: 38.44%;
-bottom: 34.38%;
-
-border: 2px solid #314D89;
-
-
-/* Vector */
-
-position: absolute;
-left: 6.25%;
-right: 28.91%;
-top: 26.79%;
-bottom: 21.88%;
-
-border: 2px solid #314D89;
-
-
-/* Vector */
-
-position: absolute;
-left: 41.92%;
-right: 6.25%;
-top: 21.87%;
-bottom: 33.94%;
-
-border: 2px solid #314D89;
-
-
-/* Vector */
-
-position: absolute;
-left: 52.94%;
-right: 34.44%;
-top: 34.65%;
-bottom: 51.47%;
-
-border: 2px solid #314D89;
-
+    vertical-align: top;
 }
