@@ -34,33 +34,37 @@ export default function Login() {
             <img className="logo" src={logoPic} alt="PET logo" />
           </div>
           <div className="beneathLogo">
-            <h1>Email</h1>
-            <input
-              placeholder=""
-              value={email} // add newEmail as the input's value
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                // this event handler updates the value of newIngredient
-                setEmail(e.target.value);
-              }}
-            />
-            <h1>Password</h1>
+            <div className="textInput">
+              <h1>Email</h1>
+              <input
+                placeholder=""
+                value={email} // add newEmail as the input's value
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  // this event handler updates the value of newIngredient
+                  setEmail(e.target.value);
+                }}
+              />
+              <h1>Password</h1>
 
-            <div>
-              <input type={passwordShown ? "text" : "password"} />
-              <button
-                type="button"
-                className="eyeSlash"
-                onClick={togglePassword}
-              >
-                <EyeSlashPic />
-              </button>
-            </div>
-            <a href="google.com">
-              <div className="accountAdjustButton">
-                <div className="boldAccount">Forgot password?</div>
+              <div className="password">
+                <button
+                  type="button"
+                  className="eyeSlash"
+                  onClick={togglePassword}
+                >
+                  <EyeSlashPic />
+                </button>
+                <input
+                  type={passwordShown ? "text" : "password"}
+                  className="passwordInput"
+                />
               </div>
-            </a>
-
+              <a href="google.com">
+                <div className="accountAdjustButton">
+                  <div className="boldAccount">Forgot password?</div>
+                </div>
+              </a>
+            </div>
             <form>
               <button
                 type="button"

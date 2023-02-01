@@ -7,8 +7,7 @@
     display:flex;
     flex-direction:column;
     width: 640px;
-    height: 697px;
-    border-width: 0.5px;
+    height: auto;
     border: 1px solid #C4C4C4;
 }
 .logo{
@@ -22,6 +21,13 @@
     align-items: center;
     justify-content: center;
     flex-direction:column;
+    align-content: stretch; 
+    padding:10%
+}
+.textInput{
+    padding-top:5%;
+    padding-bottom: 5%;
+    cursor: text;
 }
 .beneathLogo{
     display:flex;
@@ -38,9 +44,8 @@ h1{
 input{
     align-self: left;
     height: 55px;
-    /* width: 436px;
+    width: 436px;
     left: 538px;
-    top: 447px; */
 }
 .accountAdjustButton{
     display: flex;
@@ -51,8 +56,6 @@ input{
     line-height: 19px;
     justify-content: flex-end;
     color: #000000;
-
-    
 }
 a:link { text-decoration: none; }
 a:visited { text-decoration: none; }
@@ -76,8 +79,28 @@ a:active { text-decoration: none; }
     height: 55px;
     /* Brand color 1 */
     background: #1B4C5A;
+    cursor: pointer;
 }
-.eyeSlash{
-    vertical-align: top;
+.password{
+    display:flex;
+    flex-direction:row;
 
 }
+.passwordInput{
+    margin: 0px;
+    flex: 1;
+    width: 100%;
+    z-index: -1;
+}
+.eyeSlash{
+    float: left;
+    position: absolute;
+    border-width: 0px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+}
+
+
+
