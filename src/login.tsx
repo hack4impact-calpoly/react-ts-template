@@ -1,8 +1,8 @@
 /*
-make login in button work
-can't get rubik font to show up
-validate email
-validate password
+validated email and password
+password must have 1 uppercase, lowercase, number and special character
+password must be eight characters long
+password validation commented out
 */
 
 import React, { ChangeEvent, useState } from "react";
@@ -17,15 +17,37 @@ function addAccount() {
 
 export default function Login() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   // Initialize a boolean state
   const [passwordShown, setPasswordShown] = useState(false);
-
   // Password toggle handler
   const togglePassword = () => {
     // When the handler is invoked
     // inverse the boolean state of passwordShown
     setPasswordShown(!passwordShown);
   };
+  const [validEmail, setValidEmail] = React.useState(false);
+  // const [validPw, setValidPw] = React.useState(false);
+  const handleOnChangeEmail = (email1: string) => {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //   re.test(email) ? setValid(true) : setValid(false);
+    if (re.test(email1)) {
+      setValidEmail(false);
+    } else {
+      setValidEmail(true);
+    }
+  };
+  // const handleOnChangePw = (pw: string) => {
+  //   const re =
+  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  //   //   re.test(email) ? setValid(true) : setValid(false);
+  //   if (re.test(pw)) {
+  //     setValidPw(false);
+  //   } else {
+  //     setValidPw(true);
+  //   }
+  // };
 
   return (
     <div className="login_card">
@@ -35,10 +57,20 @@ export default function Login() {
             <img className="logo" src={logoPic} alt="PET logo" />
           </div>
           <div className="beneathLogo">
+            <div className="invalidAlert">
+              <div style={{ display: validEmail ? "block" : "none" }}>
+                {" "}
+                invalid email
+              </div>
+              {/* <div style={{ display: validPw ? "block" : "none" }}>
+                invalid password
+              </div> */}
+            </div>
             <div className="textInput">
               <h1>Email</h1>
               <input
                 placeholder=""
+                type="email"
                 value={email} // add newEmail as the input's value
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   // this event handler updates the value of newIngredient
@@ -51,9 +83,12 @@ export default function Login() {
                     e.currentTarget.value.length
                   );
                 }}
+                onBlur={() => {
+                  handleOnChangeEmail(email);
+                }}
               />
+              {/* if (touched){handleOnChange(email)} */}
               <h1>Password</h1>
-
               <div className="password inputBlur">
                 <button
                   type="button"
@@ -66,18 +101,23 @@ export default function Login() {
                 <input
                   type={passwordShown ? "text" : "password"}
                   className="passwordInput"
+                  value={password}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    // this event handler updates the value of newIngredient
+                    setPassword(e.target.value);
+                  }}
                   onFocus={(e) => {
                     e.currentTarget.parentElement?.classList.remove(
                       "inputBlur"
                     );
                     e.currentTarget.parentElement?.classList.add("inputFocus");
-                    // e.selectionSet=true;
                   }}
                   onBlur={(e) => {
                     e.currentTarget.parentElement?.classList.remove(
                       "inputFocus"
                     );
                     e.currentTarget.parentElement?.classList.add("inputBlur");
+                    // handleOnChangePw(email);
                   }}
                   onClick={(e) => {
                     e.currentTarget.scrollLeft = e.currentTarget.scrollWidth;
