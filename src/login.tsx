@@ -59,8 +59,8 @@ export default function Login() {
                   className="passwordInput"
                 />
               </div>
-              <a href="google.com">
-                <div className="accountAdjustButton">
+              <a href="google.com" className="accountAdjustButton">
+                <div className="fgPw">
                   <div className="boldAccount">Forgot password?</div>
                 </div>
               </a>

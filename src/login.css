@@ -57,6 +57,9 @@ input{
     justify-content: flex-end;
     color: #000000;
 }
+.fgPw{
+    padding-top: 5px;
+}
 a:link { text-decoration: none; }
 a:visited { text-decoration: none; }
 a:hover { text-decoration: none; }
@@ -83,22 +86,23 @@ a:active { text-decoration: none; }
 }
 .password{
     display:flex;
-    flex-direction:row;
+    flex-direction:row-reverse;
+    align-items: center;
 
 }
 .passwordInput{
     margin: 0px;
     flex: 1;
     width: 100%;
-    z-index: -1;
+    z-index: 0;
 }
 .eyeSlash{
-    float: left;
     position: absolute;
     border-width: 0px;
-    background: none;
+    background: white;
     border: none;
     cursor: pointer;
+    margin-right: 5px;
     z-index: 1;
 }
 
