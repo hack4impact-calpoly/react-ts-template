@@ -1,110 +1,128 @@
-.login_card{
-    display:flex;
-    align-items: center;
-    justify-content: center;
+.login_card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.login_box{
-    display:flex;
-    flex-direction:column;
-    width: 640px;
-    height: auto;
-    border: 1px solid #C4C4C4;
+.login_box {
+  display: flex;
+  flex-direction: column;
+  width: 640px;
+  height: auto;
+  border: 1px solid #c4c4c4;
 }
-.logo{
-    align-self: center;
-    /* PET_FINAL logo 1 */
-    width: 135px;
-    height: 226px;
+.logo {
+  align-self: center;
+  /* PET_FINAL logo 1 */
+  width: 135px;
+  height: 226px;
 }
-.insideLoginPanel{
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction:column;
-    align-content: stretch; 
-    padding:10%
+.insideLoginPanel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  align-content: stretch;
+  padding: 10%;
 }
-.textInput{
-    padding-top:5%;
-    padding-bottom: 5%;
-    cursor: text;
+.textInput {
+  padding-top: 5%;
+  padding-bottom: 5%;
+  cursor: text;
 }
-.beneathLogo{
-    display:flex;
-    flex-direction:column;
+.beneathLogo {
+  display: flex;
+  flex-direction: column;
 }
-h1{
-    font-family: 'Rubik';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 21px;
-    color: #011338;
+h1 {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  color: #011338;
 }
-input{
-    align-self: left;
-    height: 55px;
-    width: 436px;
-    left: 538px;
+input {
+  align-self: left;
+  height: 55px;
+  width: 436px;
+  left: 538px;
 }
-.accountAdjustButton{
-    display: flex;
-    font-family: 'Rubik';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 19px;
-    justify-content: flex-end;
-    color: #000000;
+.accountAdjustButton {
+  display: flex;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  justify-content: flex-end;
+  color: #000000;
 }
-.fgPw{
-    padding-top: 5px;
+.fgPw {
+  padding-top: 5px;
 }
-a:link { text-decoration: none; }
-a:visited { text-decoration: none; }
-a:hover { text-decoration: none; }
-a:active { text-decoration: none; }
-.boldAccount{
-    font-weight: bold;
+a:link {
+  text-decoration: none;
 }
-.loginButton{
-    align-self: center;
-    /* login button font */
-    font-family: 'Rubik';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 21px;
-    text-align: center;
-    color: #FFFFFF;
-    /* button size*/
-    width: 436px;
-    height: 55px;
-    /* Brand color 1 */
-    background: #1B4C5A;
-    cursor: pointer;
+a:visited {
+  text-decoration: none;
 }
-.password{
-    display:flex;
-    flex-direction:row-reverse;
-    align-items: center;
-
+a:hover {
+  text-decoration: none;
 }
-.passwordInput{
-    margin: 0px;
-    flex: 1;
-    width: 100%;
-    z-index: 0;
+a:active {
+  text-decoration: none;
 }
-.eyeSlash{
-    position: absolute;
-    border-width: 0px;
-    background: white;
-    border: none;
-    cursor: pointer;
-    margin-right: 5px;
-    z-index: 1;
+.boldAccount {
+  font-weight: bold;
+}
+.loginButton {
+  align-self: center;
+  /* login button font */
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+  color: #ffffff;
+  /* button size*/
+  width: 436px;
+  height: 55px;
+  /* Brand color 1 */
+  background: #1b4c5a;
+  cursor: pointer;
 }
 
+.inputFocus{
+    outline: -webkit-focus-ring-color auto 1px;
+}
 
+.inputBlur {
+  border: 1px solid black;
+  /* outline: auto; */
+}
 
+.password {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.passwordInput {
+  margin: 0px;
+  flex: 1;
+  width: 100%;
+  z-index: 0;
+  border: none;
+  outline: none !important;
+  background:none;
+}
+.eyeSlash {
+  /* position: absolute; */
+  border-width: 0px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  margin-right: 4px;
+  z-index: 1;
+}

@@ -26,6 +26,7 @@ export default function Login() {
     // inverse the boolean state of passwordShown
     setPasswordShown(!passwordShown);
   };
+
   return (
     <div className="login_card">
       <div className="login_box">
@@ -43,10 +44,17 @@ export default function Login() {
                   // this event handler updates the value of newIngredient
                   setEmail(e.target.value);
                 }}
+                onClick={(e) => {
+                  e.currentTarget.scrollLeft = e.currentTarget.scrollWidth;
+                  e.currentTarget.setSelectionRange(
+                    e.currentTarget.value.length,
+                    e.currentTarget.value.length
+                  );
+                }}
               />
               <h1>Password</h1>
 
-              <div className="password">
+              <div className="password inputBlur">
                 <button
                   type="button"
                   className="eyeSlash"
@@ -54,9 +62,30 @@ export default function Login() {
                 >
                   <EyeSlashPic />
                 </button>
+
                 <input
                   type={passwordShown ? "text" : "password"}
                   className="passwordInput"
+                  onFocus={(e) => {
+                    e.currentTarget.parentElement?.classList.remove(
+                      "inputBlur"
+                    );
+                    e.currentTarget.parentElement?.classList.add("inputFocus");
+                    // e.selectionSet=true;
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.parentElement?.classList.remove(
+                      "inputFocus"
+                    );
+                    e.currentTarget.parentElement?.classList.add("inputBlur");
+                  }}
+                  onClick={(e) => {
+                    e.currentTarget.scrollLeft = e.currentTarget.scrollWidth;
+                    e.currentTarget.setSelectionRange(
+                      e.currentTarget.value.length,
+                      e.currentTarget.value.length
+                    );
+                  }}
                 />
               </div>
               <a href="google.com" className="accountAdjustButton">
