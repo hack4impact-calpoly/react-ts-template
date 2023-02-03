@@ -1,8 +1,9 @@
 import React from "react";
 import "./App.css";
+import CreateAccount from "./createAccount";
 
 function App() {
-  return <p>Cleanedup React App</p>;
+  return <CreateAccount />;
 }
 
 export default App;
