@@ -57,10 +57,13 @@ export default function Login() {
             <img className="logo" src={logoPic} alt="PET logo" />
           </div>
           <div className="beneathLogo">
-            <div className="invalidAlert">
-              <div style={{ display: validEmail ? "block" : "none" }}>
+            <div>
+              <div
+                className="invalidAlert"
+                style={{ display: validEmail ? "block" : "none" }}
+              >
                 {" "}
-                invalid email
+                Invalid email. Please try again.
               </div>
               {/* <div style={{ display: validPw ? "block" : "none" }}>
                 invalid password

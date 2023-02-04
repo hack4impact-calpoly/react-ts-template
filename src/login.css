@@ -6,15 +6,21 @@
 .login_box {
   display: flex;
   flex-direction: column;
-  width: 640px;
   height: auto;
   border: 1px solid #c4c4c4;
+  width: 48.261%;
+  padding-right: 11.087%;
+  padding-left: 11.087%;
+  padding-top: 3.956%;
+  padding-bottom: 7.64%;
+  
 }
 .logo {
   align-self: center;
   /* PET_FINAL logo 1 */
-  width: 135px;
-  height: 226px;
+  width: 55%;
+  height: 70%;
+padding-bottom:34px;
 }
 .insideLoginPanel {
   display: flex;
@@ -23,11 +29,27 @@
   flex-direction: column;
   align-content: stretch;
   padding: 10%;
+  width: 436/1920 * 10%;
 }
 .textInput {
   padding-top: 5%;
   padding-bottom: 5%;
   cursor: text;
+}
+.invalidAlert {
+  flex: content;
+  /* width:100%; */
+  height: 15%;
+  padding: 5%;
+  border: 1px solid #d03d3d;
+  align-content: stretch;
+  text-align: center;
+  vertical-align: middle;
+  font-family: 'Rubik';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+/* line-height: 55px; */
 }
 .beneathLogo {
   display: flex;
@@ -93,8 +115,8 @@ a:active {
   cursor: pointer;
 }
 
-.inputFocus{
-    outline: -webkit-focus-ring-color auto 1px;
+.inputFocus {
+  outline: -webkit-focus-ring-color auto 1px;
 }
 
 .inputBlur {
@@ -115,7 +137,7 @@ a:active {
   z-index: 0;
   border: none;
   outline: none !important;
-  background:none;
+  background: none;
 }
 .eyeSlash {
   /* position: absolute; */
