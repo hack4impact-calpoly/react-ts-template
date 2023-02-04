@@ -4,83 +4,82 @@
   justify-content: center;
 }
 .login_box {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
+  /* width: 640px; */
+  width: 45%;
   height: auto;
   border: 1px solid #c4c4c4;
-  width: 48.261%;
-  padding-right: 11.087%;
-  padding-left: 11.087%;
-  padding-top: 3.956%;
-  padding-bottom: 7.64%;
-  
+  padding: 0%;
+  align-content: stretch;
+  align-items: center;
+
 }
 .logo {
-  align-self: center;
+  display: flex;
+  margin: auto;
   /* PET_FINAL logo 1 */
-  width: 55%;
+  width: 60%;
   height: 70%;
-padding-bottom:34px;
 }
 .insideLoginPanel {
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
   flex-direction: column;
   align-content: stretch;
-  padding: 10%;
-  width: 436/1920 * 10%;
+  padding-left: 15%;
+  padding-right: 15%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+
+
 }
 .textInput {
   padding-top: 5%;
   padding-bottom: 5%;
   cursor: text;
 }
-.invalidAlert {
-  flex: content;
-  /* width:100%; */
-  height: 15%;
-  padding: 5%;
-  border: 1px solid #d03d3d;
-  align-content: stretch;
-  text-align: center;
-  vertical-align: middle;
-  font-family: 'Rubik';
-font-style: normal;
-font-weight: 400;
-font-size: 18px;
-/* line-height: 55px; */
-}
 .beneathLogo {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
+  align-content: stretch;
+  padding:-100%;
+
+}
+
+input {
+  align-self: left;
+  /* height: 55px;
+  width: 436px;
+  left: 538px; */
+  line-height: 400%;
+  width: 99%;
+  left: 500%; 
 }
 h1 {
   font-family: "Rubik";
   font-style: normal;
   font-weight: 500;
-  font-size: 18px;
-  line-height: 21px;
+  /* font-size: 18px;
+  line-height: 21px; */
+  font-size: 112.50%;
+  line-height: 131.25%;
   color: #011338;
-}
-input {
-  align-self: left;
-  height: 55px;
-  width: 436px;
-  left: 538px;
 }
 .accountAdjustButton {
   display: flex;
   font-family: "Rubik";
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
+  font-size: 100%;
+  line-height: 100%;
   justify-content: flex-end;
   color: #000000;
 }
 .fgPw {
-  padding-top: 5px;
+  padding-top: 2%;
 }
 a:link {
   text-decoration: none;
@@ -103,20 +102,20 @@ a:active {
   font-family: "Rubik";
   font-style: normal;
   font-weight: 500;
-  font-size: 18px;
-  line-height: 21px;
+  font-size: 100%;
+  line-height: 300%;
   text-align: center;
   color: #ffffff;
   /* button size*/
-  width: 436px;
-  height: 55px;
+  width: 100%;
+  height: 100%;
   /* Brand color 1 */
   background: #1b4c5a;
   cursor: pointer;
 }
 
-.inputFocus {
-  outline: -webkit-focus-ring-color auto 1px;
+.inputFocus{
+    outline: -webkit-focus-ring-color auto 1px;
 }
 
 .inputBlur {
@@ -131,20 +130,20 @@ a:active {
 }
 
 .passwordInput {
-  margin: 0px;
+  margin: 0%;
   flex: 1;
   width: 100%;
   z-index: 0;
   border: none;
   outline: none !important;
-  background: none;
+  background:none;
 }
 .eyeSlash {
   /* position: absolute; */
-  border-width: 0px;
+  border-width: 0%;
   background: white;
   border: none;
   cursor: pointer;
-  margin-right: 4px;
+  margin-right: 1%;
   z-index: 1;
 }
