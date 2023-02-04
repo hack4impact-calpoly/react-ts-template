@@ -9,6 +9,7 @@ import React, { ChangeEvent, useState } from "react";
 import "./login.css";
 import logoPic from "./images/PET logo.jpg";
 import { ReactComponent as EyeSlashPic } from "./images/EyeSlash.svg";
+import { ReactComponent as EyePic } from "./images/Eye.svg";
 import "@fontsource/rubik";
 
 function addAccount() {
@@ -98,11 +99,11 @@ export default function Login() {
                   className="eyeSlash"
                   onClick={togglePassword}
                 >
-                  <EyeSlashPic />
+                  {passwordShown ? <EyeSlashPic /> : <EyePic />}
                 </button>
 
                 <input
-                  type={passwordShown ? "text" : "password"}
+                  // type={passwordShown ? "text" : "password"}
                   className="passwordInput"
                   value={password}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
