@@ -6,15 +6,16 @@
 .login_box {
   display: flex;
   flex-direction: column;
-  width: 640px;
+  /* width: 640px; */
+  width: 50%;
   height: auto;
   border: 1px solid #c4c4c4;
 }
 .logo {
   align-self: center;
   /* PET_FINAL logo 1 */
-  width: 135px;
-  height: 226px;
+  width: 50%;
+  height: 60%;
 }
 .insideLoginPanel {
   display: flex;

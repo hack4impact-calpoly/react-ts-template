@@ -8,7 +8,7 @@ password validation commented out
 import React, { ChangeEvent, useState } from "react";
 import "./login.css";
 import logoPic from "./images/PET logo.jpg";
-import { ReactComponent as EyeSlashPic } from "./images/EyeSlash.svg";
+import { ReactComponent as EyeSlashPic } from "./images/eyeSlash.svg";
 import "@fontsource/rubik";
 
 function addAccount() {
