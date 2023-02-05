@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.css";
-import FgPass from "./forgotPassword";
+import Login from "./login";
 
 function App() {
-  return <FgPass />;
+  return <Login />;
   // return <p>Cleanedup React App</p>;
 }
 
