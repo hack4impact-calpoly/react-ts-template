@@ -5,8 +5,10 @@ import { Amplify } from "aws-amplify";
 import awsconfig from "./aws-exports";
 import Temp from "./components/Temp";
 import Success from "./success";
+import ResetPassword from "./resetPassword";
 
 Amplify.configure(awsconfig);
+// import Home from "./home";
 
 function App() {
   return (
@@ -18,8 +20,8 @@ function App() {
         <Route path="/create-account" element={<Temp />} />
         <Route path="/forgot-password" element={<Temp />} />
         <Route path="/enter-code" element={<Temp />} />
-        <Route path="/reset-password" element={<Temp />} />
-        <Route path="/success" element={<Success />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/success/:id" element={<Success />} />
       </Routes>
     </BrowserRouter>
   );
