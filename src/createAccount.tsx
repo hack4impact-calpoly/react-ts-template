@@ -22,20 +22,17 @@ const Box = styled.section`
   border: 0.5px solid #c4c4c4;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 3rem 5rem;
-  @media (max-width: 500px) {
+  @media (max-width: 630px) {
     display: flex;
-    width: fit-content;
+    width: 100%;
     border: none;
     box-shadow: none;
-    margin: 0rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    padding: auto;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 30%;
+    padding: 1rem;
+    margin-top: auto;
   }
 `;
 
@@ -61,7 +58,7 @@ const Header = styled.text`
   color: #011338;
   font-size: 25px;
   padding-bottom: 5%;
-  @media (max-width: 500px) {
+  @media (max-width: 630px) {
     margin: 2rem 0rem;
     padding: auto;
     width: fit-content;
@@ -80,6 +77,7 @@ const StyledInput = styled.input`
   display: flex;
   height: 3rem;
   margin-bottom: 5%;
+  font-size: 15px;
 `;
 
 const StyledSelect = styled.select`
@@ -90,6 +88,7 @@ const StyledSelect = styled.select`
   height: 3rem;
   margin-bottom: 5%;
   color: gray;
+  font-size: 15px;
 `;
 
 const Already = styled.text`
@@ -125,7 +124,12 @@ const Container = styled.div`
 const NameFields = styled.section`
   display: flex;
   flex-direction: row;
+  margin-bottom: 3%;
   width: 100%;
+  @media (max-width: 630px) {
+    flex-direction: column;
+    margin-bottom: 0%;
+  }
 `;
 
 const FirstName = styled.section`
@@ -133,6 +137,9 @@ const FirstName = styled.section`
   flex-direction: column;
   width: 100%;
   margin-right: 5%;
+  @media (max-width: 630px) {
+    margin-right: 0%;
+  }
 `;
 
 const LastName = styled.section`
@@ -140,6 +147,9 @@ const LastName = styled.section`
   flex-direction: column;
   width: 100%;
   margin-left: 5%;
+  @media (max-width: 630px) {
+    margin-left: 0%;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -208,7 +218,6 @@ export default function CreateAccount() {
           <option value="none" selected disabled>
             Please Select...
           </option>
-          <option value="Admin">Admin</option>
           <option value="Volunteer">Volunteer</option>
           <option value="Rider">Rider</option>
         </StyledSelect>
