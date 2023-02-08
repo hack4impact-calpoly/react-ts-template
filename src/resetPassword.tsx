@@ -217,7 +217,7 @@ function ResetPassword(this: any) {
     }
   };
   const handleBackClick = () => {
-    navigate("/enterCode");
+    navigate("/enter-code");
   };
 
   return (
