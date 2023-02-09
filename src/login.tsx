@@ -12,12 +12,22 @@ import logoPic from "./images/PET logo.jpg";
 import { ReactComponent as EyeSlashPic } from "./images/eyeSlash.svg";
 import "@fontsource/rubik";
 
-// const Input = styled.input`
-//   align-self: left;
-//   line-height: 400%;
-//   width: 99%;
-//   left: 500%;
-// `;
+const Input = styled.input`
+  align-self: left;
+  line-height: 400%;
+  width: 99%;
+  left: 500%;
+`;
+
+const PasswordInput = styled(Input)`
+  margin: 0%;
+  flex: 1;
+  width: 100%;
+  z-index: 0;
+  border: none;
+  outline: none !important;
+  background: none;
+`;
 
 const Button = styled.button`
   display: flex;
@@ -28,14 +38,34 @@ const Button = styled.button`
   line-height: 100%;
   justify-content: flex-end;
   color: #000000;
-  > .eyeSlash {
-    border-width: 0%;
-    background: white;
-    border: none;
-    cursor: pointer;
-    margin-right: 1%;
-    z-index: 1;
-  }
+  text-decoration: none;
+`;
+
+const TomatoButton = styled(Button)`
+  border-width: 0%;
+  background: white;
+  border: none;
+  cursor: pointer;
+  margin-right: 1%;
+  z-index: 1;
+`;
+
+const LoginButton = styled(Button)`
+  align-self: center;
+  text-align: center;
+  /* login button font */
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 100%;
+  line-height: 300%;
+  color: #ffffff;
+  /* button size*/
+  width: 100%;
+  height: 100%;
+  /* Brand color 1 */
+  background: #1b4c5a;
+  cursor: pointer;
 `;
 
 const Section = styled.div`
@@ -53,6 +83,10 @@ const Section = styled.div`
     padding: 0%;
     align-content: stretch;
     align-items: center;
+    @media (max-width: 500px) {
+      width: auto;
+      border: 0;
+    }
   }
   > .insideLoginPanel {
     align-items: center;
@@ -88,9 +122,8 @@ const Section = styled.div`
   }
 `;
 const Title = styled.text`
-  > .boldAccount {
-    font-weight: bold;
-  }
+  font-weight: bold;
+  padding-top: 2%;
 `;
 
 const SmallText = styled.h1`
@@ -103,6 +136,10 @@ const SmallText = styled.h1`
   line-height: 131.25%;
   color: #011338;
 `;
+
+// const Paragraph = styled.h3`
+//   font-weight: bold;
+// `;
 
 function addAccount() {
   alert("You clicked login");
@@ -165,7 +202,7 @@ export default function Login() {
               </Section>
               <Section className="textInput">
                 <SmallText>Email</SmallText>
-                <input
+                <Input
                   placeholder=""
                   type="email"
                   value={email} // add newEmail as the input's value
@@ -186,18 +223,17 @@ export default function Login() {
                 />
                 {/* if (touched){handleOnChange(email)} */}
                 <SmallText>Password</SmallText>
-                <div className="password inputBlur">
-                  <Button
+                <Section className="password inputBlur">
+                  <TomatoButton
                     type="button"
                     className="eyeSlash"
                     onClick={togglePassword}
                   >
                     <EyeSlashPic />
-                  </Button>
+                  </TomatoButton>
 
-                  <input
+                  <PasswordInput
                     type={passwordShown ? "text" : "password"}
-                    className="passwordInput"
                     value={password}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       // this event handler updates the value of newIngredient
@@ -226,32 +262,32 @@ export default function Login() {
                       );
                     }}
                   />
-                </div>
+                </Section>
                 <Button
                   as="a"
                   href="google.com"
                   className="accountAdjustButton"
                 >
-                  <div className="fgPw">
-                    <h1 className="boldAccount">Forgot password?</h1>
-                  </div>
+                  <Section className="fgPw">
+                    <Title className="boldAccount">Forgot password?</Title>
+                  </Section>
                 </Button>
               </Section>
               <form>
-                <button
+                <LoginButton
                   type="button"
                   className="loginButton"
                   onClick={addAccount}
                 >
                   Log In
-                </button>
+                </LoginButton>
               </form>
               <p>
                 <Button as="a" href="google.com">
-                  <div className="accountAdjust">
+                  <Section className="accountAdjust">
                     Don&apos;t have an account?&nbsp;
                     <Title className="boldAccount">Create Account</Title>
-                  </div>
+                  </Section>
                 </Button>
               </p>
             </Section>

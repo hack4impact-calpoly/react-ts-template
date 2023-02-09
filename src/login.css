@@ -18,9 +18,9 @@
   display: flex;
   margin: auto;
   /* PET_FINAL logo 1 */
-  /* width: 60%; */
-  /* height: 70%; */
-/* } */ 
+/* width: 60%; */
+/* height: 70%; */
+/* } */
 /* .insideLoginPanel {
   /* display: flex; */
 /* align-items: center;
@@ -45,15 +45,15 @@
   padding: -100%;
 } */
 
-input {
+/* input {
   align-self: left;
   /* height: 55px;
   width: 436px;
   left: 538px; */
-  line-height: 400%;
+  /* line-height: 400%;
   width: 99%;
-  left: 500%;
-}
+  left: 500%; */
+/* } */ 
 /* 
 h1 {
   font-family: "Rubik";
@@ -61,10 +61,10 @@ h1 {
   font-weight: 500;
   /* font-size: 18px;
   line-height: 21px; */
-  /* font-size: 112.5%; */
-  /* line-height: 131.25%; */
-  /* color: #011338; */
-/* } */ 
+/* font-size: 112.5%; */
+/* line-height: 131.25%; */
+/* color: #011338; */
+/* } */
 /* .accountAdjustButton {
   display: flex;
   font-family: "Rubik";
@@ -75,10 +75,10 @@ h1 {
   justify-content: flex-end;
   color: #000000;
 } */
-.fgPw {
+/* .fgPw {
   padding-top: 2%;
-}
-a:link {
+} */
+/* a:link {
   text-decoration: none;
 }
 a:visited {
@@ -89,41 +89,42 @@ a:hover {
 }
 a:active {
   text-decoration: none;
-}
+} */
 /* .boldAccount {
   font-weight: bold;
 } */
-.loginButton {
+/* .loginButton {
   align-self: center;
   /* login button font */
-  font-family: "Rubik";
+  /* font-family: "Rubik";
   font-style: normal;
   font-weight: 500;
   font-size: 100%;
   line-height: 300%;
   text-align: center;
-  color: #ffffff;
-  /* button size*/
-  width: 100%;
-  height: 100%;
-  /* Brand color 1 */
-  background: #1b4c5a;
+  color: #ffffff; */
+  /* button size */
+  /* width: 100%;
+  height: 100%; */
+  /* Brand color 1  */
+  /* background: #1b4c5a;
   cursor: pointer;
-}
+} */ 
 
-.inputFocus {
+/* .inputFocus {
   outline: -webkit-focus-ring-color auto 1px;
-}
+} */
 
-.inputBlur {
+/* .inputBlur {
   border: 1px solid black;
   /* outline: auto; */
-}
+/* } */
 
 .password {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
+  border: 1px solid black;
 }
 
 .passwordInput {
@@ -135,12 +136,12 @@ a:active {
   outline: none !important;
   background: none;
 }
-.eyeSlash {
+/* .eyeSlash {
   /* position: absolute; */
-  border-width: 0%;
-  background: white;
-  border: none;
-  cursor: pointer;
-  margin-right: 1%;
-  z-index: 1;
-}
+/* border-width: 0%; */
+/* background: white;
+  border: none; */
+/* cursor: pointer; */
+/* margin-right: 1%; */
+/* z-index: 1; */
+/* } */

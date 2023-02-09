@@ -48,8 +48,7 @@ const Section = styled.div`
   > .fgBox {
     margin-top: -10%;
     flex-direction: column;
-    /* width: 640px; */
-    width: 45%;
+    width: auto;
     height: auto;
     border: 1px solid #c4c4c4;
     padding: 0%;
