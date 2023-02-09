@@ -1,10 +1,3 @@
-/*
-validated email and password
-password must have 1 uppercase, lowercase, number and special character
-password must be eight characters long
-password validation commented out
-*/
-
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import "./login.css";
@@ -39,6 +32,10 @@ const Button = styled.button`
   justify-content: flex-end;
   color: #000000;
   text-decoration: none;
+  @media (max-width: 500px) {
+    font-size: 80%;
+    font-weight: bold;
+  }
 `;
 
 const TomatoButton = styled(Button)`
@@ -120,10 +117,16 @@ const Section = styled.div`
   > .invalidAlert {
     border: red;
   }
+  > .password {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    border: 1px solid black;
+  }
 `;
 const Title = styled.text`
   font-weight: bold;
-  padding-top: 2%;
+  padding: 0%;
 `;
 
 const SmallText = styled.h1`
@@ -223,7 +226,7 @@ export default function Login() {
                 />
                 {/* if (touched){handleOnChange(email)} */}
                 <SmallText>Password</SmallText>
-                <Section className="password inputBlur">
+                <Section className="password">
                   <TomatoButton
                     type="button"
                     className="eyeSlash"
@@ -268,9 +271,9 @@ export default function Login() {
                   href="google.com"
                   className="accountAdjustButton"
                 >
-                  <Section className="fgPw">
+                  <p>
                     <Title className="boldAccount">Forgot password?</Title>
-                  </Section>
+                  </p>
                 </Button>
               </Section>
               <form>

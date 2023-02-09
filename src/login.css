@@ -120,14 +120,14 @@ a:active {
   /* outline: auto; */
 /* } */
 
-.password {
+/* .password {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
   border: 1px solid black;
-}
+} */
 
-.passwordInput {
+/* .passwordInput {
   margin: 0%;
   flex: 1;
   width: 100%;
@@ -135,7 +135,7 @@ a:active {
   border: none;
   outline: none !important;
   background: none;
-}
+} */
 /* .eyeSlash {
   /* position: absolute; */
 /* border-width: 0%; */
