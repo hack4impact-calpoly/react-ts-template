@@ -1,5 +1,4 @@
-import React from "react";
-import Popup from "reactjs-popup";
+import React, { useState } from "react";
 import "reactjs-popup/dist/index.css";
 import styled from "styled-components";
 import "@fontsource/roboto";
@@ -12,16 +11,15 @@ const Button = styled.button`
   color: white;
 `;
 const Div = styled.div`
-  background: palevioletred;
-  border-radius: 3px;
-  border: none;
-  color: white;
+  background: white;
 `;
-const StyledPopup = styled(Popup)`
-  border: none;
+const StyledPopup = styled(Div)`
+  border: black 2px;
+  border-style: solid;
   display: flex;
-  shadow: none;
   background: black;
+  width: 25%;
+  height: 25%;
 `;
 const RiderInfo = styled(Div)`
   display: flex;
@@ -38,20 +36,33 @@ const RiderInfo = styled(Div)`
   padding: 2.5%;
 `;
 const Header = styled(Div)`
-  padding: 10%;
+  padding: 5%;
   font-family: "Roboto";
   font-style: normal;
   font-weight: 700;
-  font-size: 18px;
-  line-height: 21px;
+  font-size: 125%;
+  line-height: 200%;
   background: white;
   color: #1b4c5a;
 `;
 
 export default function AppointmentPopup() {
+  const [popupShown, setPopupShown] = useState(false);
+  const togglePopup = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPopupShown(!popupShown);
+  };
   return (
     <div>
-      <StyledPopup trigger={<Button> Trigger</Button>} position="right center">
+      <Button type="button" onClick={togglePopup}>
+        Click Me
+      </Button>
+      <StyledPopup
+        className="invalidAlert"
+        style={{ display: popupShown ? "block" : "none" }}
+      >
+        {" "}
         <Header>Appointment Info</Header>
         <RiderInfo>
           <Horse /> Riders: Jane Doe, John Smith
