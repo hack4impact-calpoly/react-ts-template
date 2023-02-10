@@ -14,8 +14,6 @@ const Div = styled.div`
   background: white;
 `;
 const StyledPopup = styled(Div)`
-  border: black 2px;
-  border-style: solid;
   display: flex;
   background: black;
   width: 25%;
