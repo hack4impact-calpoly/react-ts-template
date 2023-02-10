@@ -56,6 +56,8 @@ const LoginButton = styled(Button)`
   font-weight: 500;
   font-size: 100%;
   line-height: 300%;
+  display: grid;
+  align-items: center;
   color: #ffffff;
   /* button size*/
   width: 100%;
