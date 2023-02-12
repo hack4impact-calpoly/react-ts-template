@@ -1,9 +1,10 @@
 import React from "react";
 import "./App.css";
+import CalendarWeek from "./weeklyView";
 // import Success from "./success";
 
 function App() {
-  return <p>Cleanedup React App</p>;
+  return <CalendarWeek startDate={new Date()} />;
 }
 
 export default App;
