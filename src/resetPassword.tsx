@@ -224,15 +224,7 @@ function ResetPassword(this: any) {
     }));
     validateInput(e);
   };
-  // const onInputChange2 = (e: { target: any }) => {
-  //   const { name, value } = e.target;
 
-  //   setInput((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  //   return e.target.value;
-  // };
   // changes windows to different pages
   const handleClick = () => {
     const username = "igloo405@gmail.com";
@@ -248,8 +240,13 @@ function ResetPassword(this: any) {
         .then((data) => console.log(data))
         // eslint-disable-next-line no-console
         .catch((err) => console.log(err));
+
+      // DELETE THESE CONSOLE STATEMENTS LATER
       // eslint-disable-next-line no-console
       console.log("nice");
+      // eslint-disable-next-line no-console
+      console.log(input.code);
+
       navigate("/success/reset");
     }
   };
