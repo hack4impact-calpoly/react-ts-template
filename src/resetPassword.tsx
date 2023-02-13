@@ -4,6 +4,7 @@ import "./resetPassword.css";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import "@fontsource/rubik";
+import { Auth } from "aws-amplify";
 import eyeSlash from "./images/eyeslash.jpeg";
 import backArrow from "./images/backarrow.jpeg";
 
@@ -117,7 +118,7 @@ const EyeSlash = styled.image`
   display: flex;
   position: absolute;
   transfrom: translateY(-50%);
-  top: 5%;
+  top: 45%;
   left: 90%;
   @media (max-width: 500px) {
     left: 85%;
@@ -129,11 +130,11 @@ const EyeSlash2 = styled.image`
   display: flex;
   position: absolute;
   transfrom: translateY(-50%);
-  top: 77%;
+  top: 87%;
   left: 90%;
   @media (max-width: 500px) {
     left: 85%;
-    top: 73%;
+    top: 85%;
   }
 `;
 const BackArrow = styled.image`
@@ -152,6 +153,7 @@ function ResetPassword(this: any) {
     confirmPassword: "",
     showPassword: false,
     showPassword2: false,
+    code: false,
   });
 
   const [error, setError] = useState({
@@ -160,6 +162,15 @@ function ResetPassword(this: any) {
   });
   // handling the show password icons
   const handleClickShowPassword = () => {
+    // get rid of this later too
+    const username = "igloo405@gmail.com";
+    // get rid of this later this should be in enter code
+    // Send confirmation code to user's email
+    Auth.forgotPassword(username)
+      // eslint-disable-next-line no-console
+      .then((data) => console.log(data))
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
     setInput({ ...input, showPassword: !input.showPassword });
   };
   const handleClickShowPassword2 = () => {
@@ -168,6 +179,7 @@ function ResetPassword(this: any) {
   // checking whether passwords match and if they meet requirements (only requirement so far is <5char)
   const validateInput = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
+
     setError((prev) => {
       const stateObj = { ...prev, [name]: "" };
 
@@ -198,12 +210,14 @@ function ResetPassword(this: any) {
         default:
           break;
       }
+
       return stateObj;
     });
   };
   // helper function for validating the input
   const onInputChange = (e: { target: any }) => {
     const { name, value } = e.target;
+
     setInput((prev) => ({
       ...prev,
       [name]: value,
@@ -212,7 +226,17 @@ function ResetPassword(this: any) {
   };
   // changes windows to different pages
   const handleClick = () => {
-    if (input.confirmPassword === input.password && input.password.length > 5) {
+    const username = "igloo405@gmail.com";
+    const code = "094d9e8b-7a16-410d-869a-dc4ffec62829";
+    if (input.confirmPassword === input.password && input.password.length > 8) {
+      // Collect confirmation code and new password, then
+      Auth.forgotPasswordSubmit(username, code, input.password)
+        // eslint-disable-next-line no-console
+        .then((data) => console.log(data))
+        // eslint-disable-next-line no-console
+        .catch((err) => console.log(err));
+      // eslint-disable-next-line no-console
+      console.log("nice");
       navigate("/success/reset");
     }
   };
@@ -232,10 +256,18 @@ function ResetPassword(this: any) {
           Your new password must be different from previous used passwords
         </Header2>
         <NewP>
-          <NewPTxt>New Password</NewPTxt>
+          <NewPTxt>Verification Code</NewPTxt>
           {/* wrapper for my input */}
           <Input>
+            <StyledInput
+              type="text"
+              name="verification"
+              placeholder="Enter Code"
+              // value= {input.code}
+              required
+            />
             {/* if show password is true then change type to text */}
+            <NewPTxt>New Password</NewPTxt>
             <StyledInput
               type={input.showPassword ? "text" : "password"}
               name="password"
