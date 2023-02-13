@@ -153,7 +153,7 @@ function ResetPassword(this: any) {
     confirmPassword: "",
     showPassword: false,
     showPassword2: false,
-    code: false,
+    code: "",
   });
 
   const [error, setError] = useState({
@@ -224,13 +224,26 @@ function ResetPassword(this: any) {
     }));
     validateInput(e);
   };
+  // const onInputChange2 = (e: { target: any }) => {
+  //   const { name, value } = e.target;
+
+  //   setInput((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  //   return e.target.value;
+  // };
   // changes windows to different pages
   const handleClick = () => {
     const username = "igloo405@gmail.com";
-    const code = "094d9e8b-7a16-410d-869a-dc4ffec62829";
-    if (input.confirmPassword === input.password && input.password.length > 8) {
+    // const code = "094d9e8b-7a16-410d-869a-dc4ffec62829";
+    if (
+      input.confirmPassword === input.password &&
+      input.password.length > 8 &&
+      input.code.length > 0
+    ) {
       // Collect confirmation code and new password, then
-      Auth.forgotPasswordSubmit(username, code, input.password)
+      Auth.forgotPasswordSubmit(username, input.code, input.password)
         // eslint-disable-next-line no-console
         .then((data) => console.log(data))
         // eslint-disable-next-line no-console
@@ -261,9 +274,12 @@ function ResetPassword(this: any) {
           <Input>
             <StyledInput
               type="text"
-              name="verification"
+              name="code"
               placeholder="Enter Code"
-              // value= {input.code}
+              value={input.code}
+              onChange={(e) =>
+                setInput((prev) => ({ ...prev, code: e.target.value }))
+              }
               required
             />
             {/* if show password is true then change type to text */}
