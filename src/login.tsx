@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import "./login.css";
 import logoPic from "./images/PET logo.jpg";
@@ -20,6 +21,22 @@ const PasswordInput = styled(Input)`
   border: none;
   outline: none !important;
   background: none;
+`;
+
+const StyledLink = styled(Link)`
+  display: flex;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 100%;
+  line-height: 100%;
+  justify-content: flex-end;
+  color: #000000;
+  text-decoration: none;
+  @media (max-width: 500px) {
+    font-size: 80%;
+    font-weight: bold;
+  }
 `;
 
 const Button = styled.button`
@@ -268,15 +285,9 @@ export default function Login() {
                     }}
                   />
                 </Section>
-                <Button
-                  as="a"
-                  href="google.com"
-                  className="accountAdjustButton"
-                >
-                  <p>
-                    <Title className="boldAccount">Forgot password?</Title>
-                  </p>
-                </Button>
+                <StyledLink to="/forgot-password">
+                  <Title className="boldAccount">Forgot password?</Title>
+                </StyledLink>
               </Section>
               <form>
                 <LoginButton
@@ -287,14 +298,12 @@ export default function Login() {
                   Log In
                 </LoginButton>
               </form>
-              <p>
-                <Button as="a" href="google.com">
-                  <Section className="accountAdjust">
-                    Don&apos;t have an account?&nbsp;
-                    <Title className="boldAccount">Create Account</Title>
-                  </Section>
-                </Button>
-              </p>
+              <StyledLink to="/create-account">
+                <Section className="accountAdjust">
+                  Don&apos;t have an account?&nbsp;
+                  <Title className="boldAccount">Create Account</Title>
+                </Section>
+              </StyledLink>
             </Section>
           </Section>
         </Section>

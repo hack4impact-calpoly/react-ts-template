@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import "./forgotPassword.css";
 import arrow_pic from "./images/Arrow.png";
@@ -136,10 +137,6 @@ function sendEmail() {
   alert("You clicked Send");
 }
 
-function sendEmailArrow() {
-  alert("You clicked the Arrow");
-}
-
 export default function forgotPassword() {
   const [email, setEmail] = useState("");
 
@@ -158,8 +155,10 @@ export default function forgotPassword() {
 
   return (
     <Section>
-      <Button type="button" className="arrowButton" onClick={sendEmailArrow}>
-        <img className="arrow_" src={arrow_pic} alt="Arrow" />
+      <Button>
+        <Link to="/login">
+          <img className="arrow_" src={arrow_pic} alt="Arrow" />
+        </Link>
       </Button>
       <Section className="fgCard">
         <Section className="fgBox">
