@@ -1,8 +1,9 @@
 import React from "react";
 import "./App.css";
+import WeeklyView from "./components/monthlyView";
 
 function App() {
-  return <p>Cleanedup React App</p>;
+  return <WeeklyView />;
 }
 
 export default App;

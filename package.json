@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.0.6",
     "aws-amplify": "^5.0.11",
     "react": "^18.2.0",
+    "react-calendar": "^4.0.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
@@ -46,6 +47,8 @@
     ]
   },
   "devDependencies": {
+    "@types/react-calendar": "^3.9.0",
+    "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "eslint": "^8.21.0",
