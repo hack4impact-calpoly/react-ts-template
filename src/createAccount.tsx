@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
@@ -163,7 +164,7 @@ export default function CreateAccount() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone_number, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -176,7 +177,7 @@ export default function CreateAccount() {
       !firstName ||
       !lastName ||
       !email ||
-      !phone ||
+      !phone_number ||
       !password ||
       role === "none"
     ) {
@@ -192,7 +193,7 @@ export default function CreateAccount() {
     }
 
     const phoneRegex = /^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
-    if (!phoneRegex.test(phone)) {
+    if (!phoneRegex.test(phone_number)) {
       setError("Invalid phone number");
       return;
     }
@@ -248,7 +249,7 @@ export default function CreateAccount() {
         <Txt>Phone</Txt>
         <StyledInput
           type="tel"
-          value={phone}
+          value={phone_number}
           onChange={(e) => setPhone(e.target.value)}
         />
         <Txt>Password</Txt>
