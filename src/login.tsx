@@ -1,16 +1,16 @@
+import React, { ChangeEvent, useState } from "react";
+import { Link } from "react-router-dom";
+import "./login.css";
+import logoPic from "./images/PET logo.jpg";
+import { ReactComponent as EyeSlashPic } from "./images/eyeSlash.svg";
+import { ReactComponent as EyePic } from "./images/Eye.svg";
+import "@fontsource/rubik";
 /*
 validated email and password
 password must have 1 uppercase, lowercase, number and special character
 password must be eight characters long
 password validation commented out
 */
-
-import React, { ChangeEvent, useState } from "react";
-import "./login.css";
-import logoPic from "./images/PET logo.jpg";
-import { ReactComponent as EyeSlashPic } from "./images/eyeSlash.svg";
-import { ReactComponent as EyePic } from "./images/Eye.svg";
-import "@fontsource/rubik";
 
 function addAccount() {
   alert("You clicked login");
@@ -132,11 +132,11 @@ export default function Login() {
                   }}
                 />
               </div>
-              <a href="google.com" className="accountAdjustButton">
+              <Link to="/forgot-password" className="accountAdjustButton">
                 <div className="fgPw">
                   <div className="boldAccount">Forgot password?</div>
                 </div>
-              </a>
+              </Link>
             </div>
             <form>
               <button
@@ -148,12 +148,12 @@ export default function Login() {
               </button>
             </form>
             <p>
-              <a href="google.com">
+              <Link to="/create-account">
                 <div className="accountAdjustButton">
                   Don&apos;t have an account?&nbsp;
                   <div className="boldAccount">Create Account</div>
                 </div>
-              </a>
+              </Link>
             </p>
           </div>
         </div>
