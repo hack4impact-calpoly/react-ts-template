@@ -2,8 +2,8 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState } from "react";
 import styled from "styled-components";
-// import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import chevronLeft from "./images/chevron left.svg";
+import plusCircle from "./images/plus circle.svg";
 
 interface ICalendarWeekProps {
   startDate: Date;
@@ -11,78 +11,77 @@ interface ICalendarWeekProps {
 
 const Wrapper = styled.div`
   font-family: "Rubik", sans-serif;
-  padding: 1rem;
+  @media (max-width: 500px) {
+    font-size: 80%;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    padding: 8%;
+    padding-top: 10%;
+  }
 `;
 
 const Head = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   vertical-align: middle;
   height: 3rem;
-  padding-left: 3.5rem;
+`;
+const WeeklySwitch = styled.div`
+  @media (max-width: 500px) {
+    display: flex;
+    font-size: 80%;
+    font-weight: bold;
+    align-self: start;
+  }
 `;
 
-const StyledBtn = styled.button`
+const Arrow = styled.button`
   border: none;
   background: none;
-  vertical-align: middle;
+  scale: 40%;
 `;
 
 const ChevronLeft = styled.img`
-  width: auto;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
 `;
 
 const ChevronRight = styled.img`
-  width: auto;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
   transform: scaleX(-1);
 `;
-
-const StyledTable = styled.table`
-  border-collapse: collapse;
-  td {
-    border: 2px solid #DFDFDF;
+const PlusCircle = styled.img`
+  display: flex;
+  align-self: end;
+`;
+const WeekDates = styled.table`
+  @media (max-width: 500px) {
+    width: 100%;
+    padding-top: 5%;
+    td {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
   }
-  th,
-  td,
-  tr {
-    padding-top: 1em;
-    padding-bottom: 1em;
-  },
-  border: 1px solid #DFDFDF;
-  text-align: center;
-  td:nth-child(8n+1) {
-    border: none;
-    padding-top: 0;
-    padding-bottom: 2.5em;
-    padding-right: 0.5em;
-    font-size: 16px;
-    text-align: right;
-  }
-  thead{
-    color: #747474;
-  }
-  tbody td + td{
-    width: 7rem;
+`;
+const Header1 = styled.text`
+  display: none;
+  @media (max-width: 500px) {
+    display: flex;
+    align-self: left;
+    font-size: 140%;
+    padding-bottom: 8%;
   }
 `;
 
-const LargeText = styled.text`
+const Month = styled.text`
   color: #000000;
   font-weight: bold;
   font-size: 30px;
-  width: 8em;
-
-  margin: 2rem 0.5rem;
   @media (max-width: 500px) {
-    margin: 2rem 0rem;
-    padding: auto;
-    width: fit-content;
+    font-size: 140%;
     align-self: center;
   }
 `;
@@ -94,7 +93,7 @@ const CalendarWeek: React.FC<ICalendarWeekProps> = ({ startDate }) => {
     days.push(new Date(currentDate.getTime() + i * 24 * 60 * 60 * 1000));
   }
 
-  const hours = [8, 9, 10, 11, 12, 1, 2, 3, 4, 5];
+  // const hours = [8, 9, 10, 11, 12, 1, 2, 3, 4, 5];
 
   const handleNextWeek = () => {
     setCurrentDate(new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000));
@@ -109,31 +108,52 @@ const CalendarWeek: React.FC<ICalendarWeekProps> = ({ startDate }) => {
     return new Date(day.setDate(diff));
   }
 
-  function getEndOfWeek(day: Date): Date {
-    return new Date(day.getTime() + 6 * 24 * 60 * 60 * 1000);
-  }
+  // function getEndOfWeek(day: Date): Date {
+  //   return new Date(day.getTime() + 6 * 24 * 60 * 60 * 1000);
+  // }
 
   return (
     <Wrapper>
       <Head>
-        <LargeText>
-          {getStartOfWeek(currentDate)
-            .toLocaleDateString("en-us", { month: "long", day: "numeric" })
-            .concat("-")
-            .concat(
-              getEndOfWeek(currentDate).toLocaleDateString("en-us", {
-                day: "numeric",
-              })
-            )}
-        </LargeText>
-        <StyledBtn type="button" onClick={handlePrevWeek}>
-          <ChevronLeft src={chevronLeft} />
-        </StyledBtn>
-        <StyledBtn type="button" onClick={handleNextWeek}>
-          <ChevronRight src={chevronLeft} />
-        </StyledBtn>
+        <PlusCircle src={plusCircle} />
+        <Header1>Schedule</Header1>
+        <WeeklySwitch>
+          <Arrow type="button" onClick={handlePrevWeek}>
+            <ChevronLeft src={chevronLeft} />
+          </Arrow>
+          <Month>
+            {getStartOfWeek(currentDate).toLocaleDateString("en-us", {
+              month: "long",
+            })}
+          </Month>
+          <Arrow type="button" onClick={handleNextWeek}>
+            <ChevronRight src={chevronLeft} />
+          </Arrow>
+        </WeeklySwitch>
+        <WeekDates className="subDay">
+          <tr>
+            <th />
+            {days.map((day) => (
+              <th key={day.toDateString()}>
+                {day
+                  .toLocaleDateString("en-us", {
+                    weekday: "narrow",
+                  })
+                  .toUpperCase()}
+              </th>
+            ))}
+          </tr>
+          <tr>
+            <th />
+            {days.map((day) => (
+              <th key={day.toDateString()}>
+                {day.toLocaleDateString("en-us", { day: "numeric" })}
+              </th>
+            ))}
+          </tr>
+        </WeekDates>
       </Head>
-      <StyledTable>
+      {/* <WeekDates>
         <thead>
           <tr>
             <th />
@@ -141,11 +161,17 @@ const CalendarWeek: React.FC<ICalendarWeekProps> = ({ startDate }) => {
               <th key={day.toDateString()}>
                 {day
                   .toLocaleDateString("en-us", {
-                    weekday: "short",
+                    weekday: "narrow",
                   })
-                  .toUpperCase()
-                  .concat(" ")
-                  .concat(day.toLocaleDateString("en-us", { day: "numeric" }))}
+                  .toUpperCase()}
+              </th>
+            ))}
+          </tr>
+          <tr>
+            <th />
+            {days.map((day) => (
+              <th key={day.toDateString()}>
+                {day.toLocaleDateString("en-us", { day: "numeric" })}
               </th>
             ))}
           </tr>
@@ -160,7 +186,7 @@ const CalendarWeek: React.FC<ICalendarWeekProps> = ({ startDate }) => {
             </tr>
           ))}
         </tbody>
-      </StyledTable>
+      </WeekDates> */}
     </Wrapper>
   );
 };
