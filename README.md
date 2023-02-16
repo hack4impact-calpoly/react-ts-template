@@ -13,9 +13,9 @@ A scheduling app for the nonprofit Partners in Equestrian Therapy.
 
 ### Purpose
 
-Partners in Equestrian Therapy is a program that assists children, adults, and volunteers through equine activities led by a team of certified instructors, trained staff, volunteers, and gentle and lovely horses. PET was founded in 1994 to serve the SLO area. Located in Atascadero, the organization provides individuals with the opportunity to have confidence and independence while increasing physical skills and cognition. The horses at the organization are trained animals who love their job. 
+Partners in Equestrian Therapy is a program that assists children, adults, and volunteers through equine activities led by a team of certified instructors, trained staff, volunteers, and gentle and lovely horses. PET was founded in 1994 to serve the SLO area. Located in Atascadero, the organization provides individuals with the opportunity to have confidence and independence while increasing physical skills and cognition. The horses at the organization are trained animals who love their job.
 
-Our app is a scheduling app for the riders and volunteers of PET. Riders should be scheduled for the entire month, and allow for riders, volunteers, and admins to work schedules better so everyone is in sync with each other. 
+Our app is a scheduling app for the riders and volunteers of PET. Riders should be scheduled for the entire month, and allow for riders, volunteers, and admins to work schedules better so everyone is in sync with each other.
 
 ### Team
 
@@ -30,6 +30,10 @@ The Partners in Equestrian Therapy team consists of {#} Cal Poly students. Over 
 - [Parshana Sekhon](https://www.linkedin.com/in/parshana-sekhon-45b813222/) - Software Developer
 - [Ian Loo](https://www.linkedin.com/in/ian-loo-b35078197/) - Software Developer
 - [Annes Huynh](https://www.linkedin.com/in/annes-huynh-584a96190/) - Software Developer
+- [Ryan Agdassi](https://www.linkedin.com/in/ryan-agdassi/) - Software Developer
+- [Sophia Hsuan](https://www.linkedin.com/in/sophiahsuan) - Software Developer
+- [Dominic Davidson](https://www.linkedin.com/in/dominic-davidson-027b9519b/) - Software Developer
+- [Angel Jeen](https://www.linkedin.com/in/angel-jeen/) - Software Developer
 
 ## Getting Started And Contributing
 
