@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.css";
-import WeeklyView from "./components/monthlyView";
+import MonthlyView from "./components/monthlyView";
 
 function App() {
-  return <WeeklyView />;
+  return <MonthlyView />;
 }
 
 export default App;
