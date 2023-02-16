@@ -8,6 +8,8 @@ import Success from "./success";
 import ResetPassword from "./resetPassword";
 import CreateAccount from "./createAccount";
 import EnterCode from "./enterCode";
+import Login from "./login";
+import ForgotPassword from "./forgotPassword";
 
 Amplify.configure(awsconfig);
 // import Home from "./home";
@@ -18,10 +20,10 @@ function App() {
       <Routes>
         {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
         <Route path="/" element={<Temp />} />
-        <Route path="/login" element={<Temp />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<CreateAccount />} />
-        <Route path="/forgot-password" element={<Temp />} />
         <Route path="/enter-code" element={<EnterCode />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/success/:id" element={<Success />} />
       </Routes>
