@@ -1,0 +1,147 @@
+/* .loginCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+/* .loginBox {
+  /* display: flex; */
+/* flex-direction: column; */
+/* width: 640px; */
+/* width: 45%; */
+/* height: auto; */
+/* border: 1px solid #c4c4c4; */
+/* padding: 0%; */
+/* align-content: stretch; */
+/* align-items: center; */
+/* } */
+/* .logo {
+  display: flex;
+  margin: auto;
+  /* PET_FINAL logo 1 */
+/* width: 60%; */
+/* height: 70%; */
+/* } */
+/* .insideLoginPanel {
+  /* display: flex; */
+/* align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  align-content: stretch;
+  padding-left: 15%;
+  padding-right: 15%;
+  padding-top: 5%;
+  padding-bottom: 5%;} */
+
+/* .textInput {
+  padding-top: 5%;
+  padding-bottom: 5%;
+  cursor: text;
+} */
+/* .beneathLogo {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: stretch;
+  padding: -100%;
+} */
+
+/* input {
+  align-self: left;
+  /* height: 55px;
+  width: 436px;
+  left: 538px; */
+  /* line-height: 400%;
+  width: 99%;
+  left: 500%; */
+/* } */ 
+/* 
+h1 {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 500;
+  /* font-size: 18px;
+  line-height: 21px; */
+/* font-size: 112.5%; */
+/* line-height: 131.25%; */
+/* color: #011338; */
+/* } */
+/* .accountAdjustButton {
+  display: flex;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 100%;
+  line-height: 100%;
+  justify-content: flex-end;
+  color: #000000;
+} */
+/* .fgPw {
+  padding-top: 2%;
+} */
+/* a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
+} */
+/* .boldAccount {
+  font-weight: bold;
+} */
+/* .loginButton {
+  align-self: center;
+  /* login button font */
+  /* font-family: "Rubik";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 100%;
+  line-height: 300%;
+  text-align: center;
+  color: #ffffff; */
+  /* button size */
+  /* width: 100%;
+  height: 100%; */
+  /* Brand color 1  */
+  /* background: #1b4c5a;
+  cursor: pointer;
+} */ 
+
+/* .inputFocus {
+  outline: -webkit-focus-ring-color auto 1px;
+} */
+
+/* .inputBlur {
+  border: 1px solid black;
+  /* outline: auto; */
+/* } */
+
+/* .password {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  border: 1px solid black;
+} */
+
+/* .passwordInput {
+  margin: 0%;
+  flex: 1;
+  width: 100%;
+  z-index: 0;
+  border: none;
+  outline: none !important;
+  background: none;
+} */
+/* .eyeSlash {
+  /* position: absolute; */
+/* border-width: 0%; */
+/* background: white;
+  border: none; */
+/* cursor: pointer; */
+/* margin-right: 1%; */
+/* z-index: 1; */
+/* } */

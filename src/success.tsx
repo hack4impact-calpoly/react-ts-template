@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams /* useNavigate */ } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import logo from "./images/logo1.svg";
 
@@ -70,11 +70,11 @@ const Button = styled.button`
 `;
 
 function Success() {
-  // const navigate = useNavigate();
-  const { action } = useParams();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleClick = () => {
-    // navigate("/login");
+    navigate("/login");
   };
 
   return (
@@ -82,7 +82,7 @@ function Success() {
       <Box>
         <Logo src={logo} />
         <LargeText>Success!</LargeText>
-        {action === "reset"
+        {id === "reset"
           ? "You have successfully reset your password."
           : "You have successfully signed up for an account."}
 
