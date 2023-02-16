@@ -153,7 +153,7 @@ function EnterCode() {
         rel="stylesheet"
       /> */}
       <Form>
-        <BackArrow src={arrow} onClick={() => navigate("./login")} />
+        <BackArrow src={arrow} onClick={() => navigate("/login")} />
         <Lock src={lock} />
         <Header>Enter Code</Header>
         <Text>
