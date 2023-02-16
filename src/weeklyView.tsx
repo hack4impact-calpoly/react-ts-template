@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import chevronLeft from "./images/chevron left.svg";
 import plusCircle from "./images/plus circle.svg";
-// import {Dropdown, Option} from "./Dropdown";
 
 interface ICalendarWeekProps {
   startDate: Date;
@@ -113,13 +112,6 @@ const CalendarWeek: React.FC<ICalendarWeekProps> = ({ startDate }) => {
   //   return new Date(day.getTime() + 6 * 24 * 60 * 60 * 1000);
   // }
 
-  // export default function App() {
-  // const [optionValue, setOptionValue] = useState("");
-  // const handleSelect = (e) => {
-  //   console.log(e.target.value);
-  //   setOptionValue(e.target.value);
-  // };
-
   return (
     <Wrapper>
       <Head>
@@ -195,21 +187,6 @@ const CalendarWeek: React.FC<ICalendarWeekProps> = ({ startDate }) => {
           ))}
         </tbody>
       </WeekDates> */}
-      {/* <div>
-      <h1>Which service are you interested in?</h1>
-      <Dropdown
-        formLabel="Choose a service"
-        buttonText="Send form"
-        onChange={handleSelect}
-        action="/"
-      >
-        <Option selected value="Click to see options" />
-        <Option value="Option 1" />
-        <Option value="Option 2" />
-        <Option value="Option 3" />
-      </Dropdown>
-      <p>You selected {optionValue} </p>
-    </div> */}
     </Wrapper>
   );
 };
