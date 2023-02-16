@@ -7,6 +7,7 @@ import Temp from "./components/Temp";
 import Success from "./success";
 import ResetPassword from "./resetPassword";
 import CreateAccount from "./createAccount";
+import EnterCode from "./enterCode";
 import Login from "./login";
 import ForgotPassword from "./forgotPassword";
 
@@ -21,8 +22,8 @@ function App() {
         <Route path="/" element={<Temp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<CreateAccount />} />
+        <Route path="/enter-code" element={<EnterCode />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/enter-code" element={<Temp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/success/:id" element={<Success />} />
       </Routes>
