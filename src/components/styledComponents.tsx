@@ -7,7 +7,7 @@ const Wrapper = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 7%;
+  padding: 4%;
 `;
 
 const Box = styled.section`
