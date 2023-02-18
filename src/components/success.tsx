@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import logo from "./images/logo1.svg";
+import logo from "../images/logo1.svg";
 
 const Wrapper = styled.section`
   display: flex;
@@ -69,7 +69,7 @@ const Button = styled.button`
   align-self: center;
 `;
 
-function Success() {
+export default function Success() {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -91,5 +91,3 @@ function Success() {
     </Wrapper>
   );
 }
-
-export default Success;

@@ -3,16 +3,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Amplify } from "aws-amplify";
 import awsconfig from "./aws-exports";
-import Success from "./success";
-import ResetPassword from "./resetPassword";
-import CreateAccount from "./createAccount";
-import EnterCode from "./enterCode";
-import Login from "./login";
-import ForgotPassword from "./forgotPassword";
-import WeeklyView from "./weeklyView";
+import Success from "./components/success";
+import ResetPassword from "./components/resetPassword";
+import CreateAccount from "./components/createAccount";
+import EnterCode from "./components/enterCode";
+import Login from "./components/login";
+import ForgotPassword from "./components/forgotPassword";
+import WeeklyView from "./components/weeklyView";
 
 Amplify.configure(awsconfig);
-// import Home from "./home";
 
 function App() {
   return (

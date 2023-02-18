@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import lock from "./images/lock.svg";
-import arrow from "./images/Back Arrow.png";
+import lock from "../images/lock.svg";
+import arrow from "../images/Back Arrow.png";
 import "@fontsource/rubik";
 
 const Div = styled.div`
@@ -122,7 +122,7 @@ const user = {
   email: "placeholder@gmail.com",
 };
 
-function EnterCode() {
+export default function EnterCode() {
   const navigate = useNavigate();
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
@@ -148,10 +148,6 @@ function EnterCode() {
 
   return (
     <Div>
-      {/* <link
-        href="https://fonts.googleapis.com/css?family=Rubik"
-        rel="stylesheet"
-      /> */}
       <Form>
         <BackArrow src={arrow} onClick={() => navigate("/login")} />
         <Lock src={lock} />
@@ -175,5 +171,3 @@ function EnterCode() {
     </Div>
   );
 }
-
-export default EnterCode;

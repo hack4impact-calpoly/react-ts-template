@@ -1,13 +1,7 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable react/function-component-definition */
 import React, { useState } from "react";
 import styled from "styled-components";
 // import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
-import chevronLeft from "./images/chevron left.svg";
-
-interface ICalendarWeekProps {
-  startDate: Date;
-}
+import chevronLeft from "../images/chevron left.svg";
 
 const Wrapper = styled.div`
   font-family: "Rubik", sans-serif;
@@ -87,7 +81,11 @@ const LargeText = styled.text`
   }
 `;
 
-const CalendarWeek: React.FC<ICalendarWeekProps> = ({ startDate }) => {
+interface WeeklyViewProps {
+  startDate: Date;
+}
+
+export default function WeeklyView({ startDate }: WeeklyViewProps) {
   const [currentDate, setCurrentDate] = useState(startDate);
   const days: Date[] = [];
   for (let i = 0; i < 7; i++) {
@@ -136,7 +134,7 @@ const CalendarWeek: React.FC<ICalendarWeekProps> = ({ startDate }) => {
       <StyledTable>
         <thead>
           <tr>
-            <th />
+            <div />
             {days.map((day) => (
               <th key={day.toDateString()}>
                 {day
@@ -163,6 +161,4 @@ const CalendarWeek: React.FC<ICalendarWeekProps> = ({ startDate }) => {
       </StyledTable>
     </Wrapper>
   );
-};
-
-export default CalendarWeek;
+}

@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
-import eyeSlash from "./images/EyeSlash.png";
-import backArrow from "./images/Back Arrow.png";
+import eyeSlash from "../images/EyeSlash.png";
+import backArrow from "../images/Back Arrow.png";
 
 const Wrapper = styled.section`
   display: flex;
@@ -164,7 +163,7 @@ export default function CreateAccount() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone_number, setPhone] = useState("");
+  const [phoneNumber, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -177,7 +176,7 @@ export default function CreateAccount() {
       !firstName ||
       !lastName ||
       !email ||
-      !phone_number ||
+      !phoneNumber ||
       !password ||
       role === "none"
     ) {
@@ -193,7 +192,7 @@ export default function CreateAccount() {
     }
 
     const phoneRegex = /^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
-    if (!phoneRegex.test(phone_number)) {
+    if (!phoneRegex.test(phoneNumber)) {
       setError("Invalid phone number");
       return;
     }
@@ -249,7 +248,7 @@ export default function CreateAccount() {
         <Txt>Phone</Txt>
         <StyledInput
           type="tel"
-          value={phone_number}
+          value={phoneNumber}
           onChange={(e) => setPhone(e.target.value)}
         />
         <Txt>Password</Txt>

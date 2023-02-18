@@ -1,8 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import "./forgotPassword.css";
-import arrow_pic from "./images/Arrow.png";
+import arrow_pic from "../images/Arrow.png";
 import "@fontsource/rubik";
 import "@fontsource/roboto";
 
@@ -145,7 +144,6 @@ export default function forgotPassword() {
   const handleOnChangeEmail = (email1: string) => {
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    //   re.test(email) ? setValid(true) : setValid(false);
     if (re.test(email1)) {
       setValidEmail(false);
     } else {
@@ -176,9 +174,6 @@ export default function forgotPassword() {
                 {" "}
                 Invalid email. Please try again.
               </Section>
-              {/* <div style={{ display: validPw ? "block" : "none" }}>
-                invalid password
-              </div> */}
             </Section>
             <Section className="textInput">
               <SmallText>Email</SmallText>
