@@ -15,14 +15,8 @@ import {
   Question,
   TextLink,
   ErrorMessage,
+  Wrapper,
 } from "./styledComponents";
-
-const Wrapper = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4%;
-`;
 
 const Select = styled.select`
   box-sizing: border-box;

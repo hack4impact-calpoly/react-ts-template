@@ -11,25 +11,8 @@ import {
   Input,
   ErrorMessage,
   Description,
+  CenteredHeader,
 } from "./styledComponents";
-
-const Header = styled.text`
-  color: #011338;
-  font-size: 40px;
-  font-weight: bold;
-  margin: 1.5rem 0.5rem;
-
-  text-align: center;
-  @media (max-width: 500px) {
-    padding: auto;
-    width: fit-content;
-    font-family: "Rubik";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 28px;
-  }
-`;
 
 const Lock = styled.img`
   color: #011338;
@@ -90,7 +73,7 @@ export default function EnterCode() {
       <BackArrow src={arrow} onClick={() => navigate("/login")} />
       <Box>
         <Lock src={lock} />
-        <Header>Enter Code</Header>
+        <CenteredHeader>Enter Code</CenteredHeader>
         <Description>
           We’ve sent an email to {user.email} with your authentication code.
         </Description>

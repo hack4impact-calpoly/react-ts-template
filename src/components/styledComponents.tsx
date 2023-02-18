@@ -35,7 +35,7 @@ const Box = styled.section`
 const Header = styled.text`
   display: flex;
   cursor: text;
-  margin: 1.5rem 0.5rem;
+  margin: 1.5rem 0rem;
 
   font-family: "Roboto";
   font-style: normal;
@@ -48,6 +48,26 @@ const Header = styled.text`
     font-weight: 600;
     font-size: 24px;
     line-height: 28px;
+  }
+`;
+
+const CenteredHeader = styled.text`
+  cursor: text;
+  margin: 1.5rem 0rem;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 40px;
+  color: #011338;
+  text-align: center;
+  @media (max-width: 500px) {
+    font-family: "Rubik";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    align-self: center;
   }
 `;
 
@@ -93,6 +113,16 @@ const Description = styled.text`
   font-size: 18px;
   color: #000d26;
   text-align: left;
+  padding-bottom: 20px;
+`;
+
+const CenteredDescription = styled.text`
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  color: #000d26;
+  text-align: center;
   padding-bottom: 20px;
 `;
 
@@ -157,10 +187,12 @@ export {
   Wrapper,
   Box,
   Header,
+  CenteredHeader,
   Button,
   BackArrow,
   Input,
   Description,
+  CenteredDescription,
   Label,
   PasswordContainer,
   EyeSlash,
