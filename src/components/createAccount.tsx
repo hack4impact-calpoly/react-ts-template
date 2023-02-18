@@ -1,132 +1,41 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import eyeSlash from "../images/EyeSlash.png";
-import backArrow from "../images/Back Arrow.png";
+import eyeSlash from "../images/eyeSlash.svg";
+import backArrow from "../images/backArrow.png";
+import {
+  Wrapper,
+  Box,
+  BackArrow,
+  Button,
+  Header,
+  Input,
+  Label,
+  EyeSlash,
+  PasswordContainer,
+  Question,
+  TextLink,
+  ErrorMessage,
+} from "./styledComponents";
 
-const Wrapper = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10% 10%;
-`;
-
-const Box = styled.section`
-  box-sizing: border-box;
-  font-family: "Rubik", sans-serif;
-  width: 75%;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  background: #fefefe;
-  border: 0.5px solid #c4c4c4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  padding: 3rem 5rem;
-  @media (max-width: 630px) {
-    display: flex;
-    width: 100%;
-    border: none;
-    box-shadow: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    padding: 1rem;
-    margin-top: auto;
-  }
-`;
-
-const ErrorMess = styled.text`
-  font-size: 15px;
-  position: relative;
-  color: red;
-`;
-
-const Button = styled.button`
-  background: #1b4c5a;
-  border: solid 0.5px #6c6b6b;
-  color: white;
-  width: 100%;
-  height: 2.8rem;
-  font-weight: bold;
-  align-self: center;
-  cursor: pointer;
-`;
-
-const Header = styled.text`
-  line-height: 2rem;
-  color: #011338;
-  font-size: 25px;
-  padding-bottom: 5%;
-  @media (max-width: 630px) {
-    margin: 2rem 0rem;
-    padding: auto;
-    width: fit-content;
-    align-self: center;
-  }
-`;
-
-const Txt = styled.text`
-  font-size: 1.125rem;
-`;
-
-const StyledInput = styled.input`
+const Select = styled.select`
   box-sizing: border-box;
   border: 1px solid rgba(143, 143, 143, 0.6);
   width: 100%;
   display: flex;
   height: 3rem;
-  margin-bottom: 5%;
-  font-size: 15px;
-`;
-
-const StyledSelect = styled.select`
-  box-sizing: border-box;
-  border: 1px solid rgba(143, 143, 143, 0.6);
-  width: 100%;
-  display: flex;
-  height: 3rem;
-  margin-bottom: 5%;
   color: gray;
   font-size: 15px;
-`;
-
-const Already = styled.text`
-  position: absolute;
-  font-size: 0.9rem;
-  right: 5px;
-  top: 100%;
-  padding-top: 5px;
-`;
-
-const EyeSlash = styled.image`
-  cursor: pointer;
-  position: absolute;
-  right: 2px;
-  top: 7px;
-  bottom: 3px;
-  margin: 0;
-  padding: 0 10px;
-`;
-
-const BackArrow = styled.image`
-  position: absolute;
-  top: 6%;
-  left: 3%;
-  cursor: pointer;
-`;
-
-const Container = styled.div`
-  width: 100%;
-  position: relative;
+  @media (max-width: 500px) {
+    height: 2rem;
+  }
 `;
 
 const NameFields = styled.section`
   display: flex;
   flex-direction: row;
-  margin-bottom: 3%;
   width: 100%;
-  @media (max-width: 630px) {
+  @media (max-width: 500px) {
     flex-direction: column;
     margin-bottom: 0%;
   }
@@ -137,7 +46,7 @@ const FirstName = styled.section`
   flex-direction: column;
   width: 100%;
   margin-right: 5%;
-  @media (max-width: 630px) {
+  @media (max-width: 500px) {
     margin-right: 0%;
   }
 `;
@@ -147,15 +56,9 @@ const LastName = styled.section`
   flex-direction: column;
   width: 100%;
   margin-left: 5%;
-  @media (max-width: 630px) {
+  @media (max-width: 500px) {
     margin-left: 0%;
   }
-`;
-
-const StyledLink = styled(Link)`
-  font-weight: bold;
-  color: black;
-  text-decoration: none;
 `;
 
 export default function CreateAccount() {
@@ -204,13 +107,15 @@ export default function CreateAccount() {
 
   return (
     <Wrapper>
-      <BackArrow onClick={() => navigate("/login")}>
-        <img src={backArrow} alt="backArrow" />
-      </BackArrow>
+      <BackArrow
+        src={backArrow}
+        alt="backArrow"
+        onClick={() => navigate("/login")}
+      />
       <Box>
         <Header>Create an Account</Header>
-        <Txt>I am a:</Txt>
-        <StyledSelect
+        <Label>I am a:</Label>
+        <Select
           id="role"
           value={role}
           onChange={(e) => setRole(e.target.value)}
@@ -220,40 +125,40 @@ export default function CreateAccount() {
           </option>
           <option value="Volunteer">Volunteer</option>
           <option value="Rider">Rider</option>
-        </StyledSelect>
+        </Select>
         <NameFields>
           <FirstName>
-            <Txt>First Name</Txt>
-            <StyledInput
+            <Label>First Name</Label>
+            <Input
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
           </FirstName>
           <LastName>
-            <Txt>Last Name</Txt>
-            <StyledInput
+            <Label>Last Name</Label>
+            <Input
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
           </LastName>
         </NameFields>
-        <Txt>Email</Txt>
-        <StyledInput
+        <Label>Email</Label>
+        <Input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <Txt>Phone</Txt>
-        <StyledInput
+        <Label>Phone</Label>
+        <Input
           type="tel"
           value={phoneNumber}
           onChange={(e) => setPhone(e.target.value)}
         />
-        <Txt>Password</Txt>
-        <Container>
-          <StyledInput
+        <Label>Password</Label>
+        <PasswordContainer>
+          <Input
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -261,14 +166,12 @@ export default function CreateAccount() {
           <EyeSlash onClick={() => setShowPassword(!showPassword)}>
             <img src={eyeSlash} alt="eyeSlash" />
           </EyeSlash>
-        </Container>
-        {error && <ErrorMess>{error}</ErrorMess>}
-        <Container>
-          <Button onClick={handleSubmit}>Sign Up</Button>
-          <Already>
-            Already have an account? <StyledLink to="/login">Log In</StyledLink>
-          </Already>
-        </Container>
+        </PasswordContainer>
+        <Button onClick={handleSubmit}>Sign Up</Button>
+        <Question>
+          Already have an account? <TextLink to="/login">Log In</TextLink>
+        </Question>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
       </Box>
     </Wrapper>
   );

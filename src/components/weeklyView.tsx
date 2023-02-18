@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-// import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
-import chevronLeft from "../images/chevron left.svg";
+import chevronLeft from "../images/chevronLeft.svg";
 
 const Wrapper = styled.div`
   font-family: "Rubik", sans-serif;
