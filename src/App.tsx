@@ -10,6 +10,7 @@ import EnterCode from "./components/enterCode";
 import Login from "./components/login";
 import ForgotPassword from "./components/forgotPassword";
 import WeeklyView from "./components/weeklyView";
+import AppointmentPopup from "./components/appointmentPopup";
 
 Amplify.configure(awsconfig);
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/success/:id" element={<Success />} />
+        <Route path="/appointment-popup" element={<AppointmentPopup />} />
       </Routes>
     </BrowserRouter>
   );
