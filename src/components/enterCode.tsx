@@ -148,10 +148,6 @@ export default function EnterCode() {
 
   return (
     <Div>
-      {/* <link
-        href="https://fonts.googleapis.com/css?family=Rubik"
-        rel="stylesheet"
-      /> */}
       <Form>
         <BackArrow src={arrow} onClick={() => navigate("/login")} />
         <Lock src={lock} />

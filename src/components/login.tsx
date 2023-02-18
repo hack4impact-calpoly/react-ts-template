@@ -273,7 +273,6 @@ export default function Login() {
                         "inputFocus"
                       );
                       e.currentTarget.parentElement?.classList.add("inputBlur");
-                      // handleOnChangePw(email);
                     }}
                     onClick={(e) => {
                       e.currentTarget.scrollLeft = e.currentTarget.scrollWidth;

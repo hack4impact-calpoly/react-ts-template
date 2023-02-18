@@ -12,7 +12,6 @@ import ForgotPassword from "./components/forgotPassword";
 import WeeklyView from "./components/weeklyView";
 
 Amplify.configure(awsconfig);
-// import Home from "./home";
 
 function App() {
   return (
