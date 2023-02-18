@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import "@fontsource/rubik";
+import "@fontsource/roboto";
 
 const Wrapper = styled.section`
   display: flex;

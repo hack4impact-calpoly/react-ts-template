@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "@fontsource/rubik";
 import { Auth } from "aws-amplify";
 import eyeSlash from "../images/eyeSlash.svg";
 import backArrow from "../images/backArrow.png";

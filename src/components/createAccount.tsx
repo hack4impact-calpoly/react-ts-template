@@ -4,7 +4,6 @@ import styled from "styled-components";
 import eyeSlash from "../images/eyeSlash.svg";
 import backArrow from "../images/backArrow.png";
 import {
-  Wrapper,
   Box,
   BackArrow,
   Button,
@@ -17,6 +16,13 @@ import {
   TextLink,
   ErrorMessage,
 } from "./styledComponents";
+
+const Wrapper = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4%;
+`;
 
 const Select = styled.select`
   box-sizing: border-box;

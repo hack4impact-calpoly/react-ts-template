@@ -1,8 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/backArrow.png";
-import "@fontsource/rubik";
-import "@fontsource/roboto";
 import {
   Wrapper,
   Box,

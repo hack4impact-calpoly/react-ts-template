@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import logoPic from "../images/PETlogo.jpg";
-import "@fontsource/rubik";
 import eyeSlash from "../images/eyeSlash.svg";
 import {
   Wrapper,
@@ -20,7 +19,7 @@ const Logo = styled.img`
   display: flex;
   margin: auto;
   /* PET_FINAL logo 1 */
-  width: 40%;
+  width: 150px;
 `;
 
 function addAccount() {
