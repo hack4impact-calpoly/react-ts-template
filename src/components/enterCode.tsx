@@ -122,7 +122,7 @@ const user = {
   email: "placeholder@gmail.com",
 };
 
-function EnterCode() {
+export default function EnterCode() {
   const navigate = useNavigate();
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
@@ -175,5 +175,3 @@ function EnterCode() {
     </Div>
   );
 }
-
-export default EnterCode;

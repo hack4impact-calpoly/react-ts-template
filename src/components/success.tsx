@@ -69,7 +69,7 @@ const Button = styled.button`
   align-self: center;
 `;
 
-function Success() {
+export default function Success() {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -91,5 +91,3 @@ function Success() {
     </Wrapper>
   );
 }
-
-export default Success;

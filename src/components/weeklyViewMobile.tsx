@@ -1,13 +1,7 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable react/function-component-definition */
 import React, { useState } from "react";
 import styled from "styled-components";
 import chevronLeft from "./images/chevron left.svg";
 import plusCircle from "./images/plus circle.svg";
-
-interface ICalendarWeekProps {
-  startDate: Date;
-}
 
 const Wrapper = styled.div`
   font-family: "Rubik", sans-serif;
@@ -86,7 +80,11 @@ const Month = styled.text`
   }
 `;
 
-const CalendarWeek: React.FC<ICalendarWeekProps> = ({ startDate }) => {
+interface WeeklyViewMobileProps {
+  startDate: Date;
+}
+
+export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
   const [currentDate, setCurrentDate] = useState(startDate);
   const days: Date[] = [];
   for (let i = 0; i < 7; i++) {
@@ -190,5 +188,3 @@ const CalendarWeek: React.FC<ICalendarWeekProps> = ({ startDate }) => {
     </Wrapper>
   );
 };
-
-export default CalendarWeek;

@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -144,7 +143,7 @@ const BackArrow = styled.image`
   left: 3%;
 `;
 
-function ResetPassword(this: any) {
+export default function ResetPassword(this: any) {
   const navigate = useNavigate();
   // useState variables
   const [input, setInput] = useState({
@@ -318,5 +317,3 @@ function ResetPassword(this: any) {
     </Wrapper>
   );
 }
-
-export default ResetPassword;
