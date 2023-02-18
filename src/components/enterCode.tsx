@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import lock from "./images/lock.svg";
-import arrow from "./images/Back Arrow.png";
+import lock from "../images/lock.svg";
+import arrow from "../images/Back Arrow.png";
 import "@fontsource/rubik";
 
 const Div = styled.div`

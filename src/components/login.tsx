@@ -1,9 +1,8 @@
 import React, { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import "./login.css";
-import logoPic from "./images/PET logo.jpg";
-import { ReactComponent as EyeSlashPic } from "./images/eyeSlash.svg";
+import logoPic from "../images/PET logo.jpg";
+import { ReactComponent as EyeSlashPic } from "../images/eyeSlash.svg";
 import "@fontsource/rubik";
 
 const Input = styled.input`

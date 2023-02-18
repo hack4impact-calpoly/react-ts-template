@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from "react";
-import "./resetPassword.css";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import "@fontsource/rubik";
 import { Auth } from "aws-amplify";
-import eyeSlash from "./images/eyeslash.jpeg";
-import backArrow from "./images/backarrow.jpeg";
+import eyeSlash from "../images/eyeslash.jpeg";
+import backArrow from "../images/backarrow.jpeg";
 
 const Wrapper = styled.section`
   display: flex;

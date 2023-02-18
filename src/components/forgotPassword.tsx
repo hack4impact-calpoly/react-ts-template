@@ -1,8 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import "./forgotPassword.css";
-import arrow_pic from "./images/Arrow.png";
+import arrow_pic from "../images/Arrow.png";
 import "@fontsource/rubik";
 import "@fontsource/roboto";
 
