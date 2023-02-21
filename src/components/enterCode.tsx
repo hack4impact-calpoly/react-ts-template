@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Auth } from "aws-amplify";
 import lock from "../images/lock.svg";
 import arrow from "../images/backArrow.png";
 import {
@@ -9,8 +10,8 @@ import {
   Button,
   BackArrow,
   Input,
-  ErrorMessage,
   Description,
+  ErrorMessage,
   CenteredHeader,
 } from "./styledComponents";
 
@@ -39,33 +40,44 @@ const Resend = styled.button`
   }
 `;
 
-// temporary email placeholder
-const user = {
-  email: "placeholder@gmail.com",
-};
-
 export default function EnterCode() {
   const navigate = useNavigate();
+  const username = localStorage.getItem("username") || "";
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
 
-  // code requirements (at least 8 characters for now)
-  const codeValidation = () => {
-    const regEx = /^.{8,}$/;
-    if (regEx.test(code)) {
-      setError("");
-    } else if (!regEx.test(code)) {
-      setError("Code is Invalid");
+  async function confirmSignUp() {
+    try {
+      await Auth.confirmSignUp(username, code);
+      localStorage.clear();
+      navigate("/success/:id=signUp", { replace: true });
+    } catch (errore) {
+      console.log("error confirming sign up", errore);
+      if (errore instanceof Error) {
+        setError(errore.message);
+      } else {
+        setError(String(errore));
+      }
     }
-  };
-  // temporary alert (later verify if input code = sent code, then navigate to /success)
+  }
+
+  async function resendConfirmationCode() {
+    try {
+      await Auth.resendSignUp(username);
+      console.log("code resent successfully");
+    } catch (err) {
+      console.log("error resending code: ", err);
+    }
+  }
+
   const codeVerification = () => {
-    alert("Verifying Code...");
-    // navigate("./login");
+    confirmSignUp();
   };
+
   // temporary alert (later resend code to email)
   const resendCode = () => {
     alert("Resent Code");
+    resendConfirmationCode();
   };
 
   return (
@@ -75,14 +87,13 @@ export default function EnterCode() {
         <Lock src={lock} />
         <CenteredHeader>Enter Code</CenteredHeader>
         <Description>
-          We’ve sent an email to {user.email} with your authentication code.
+          We’ve sent an email to {username} with your authentication code.
         </Description>
         <Input
           value={code}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setCode(e.target.value)
           }
-          onBlur={() => codeValidation()}
         />
         <Resend onClick={resendCode}>Resend code</Resend>
         <Button onClick={codeVerification}>Verify</Button>

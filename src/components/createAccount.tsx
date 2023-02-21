@@ -90,9 +90,15 @@ export default function CreateAccount() {
         },
       });
       console.log(user);
-      navigate("/enter-code");
+      localStorage.setItem("username", email);
+      navigate("/enter-code", { replace: true });
     } catch (errore) {
       console.log("error signing up:", errore);
+      if (errore instanceof Error) {
+        setError(errore.message);
+      } else {
+        setError(String(errore));
+      }
     }
   }
 
