@@ -6,9 +6,6 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { fetchByPath, validateField } from "./utils";
-import { Timeslot } from "../models";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import {
   Button,
   Flex,
@@ -16,24 +13,26 @@ import {
   SwitchField,
   TextField,
 } from "@aws-amplify/ui-react";
+import { getOverrideProps } from "@aws-amplify/ui-react/internal";
+import { Timeslot } from "../models";
+import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 export default function TimeslotUpdateForm(props) {
   const {
-    id,
+    id: idProp,
     timeslot,
     onSuccess,
     onError,
     onSubmit,
-    onCancel,
     onValidate,
     onChange,
     overrides,
     ...rest
   } = props;
   const initialValues = {
-    startTime: undefined,
-    endTime: undefined,
-    eventId: undefined,
+    startTime: "",
+    endTime: "",
+    eventId: "",
     available: false,
   };
   const [startTime, setStartTime] = React.useState(initialValues.startTime);
@@ -42,7 +41,9 @@ export default function TimeslotUpdateForm(props) {
   const [available, setAvailable] = React.useState(initialValues.available);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = { ...initialValues, ...timeslotRecord };
+    const cleanValues = timeslotRecord
+      ? { ...initialValues, ...timeslotRecord }
+      : initialValues;
     setStartTime(cleanValues.startTime);
     setEndTime(cleanValues.endTime);
     setEventId(cleanValues.eventId);
@@ -52,11 +53,13 @@ export default function TimeslotUpdateForm(props) {
   const [timeslotRecord, setTimeslotRecord] = React.useState(timeslot);
   React.useEffect(() => {
     const queryData = async () => {
-      const record = id ? await DataStore.query(Timeslot, id) : timeslot;
+      const record = idProp
+        ? await DataStore.query(Timeslot, idProp)
+        : timeslot;
       setTimeslotRecord(record);
     };
     queryData();
-  }, [id, timeslot]);
+  }, [idProp, timeslot]);
   React.useEffect(resetStateValues, [timeslotRecord]);
   const validations = {
     startTime: [],
@@ -64,7 +67,14 @@ export default function TimeslotUpdateForm(props) {
     eventId: [],
     available: [],
   };
-  const runValidationTasks = async (fieldName, value) => {
+  const runValidationTasks = async (
+    fieldName,
+    currentValue,
+    getDisplayValue
+  ) => {
+    const value = getDisplayValue
+      ? getDisplayValue(currentValue)
+      : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -110,6 +120,11 @@ export default function TimeslotUpdateForm(props) {
           modelFields = onSubmit(modelFields);
         }
         try {
+          Object.entries(modelFields).forEach(([key, value]) => {
+            if (typeof value === "string" && value.trim() === "") {
+              modelFields[key] = undefined;
+            }
+          });
           await DataStore.save(
             Timeslot.copyOf(timeslotRecord, (updated) => {
               Object.assign(updated, modelFields);
@@ -124,15 +139,15 @@ export default function TimeslotUpdateForm(props) {
           }
         }
       }}
-      {...rest}
       {...getOverrideProps(overrides, "TimeslotUpdateForm")}
+      {...rest}
     >
       <TextField
         label="Start time"
         isRequired={false}
         isReadOnly={false}
         type="date"
-        defaultValue={startTime}
+        value={startTime}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -160,7 +175,7 @@ export default function TimeslotUpdateForm(props) {
         isRequired={false}
         isReadOnly={false}
         type="date"
-        defaultValue={endTime}
+        value={endTime}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -187,7 +202,7 @@ export default function TimeslotUpdateForm(props) {
         label="Event id"
         isRequired={false}
         isReadOnly={false}
-        defaultValue={eventId}
+        value={eventId}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -244,7 +259,11 @@ export default function TimeslotUpdateForm(props) {
         <Button
           children="Reset"
           type="reset"
-          onClick={resetStateValues}
+          onClick={(event) => {
+            event.preventDefault();
+            resetStateValues();
+          }}
+          isDisabled={!(idProp || timeslot)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -252,18 +271,13 @@ export default function TimeslotUpdateForm(props) {
           {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
         >
           <Button
-            children="Cancel"
-            type="button"
-            onClick={() => {
-              onCancel && onCancel();
-            }}
-            {...getOverrideProps(overrides, "CancelButton")}
-          ></Button>
-          <Button
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={Object.values(errors).some((e) => e?.hasError)}
+            isDisabled={
+              !(idProp || timeslot) ||
+              Object.values(errors).some((e) => e?.hasError)
+            }
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

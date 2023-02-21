@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { Auth } from "aws-amplify";
 import styled from "styled-components";
 import eyeSlash from "./images/EyeSlash.png";
 import backArrow from "./images/Back Arrow.png";
@@ -169,6 +170,29 @@ export default function CreateAccount() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  async function signUp() {
+    try {
+      const { user } = await Auth.signUp({
+        username: email,
+        password,
+        attributes: {
+          email,
+          given_name: firstName,
+          family_name: lastName,
+          phone_number: `+1${phone}`,
+        },
+        autoSignIn: {
+          // optional - enables auto sign in after user is confirmed
+          enabled: true,
+        },
+      });
+      console.log(user);
+      navigate("/enter-code");
+    } catch (errore) {
+      console.log("error signing up:", errore);
+    }
+  }
+
   const handleSubmit = () => {
     setError("");
 
@@ -191,15 +215,24 @@ export default function CreateAccount() {
       return;
     }
 
-    const phoneRegex = /^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+    const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(phone)) {
       setError("Invalid phone number");
       return;
     }
 
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Password needs at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character"
+      );
+      return;
+    }
+    console.log("We mad eit here");
     // Call the API to create an account with email and password
     // if response is ok then navigate
-    navigate("/success?from=createAccount");
+    signUp();
   };
 
   return (
