@@ -64,7 +64,6 @@ export default function EnterCode() {
   async function resendConfirmationCode() {
     try {
       await Auth.resendSignUp(username);
-      console.log("code resent successfully");
     } catch (err) {
       console.log("error resending code: ", err);
     }

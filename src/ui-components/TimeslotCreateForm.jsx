@@ -6,6 +6,9 @@
 
 /* eslint-disable */
 import * as React from "react";
+import { fetchByPath, validateField } from "./utils";
+import { Timeslot } from "../models";
+import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import {
   Button,
   Flex,
@@ -13,9 +16,6 @@ import {
   SwitchField,
   TextField,
 } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Timeslot } from "../models";
-import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 export default function TimeslotCreateForm(props) {
   const {
@@ -23,15 +23,16 @@ export default function TimeslotCreateForm(props) {
     onSuccess,
     onError,
     onSubmit,
+    onCancel,
     onValidate,
     onChange,
     overrides,
     ...rest
   } = props;
   const initialValues = {
-    startTime: "",
-    endTime: "",
-    eventId: "",
+    startTime: undefined,
+    endTime: undefined,
+    eventId: undefined,
     available: false,
   };
   const [startTime, setStartTime] = React.useState(initialValues.startTime);
@@ -52,14 +53,7 @@ export default function TimeslotCreateForm(props) {
     eventId: [],
     available: [],
   };
-  const runValidationTasks = async (
-    fieldName,
-    currentValue,
-    getDisplayValue
-  ) => {
-    const value = getDisplayValue
-      ? getDisplayValue(currentValue)
-      : currentValue;
+  const runValidationTasks = async (fieldName, value) => {
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -105,11 +99,6 @@ export default function TimeslotCreateForm(props) {
           modelFields = onSubmit(modelFields);
         }
         try {
-          Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value.trim() === "") {
-              modelFields[key] = undefined;
-            }
-          });
           await DataStore.save(new Timeslot(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
@@ -123,15 +112,14 @@ export default function TimeslotCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "TimeslotCreateForm")}
       {...rest}
+      {...getOverrideProps(overrides, "TimeslotCreateForm")}
     >
       <TextField
         label="Start time"
         isRequired={false}
         isReadOnly={false}
         type="date"
-        value={startTime}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -159,7 +147,6 @@ export default function TimeslotCreateForm(props) {
         isRequired={false}
         isReadOnly={false}
         type="date"
-        value={endTime}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -186,7 +173,6 @@ export default function TimeslotCreateForm(props) {
         label="Event id"
         isRequired={false}
         isReadOnly={false}
-        value={eventId}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -243,16 +229,21 @@ export default function TimeslotCreateForm(props) {
         <Button
           children="Clear"
           type="reset"
-          onClick={(event) => {
-            event.preventDefault();
-            resetStateValues();
-          }}
+          onClick={resetStateValues}
           {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
           {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
         >
+          <Button
+            children="Cancel"
+            type="button"
+            onClick={() => {
+              onCancel && onCancel();
+            }}
+            {...getOverrideProps(overrides, "CancelButton")}
+          ></Button>
           <Button
             children="Submit"
             type="submit"

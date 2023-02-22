@@ -5,9 +5,9 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
-import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { Event } from "../models";
+import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -27,14 +27,14 @@ export declare type EventUpdateFormValidationValues = {
     rider?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
 };
-export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
+export declare type FormProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type EventUpdateFormOverridesProps = {
-    EventUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    title?: PrimitiveOverrideProps<TextFieldProps>;
-    date?: PrimitiveOverrideProps<TextFieldProps>;
-    volunteers?: PrimitiveOverrideProps<TextFieldProps>;
-    rider?: PrimitiveOverrideProps<TextFieldProps>;
-    description?: PrimitiveOverrideProps<TextFieldProps>;
+    EventUpdateFormGrid?: FormProps<GridProps>;
+    title?: FormProps<TextFieldProps>;
+    date?: FormProps<TextFieldProps>;
+    volunteers?: FormProps<TextFieldProps>;
+    rider?: FormProps<TextFieldProps>;
+    description?: FormProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type EventUpdateFormProps = React.PropsWithChildren<{
     overrides?: EventUpdateFormOverridesProps | undefined | null;
@@ -44,6 +44,7 @@ export declare type EventUpdateFormProps = React.PropsWithChildren<{
     onSubmit?: (fields: EventUpdateFormInputValues) => EventUpdateFormInputValues;
     onSuccess?: (fields: EventUpdateFormInputValues) => void;
     onError?: (fields: EventUpdateFormInputValues, errorMessage: string) => void;
+    onCancel?: () => void;
     onChange?: (fields: EventUpdateFormInputValues) => EventUpdateFormInputValues;
     onValidate?: EventUpdateFormValidationValues;
 } & React.CSSProperties>;

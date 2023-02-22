@@ -5,9 +5,9 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
-import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { Timeslot } from "../models";
+import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -25,13 +25,13 @@ export declare type TimeslotUpdateFormValidationValues = {
     eventId?: ValidationFunction<string>;
     available?: ValidationFunction<boolean>;
 };
-export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
+export declare type FormProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TimeslotUpdateFormOverridesProps = {
-    TimeslotUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    startTime?: PrimitiveOverrideProps<TextFieldProps>;
-    endTime?: PrimitiveOverrideProps<TextFieldProps>;
-    eventId?: PrimitiveOverrideProps<TextFieldProps>;
-    available?: PrimitiveOverrideProps<SwitchFieldProps>;
+    TimeslotUpdateFormGrid?: FormProps<GridProps>;
+    startTime?: FormProps<TextFieldProps>;
+    endTime?: FormProps<TextFieldProps>;
+    eventId?: FormProps<TextFieldProps>;
+    available?: FormProps<SwitchFieldProps>;
 } & EscapeHatchProps;
 export declare type TimeslotUpdateFormProps = React.PropsWithChildren<{
     overrides?: TimeslotUpdateFormOverridesProps | undefined | null;
@@ -41,6 +41,7 @@ export declare type TimeslotUpdateFormProps = React.PropsWithChildren<{
     onSubmit?: (fields: TimeslotUpdateFormInputValues) => TimeslotUpdateFormInputValues;
     onSuccess?: (fields: TimeslotUpdateFormInputValues) => void;
     onError?: (fields: TimeslotUpdateFormInputValues, errorMessage: string) => void;
+    onCancel?: () => void;
     onChange?: (fields: TimeslotUpdateFormInputValues) => TimeslotUpdateFormInputValues;
     onValidate?: TimeslotUpdateFormValidationValues;
 } & React.CSSProperties>;

@@ -138,7 +138,6 @@ export default function CreateAccount() {
       );
       return;
     }
-    console.log("We mad eit here");
     // Call the API to create an account with email and password
     // if response is ok then navigate
     signUp();
