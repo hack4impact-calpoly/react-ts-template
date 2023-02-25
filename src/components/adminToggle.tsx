@@ -54,9 +54,8 @@ export default function AdminToggle() {
   return (
     <Wrapper>
       <Box>
-        {showVolunteers && <div>show volunteer times</div>}
-        {showRiders && <div>show rider times</div>}
-        {showBoth && <div>show both</div>}
+        {(showVolunteers || showBoth) && <div>show volunteer times</div>}
+        {(showRiders || showBoth) && <div>show rider times</div>}
         <Label>Viewing:</Label>
         <Row>
           <CheckBox onClick={toggleVolunteer}>
