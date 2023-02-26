@@ -19,7 +19,7 @@ Our app is a scheduling app for the riders and volunteers of PET. Riders should 
 
 ### Team
 
-The Partners in Equestrian Therapy team consists of {#} Cal Poly students. Over the course of about 9 months, we worked as a team to deploy this web application. The team members are listed below:
+The Partners in Equestrian Therapy team consists of 13 Cal Poly students. Over the course of about 9 months, we worked as a team to deploy this web application. The team members are listed below:
 
 - [Sharon Pagidipati](https://www.linkedin.com/in/sharon-pagidipati/) - Project Manager
 - [Hannah Chan](https://www.linkedin.com/in/hannahochan/) - Designer
