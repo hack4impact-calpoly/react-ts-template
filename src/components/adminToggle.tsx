@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Wrapper, Box, Label, Description } from "./styledComponents";
 
-const Encompasing = styled(Wrapper)``;
+const Encompasing = styled(Wrapper)`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const CheckBox = styled.div`
   border-radius: 5px;
@@ -42,6 +45,7 @@ const ViewingDescription = styled(Description)`
   font-family: Roboto;
   padding-left: 3%;
   font-size: 100%;
+  padding-top: 4%;
 `;
 
 export default function AdminToggle() {
