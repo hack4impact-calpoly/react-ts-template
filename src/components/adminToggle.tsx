@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Wrapper, Box, Label, Description } from "./styledComponents";
+import "@fontsource/roboto";
 
 const Encompasing = styled(Wrapper)`
   display: flex;
@@ -14,6 +15,8 @@ const CheckBox = styled.div`
   justify-content: center;
   border: solid 2px #1b4c5a;
   padding: 3%;
+  padding-right: 3%;
+  padding-left: 3%;
   width: 5%;
 `;
 const Check = styled.div`
@@ -22,8 +25,17 @@ const Check = styled.div`
   background-color: #1b4c5a;
   height: 10%;
   width: 10%;
-  padding: 40%;
+  padding: 70%;
 `;
+
+const NotCheck = styled.div`
+  border-radius: 5px;
+  background-color: white;
+  height: 10%;
+  width: 10%;
+  padding: 70%;
+`;
+
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -38,14 +50,18 @@ const ViewingBox = styled(Box)`
 const ViewingText = styled(Label)`
   padding-bottom: 10%;
   font-size: 130%;
-  font-family: Roboto;
+  font-family: "Roboto";
 `;
 
 const ViewingDescription = styled(Description)`
-  font-family: Roboto;
+  font-family: "Roboto";
   padding-left: 3%;
   font-size: 100%;
   padding-top: 4%;
+`;
+
+const ShowTimes = styled.div`
+  font-family: "Roboto";
 `;
 
 export default function AdminToggle() {
@@ -79,21 +95,27 @@ export default function AdminToggle() {
   return (
     <Encompasing>
       <ViewingBox>
-        {(showVolunteers || showBoth) && <div>show volunteer times</div>}
-        {(showRiders || showBoth) && <div>show rider times</div>}
+        {(showVolunteers || showBoth) && (
+          <ShowTimes>show volunteer times</ShowTimes>
+        )}
+        {(showRiders || showBoth) && <ShowTimes>show rider times</ShowTimes>}
         <ViewingText>Viewing:</ViewingText>
         <Row>
-          <CheckBox onClick={toggleBoth}>{showBoth && <Check />}</CheckBox>
+          <CheckBox onClick={toggleBoth}>
+            {showBoth ? <Check /> : <NotCheck />}
+          </CheckBox>
           <ViewingDescription>Both</ViewingDescription>
         </Row>
         <Row>
           <CheckBox onClick={toggleVolunteer}>
-            {showVolunteers && <Check />}
+            {showVolunteers ? <Check /> : <NotCheck />}
           </CheckBox>
           <ViewingDescription>Volunteer only</ViewingDescription>
         </Row>
         <Row>
-          <CheckBox onClick={toggleRider}>{showRiders && <Check />}</CheckBox>
+          <CheckBox onClick={toggleRider}>
+            {showRiders ? <Check /> : <NotCheck />}
+          </CheckBox>
           <ViewingDescription>Rider only</ViewingDescription>
         </Row>
       </ViewingBox>
