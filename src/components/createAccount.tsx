@@ -89,10 +89,12 @@ export default function CreateAccount() {
           enabled: true,
         },
       });
+      // eslint-disable-next-line no-console
       console.log(user);
       localStorage.setItem("username", email);
       navigate("/enter-code", { replace: true });
     } catch (errore) {
+      // eslint-disable-next-line no-console
       console.log("error signing up:", errore);
       if (errore instanceof Error) {
         setError(errore.message);
