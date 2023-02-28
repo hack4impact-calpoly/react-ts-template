@@ -154,6 +154,7 @@ export default function CreateAccount() {
       />
       <Box>
         <Header>Create an Account</Header>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <Label>I am a:</Label>
         <Select
           id="role"
@@ -211,7 +212,6 @@ export default function CreateAccount() {
         <Question>
           Already have an account? <TextLink to="/login">Log In</TextLink>
         </Question>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
       </Box>
     </Wrapper>
   );

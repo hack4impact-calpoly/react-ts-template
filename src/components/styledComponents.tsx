@@ -180,7 +180,19 @@ const TextLink = styled(Link)`
 `;
 
 const ErrorMessage = styled.text`
-  color: red;
+  flex: content;
+  height: 8%;
+  padding: 3%;
+  border: 2px solid #d03d3d;
+  align-content: stretch;
+  text-align: center;
+  vertical-align: middle;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export {

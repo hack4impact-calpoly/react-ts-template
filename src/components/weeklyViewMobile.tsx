@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import chevronLeft from "./images/chevron left.svg";
-import plusCircle from "./images/plus circle.svg";
+import chevronLeft from "../images/chevronLeft.svg";
+import plusCircle from "../images/plusCircle.svg";
 
 const Wrapper = styled.div`
   font-family: "Rubik", sans-serif;
@@ -124,7 +124,6 @@ export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
         </WeeklySwitch>
         <WeekDates className="subDay">
           <tr>
-            <th />
             {days.map((day) => (
               <th key={day.toDateString()}>
                 {day
@@ -136,7 +135,6 @@ export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
             ))}
           </tr>
           <tr>
-            <th />
             {days.map((day) => (
               <th key={day.toDateString()}>
                 {day.toLocaleDateString("en-us", { day: "numeric" })}
@@ -147,4 +145,4 @@ export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
       </Head>
     </Wrapper>
   );
-};
+}
