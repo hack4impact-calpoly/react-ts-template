@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@heroicons/react": "^2.0.15",
     "@fontsource/roboto": "^4.5.8",
     "@fontsource/rubik": "^4.5.14",
+    "@heroicons/react": "^2.0.15",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
