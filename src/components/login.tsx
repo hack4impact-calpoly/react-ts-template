@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import logoPic from "../images/PETlogo.jpg";
 import eyeSlash from "../images/eyeSlash.svg";
-import { Auth } from "aws-amplify";
+// import { Auth } from "aws-amplify";
 import {
   Wrapper,
   Box,
@@ -49,13 +49,13 @@ export default function Login() {
     }
   };
 
-  async function signIn() {
-    try {
-        const user = await Auth.signIn(email, password);
-    } catch (error) {
-        console.log('error signing in', error);
-    }
-  }
+  // async function signIn() {
+  //   try {
+  //       const user = await Auth.signIn(email, password);
+  //   } catch (error) {
+  //       console.log('error signing in', error);
+  //   }
+  // }
 
   return (
     <Wrapper>
