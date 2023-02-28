@@ -10,14 +10,12 @@ import EnterCode from "./components/enterCode";
 import Login from "./components/login";
 import ForgotPassword from "./components/forgotPassword";
 import WeeklyView from "./components/weeklyView";
-import AdminToggle from "./components/adminToggle";
 
 Amplify.configure(awsconfig);
 
 function App() {
   return (
     <BrowserRouter>
-      <AdminToggle />
       <Routes>
         {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
         <Route path="/" element={<WeeklyView startDate={new Date()} />} />
