@@ -190,7 +190,9 @@ const ErrorMessage = styled.text`
   font-family: "Rubik";
   font-style: normal;
   font-weight: 400;
-  font-size: 12epx;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export {

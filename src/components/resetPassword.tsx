@@ -135,6 +135,10 @@ export default function ResetPassword(this: any) {
         <Description>
           Your new password must be different from previous used passwords
         </Description>
+        {/* displays error message when input doesn't meet requirements */}
+        {error.confirmPassword && (
+          <ErrorMessage>{error.confirmPassword}</ErrorMessage>
+        )}
         <Label>Verification Code</Label>
         <Input
           type="text"
@@ -179,10 +183,7 @@ export default function ResetPassword(this: any) {
             <img src={eyeSlash} alt="didn't work" />
           </EyeSlash>
         </PasswordContainer>
-        {/* displays error message when input doesn't meet requirements */}
-        {error.confirmPassword && (
-          <ErrorMessage>{error.confirmPassword}</ErrorMessage>
-        )}
+
         <Button onClick={handleClick}>Submit</Button>
       </Box>
     </Wrapper>
