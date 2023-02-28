@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Auth } from "aws-amplify";
 import styled from "styled-components";
 import eyeSlash from "../images/eyeSlash.svg";
 import backArrow from "../images/backArrow.png";
@@ -72,6 +73,37 @@ export default function CreateAccount() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  async function signUp() {
+    try {
+      const { user } = await Auth.signUp({
+        username: email,
+        password,
+        attributes: {
+          email,
+          given_name: firstName,
+          family_name: lastName,
+          phone_number: `+1${phoneNumber}`,
+        },
+        autoSignIn: {
+          // optional - enables auto sign in after user is confirmed
+          enabled: true,
+        },
+      });
+      // eslint-disable-next-line no-console
+      console.log(user);
+      localStorage.setItem("username", email);
+      navigate("/enter-code", { replace: true });
+    } catch (errore) {
+      // eslint-disable-next-line no-console
+      console.log("error signing up:", errore);
+      if (errore instanceof Error) {
+        setError(errore.message);
+      } else {
+        setError(String(errore));
+      }
+    }
+  }
+
   const handleSubmit = () => {
     setError("");
 
@@ -94,15 +126,23 @@ export default function CreateAccount() {
       return;
     }
 
-    const phoneRegex = /^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+    const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(phoneNumber)) {
       setError("Invalid phone number");
       return;
     }
 
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Password needs at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character"
+      );
+      return;
+    }
     // Call the API to create an account with email and password
     // if response is ok then navigate
-    navigate("/success?from=createAccount");
+    signUp();
   };
 
   return (
@@ -114,6 +154,7 @@ export default function CreateAccount() {
       />
       <Box>
         <Header>Create an Account</Header>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <Label>I am a:</Label>
         <Select
           id="role"
@@ -171,7 +212,6 @@ export default function CreateAccount() {
         <Question>
           Already have an account? <TextLink to="/login">Log In</TextLink>
         </Question>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
       </Box>
     </Wrapper>
   );
