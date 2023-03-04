@@ -10,6 +10,7 @@ import EnterCode from "./components/enterCode";
 import Login from "./components/login";
 import ForgotPassword from "./components/forgotPassword";
 import WeeklyView from "./components/weeklyView";
+import Calendar from "./components/calendar";
 
 Amplify.configure(awsconfig);
 
@@ -33,6 +34,7 @@ function App() {
           element={<ResetPassword email={email!} />}
         />
         <Route path="/success/:id" element={<Success />} />
+        <Route path="/calendar" element={<Calendar />} />
       </Routes>
     </BrowserRouter>
   );
