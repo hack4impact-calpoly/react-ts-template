@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Amplify } from "aws-amplify";
@@ -15,6 +15,8 @@ import Timeslot from "./components/timeslot";
 Amplify.configure(awsconfig);
 
 function App() {
+  const [email, setEmailProp] = useState<string>();
+
   return (
     <BrowserRouter>
       <Timeslot />
@@ -24,8 +26,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/enter-code" element={<EnterCode />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword setEmailProp={setEmailProp} />}
+        />
+        <Route
+          path="/reset-password"
+          element={<ResetPassword email={email!} />}
+        />
         <Route path="/success/:id" element={<Success />} />
       </Routes>
     </BrowserRouter>
