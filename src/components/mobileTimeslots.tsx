@@ -1,0 +1,68 @@
+import MobileTimeslot from "./mobileTimeslot";
+
+interface TimeslotsProps {
+  userType: "volunteer" | "rider";
+}
+
+const timeslots = [
+  {
+    startTime: new Date(2023, 2, 7, 9, 0),
+    endTime: new Date(2023, 2, 7, 10, 0),
+  },
+  {
+    startTime: new Date(2023, 2, 7, 10, 0),
+    endTime: new Date(2023, 2, 7, 11, 0),
+  },
+  {
+    startTime: new Date(2023, 2, 7, 11, 0),
+    endTime: new Date(2023, 2, 7, 12, 0),
+  },
+  {
+    startTime: new Date(2023, 2, 7, 12, 0),
+    endTime: new Date(2023, 2, 7, 13, 0),
+  },
+  {
+    startTime: new Date(2023, 2, 7, 13, 0),
+    endTime: new Date(2023, 2, 7, 14, 0),
+  },
+  {
+    startTime: new Date(2023, 2, 7, 14, 0),
+    endTime: new Date(2023, 2, 7, 15, 0),
+  },
+  {
+    startTime: new Date(2023, 2, 7, 15, 0),
+    endTime: new Date(2023, 2, 7, 16, 0),
+  },
+  {
+    startTime: new Date(2023, 2, 7, 16, 0),
+    endTime: new Date(2023, 2, 7, 17, 0),
+  },
+];
+
+export default function MobileTimeslots({ userType }: TimeslotsProps) {
+  let filteredTimeslots: { startTime: Date; endTime: Date }[] = [];
+  if (userType === "volunteer") {
+    // Filter timeslots between 9 AM and 5 PM for volunteers
+    filteredTimeslots = timeslots.filter(
+      (timeslot) =>
+        timeslot.startTime.getHours() >= 9 && timeslot.endTime.getHours() <= 17
+    );
+  } else if (userType === "rider") {
+    // Filter timeslots between 10 AM and 2 PM for riders
+    filteredTimeslots = timeslots.filter(
+      (timeslot) =>
+        timeslot.startTime.getHours() >= 10 && timeslot.endTime.getHours() <= 14
+    );
+  }
+
+  return (
+    <div>
+      {filteredTimeslots.map((timeslot) => (
+        <MobileTimeslot
+          startTime={timeslot.startTime}
+          endTime={timeslot.endTime}
+        />
+      ))}
+    </div>
+  );
+}
