@@ -1,5 +1,5 @@
-// import React, { useState } from "react";
-import React from "react";
+import React, { useState } from "react";
+// import React from "react";
 import styled from "styled-components";
 import timeslots from "./timeslots";
 import Checked from "../images/Checked.png";
@@ -46,11 +46,24 @@ export default function Timeslot() {
   // const [dropdownShown0, setDropdownShown0] = useState(false);
   // const [showChecked, setshowChecked] = useState(false);
   // // const [showUnchecked, setshowUnchecked] = useState(false);
+  const [counters, setCounters] = useState(timeslots);
 
-  const toggleChecked = (timeslot: any) => {
+  function toggleChecked(index: any) {
     // When the handler is invoked
     // inverse the boolean state of passwordShown
-    timeslots[timeslot].checked = !timeslots[timeslot.checked];
+    // timeslots[index].checked = !timeslots[index.checked];
+
+    // const nextCounters = counters.map((c, i) => {
+    //   if (i === index) {
+    //     // Increment the clicked counter
+    //     //return c + 1;
+    //     return !timeslots[index.checked];
+    //   } else {
+    //     // The rest haven't changed
+    //     return timeslots[index.checked];
+    //   }
+    // });
+    setCounters(!timeslots[index].checked);
   };
   // const toggleUnchecked = () => {
   //   // When the handler is invoked
@@ -63,10 +76,10 @@ export default function Timeslot() {
   return (
     <Wrapper>
       <Boxed>
-        {timeslots.map((timeslot) => (
+        {timeslots.map((timeslot, index) => (
           <Box>
             {timeslot.time}
-            <ButtonToggle onClick={() => toggleChecked(timeslot)}>
+            <ButtonToggle onClick={() => toggleChecked(index)}>
               {timeslot.checked ? (
                 <img src={Checked} alt="Checked Img" />
               ) : (
