@@ -36,6 +36,41 @@ const StyledBtn = styled.button`
   vertical-align: middle;
 `;
 export default function Timeslot() {
+  const [dropdownShown0, setDropdownShown0] = useState(false);
+
+  const handleDropDow0n = () => {
+    setDropdownShown0(!dropdownShown0);
+  };
+  const [dropdownShown1, setDropdownShown1] = useState(false);
+
+  const handleDropDown1 = () => {
+    setDropdownShown1(!dropdownShown1);
+  };
+  const [dropdownShown2, setDropdownShown2] = useState(false);
+
+  const handleDropDown2 = () => {
+    setDropdownShown2(!dropdownShown2);
+  };
+  const [dropdownShown3, setDropdownShown3] = useState(false);
+
+  const handleDropDown3 = () => {
+    setDropdownShown3(!dropdownShown3);
+  };
+  const [dropdownShown4, setDropdownShown4] = useState(false);
+
+  const handleDropDown4 = () => {
+    setDropdownShown4(!dropdownShown4);
+  };
+  const [dropdownShown, setDropdownShown] = useState(false);
+
+  const handleDropDown = () => {
+    setDropdownShown(!dropdownShown);
+  };
+  const [dropdownShown, setDropdownShown] = useState(false);
+
+  const handleDropDown = () => {
+    setDropdownShown(!dropdownShown);
+  };
   const [dropdownShown, setDropdownShown] = useState(false);
 
   const handleDropDown = () => {
