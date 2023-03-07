@@ -2,7 +2,10 @@ import { useState } from "react";
 import styled from "styled-components";
 import caretDown from "../images/CaretDown.png";
 
-const Caret = styled.img``;
+const Caret = styled.img`
+  margin-left: 10%;
+  cursor: pointer;
+`;
 
 const Text = styled.text`
   font-family: "Rubik";
@@ -19,12 +22,18 @@ const Slot = styled.section`
   font-family: "Rubik", sans-serif;
   align-items: center;
   justify-content: center;
-  margin: 5%;
+  margin: 4%;
   box-sizing: border-box;
   background: rgba(144, 191, 204, 0.7);
   border: 1px solid #c4c4c4;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 50%;
+  width: 310px;
+  height: 53px;
+`;
+
+const Dropdown = styled.section`
+  display: flex;
+  flex-direction: column;
 `;
 
 interface TimeslotProps {
@@ -46,10 +55,14 @@ export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
     });
 
   return (
-    <Slot>
-      <Text>{`${formatTime(startTime)} to ${formatTime(endTime)}`}</Text>
-      <Caret src={caretDown} onClick={toggleDropdown} />
-      {isDropdownOpen && <div>Dropdown component here</div>}
-    </Slot>
+    <div>
+      <Slot>
+        <Text>{`${formatTime(startTime)} to ${formatTime(endTime)}`}</Text>
+        <Caret src={caretDown} onClick={toggleDropdown} />
+      </Slot>
+      <Dropdown>
+        {isDropdownOpen && <div>Dropdown component here</div>}
+      </Dropdown>
+    </div>
   );
 }
