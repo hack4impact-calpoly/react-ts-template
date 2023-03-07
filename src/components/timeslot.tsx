@@ -38,7 +38,7 @@ const StyledBtn = styled.button`
 export default function Timeslot() {
   const [dropdownShown0, setDropdownShown0] = useState(false);
 
-  const handleDropDow0n = () => {
+  const handleDropDown0 = () => {
     setDropdownShown0(!dropdownShown0);
   };
   const [dropdownShown1, setDropdownShown1] = useState(false);
@@ -61,20 +61,31 @@ export default function Timeslot() {
   const handleDropDown4 = () => {
     setDropdownShown4(!dropdownShown4);
   };
-  const [dropdownShown, setDropdownShown] = useState(false);
+  const [dropdownShown5, setDropdownShown5] = useState(false);
 
-  const handleDropDown = () => {
-    setDropdownShown(!dropdownShown);
+  const handleDropDown5 = () => {
+    setDropdownShown5(!dropdownShown5);
   };
-  const [dropdownShown, setDropdownShown] = useState(false);
+  const [dropdownShown6, setDropdownShown6] = useState(false);
 
-  const handleDropDown = () => {
-    setDropdownShown(!dropdownShown);
+  const handleDropDown6 = () => {
+    setDropdownShown6(!dropdownShown6);
   };
-  const [dropdownShown, setDropdownShown] = useState(false);
+  const [dropdownShown7, setDropdownShown7] = useState(false);
 
-  const handleDropDown = () => {
-    setDropdownShown(!dropdownShown);
+  const handleDropDown7 = () => {
+    setDropdownShown7(!dropdownShown7);
+
+    const [dropdownShown8, setDropdownShown8] = useState(false);
+
+    const handleDropDown8 = () => {
+      setDropdownShown8(!dropdownShown8);
+    };
+    const [dropdownShown9, setDropdownShown9] = useState(false);
+
+    const handleDropDown9 = () => {
+      setDropdownShown9(!dropdownShown9);
+    };
   };
   return (
     <Wrapper>
