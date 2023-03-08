@@ -39,30 +39,35 @@ const ChevronRight = styled.img`
 const StyledTable = styled.table`
   border-collapse: collapse;
   td {
-    border: 2px solid #DFDFDF;
+    border: 3px solid #dfdfdf;
   }
   th,
   td,
   tr {
-    padding-top: 1em;
-    padding-bottom: 1em;
+
   },
-  border: 1px solid #DFDFDF;
+  border: 3px solid #dfdfdf;
   text-align: center;
-  td:nth-child(8n+1) {
+  td:nth-child(8n + 1) {
     border: none;
     padding-top: 0;
-    padding-bottom: 2.5em;
-    padding-right: 0.5em;
     font-size: 16px;
     text-align: right;
   }
-  thead{
+  thead {
     color: #747474;
   }
-  tbody td + td{
-    width: 7rem;
+  tbody td + td {
+    width: 11rem;
   }
+  table {
+    width: 100%;
+  }
+`;
+
+const StyledTD = styled.td`
+  padding-top: 0;
+  vertical-align: top;
 `;
 
 const LargeText = styled.text`
@@ -80,7 +85,31 @@ const LargeText = styled.text`
   }
 `;
 
-interface WeeklyViewProps {
+const StyledDiv = styled.text`
+  background-color: #cce1e7;
+  opacity: 70%;
+  width: 100%;
+  padding-top: 0.7em;
+  padding-bottom: 0.7em;
+  border-bottom: 3px solid #90bfcc;
+  font-weight: bold;
+`;
+
+const StyledDiv1 = styled.text`
+  background-color: #cce1e7;
+  opacity: 70%;
+  width: 100%;
+  padding-top: 0.7em;
+  padding-bottom: 0.7em;
+  font-weight: bold;
+`;
+
+const OuterDiv = styled.text`
+  display: flex;
+  flex-direction: column;
+`;
+
+export interface WeeklyViewProps {
   startDate: Date;
 }
 
@@ -150,9 +179,14 @@ export default function WeeklyView({ startDate }: WeeklyViewProps) {
         <tbody>
           {hours.map((hour) => (
             <tr key={hour}>
-              <td>{`${hour}`}</td>
+              <StyledTD>{`${hour}`}</StyledTD>
               {days.map((day) => (
-                <td key={`${day.toDateString()}-${hour}`} />
+                <td key={`${day.toDateString()}-${hour}`}>
+                  <OuterDiv>
+                    <StyledDiv>{`${hour}:00-${hour}:30`}</StyledDiv>
+                    <StyledDiv1>{`${hour}:30-${hour + 1}:00`}</StyledDiv1>
+                  </OuterDiv>
+                </td>
               ))}
             </tr>
           ))}
@@ -161,3 +195,13 @@ export default function WeeklyView({ startDate }: WeeklyViewProps) {
     </Wrapper>
   );
 }
+
+export {
+  Wrapper,
+  Head,
+  StyledBtn,
+  ChevronLeft,
+  ChevronRight,
+  StyledTable,
+  LargeText,
+};
