@@ -10,11 +10,17 @@ import EnterCode from "./components/enterCode";
 import Login from "./components/login";
 import ForgotPassword from "./components/forgotPassword";
 import WeeklyView from "./components/weeklyView";
+import TimeslotMobileContent from "./components/timeslotMobileContent";
+import AppointmentPopup from "./components/appointmentPopup";
+import WeeklyViewMobile from "./components/weeklyViewMobile";
+import MonthlyView from "./components/monthlyView";
 
 Amplify.configure(awsconfig);
 
 function App() {
   const [email, setEmailProp] = useState<string>();
+  const [user] = useState<string>();
+  const [bookings] = useState<number>();
 
   return (
     <BrowserRouter>
@@ -33,6 +39,17 @@ function App() {
           element={<ResetPassword email={email!} />}
         />
         <Route path="/success/:id" element={<Success />} />
+        {/* delete these later */}
+        <Route
+          path="/timeslotMobile"
+          element={<TimeslotMobileContent user={user!} bookings={bookings!} />}
+        />
+        <Route
+          path="/weeklyViewMobile"
+          element={<WeeklyViewMobile startDate={new Date()} />}
+        />
+        <Route path="/apptPopUp" element={<AppointmentPopup />} />
+        <Route path="/MonthlyView" element={<MonthlyView />} />
       </Routes>
     </BrowserRouter>
   );

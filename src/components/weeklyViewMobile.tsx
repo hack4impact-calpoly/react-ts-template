@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useState } from "react";
 import styled from "styled-components";
-import chevronLeft from "./images/chevron left.svg";
-import plusCircle from "./images/plus circle.svg";
+import chevronLeft from "../images/chevronLeft.svg";
+import plusCircle from "../images/plusCircle.svg";
 
 const Wrapper = styled.div`
   font-family: "Rubik", sans-serif;
@@ -147,4 +148,4 @@ export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
       </Head>
     </Wrapper>
   );
-};
+}
