@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Amplify } from "aws-amplify";
@@ -11,11 +11,22 @@ import Login from "./components/login";
 import ForgotPassword from "./components/forgotPassword";
 import WeeklyView from "./components/weeklyView";
 import Calendar from "./components/calendar";
+import CalendarMobile from "./components/calendarMobile";
 
 Amplify.configure(awsconfig);
 
 function App() {
   const [email, setEmailProp] = useState<string>();
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.outerWidth <= 500);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <BrowserRouter>
@@ -34,7 +45,10 @@ function App() {
           element={<ResetPassword email={email!} />}
         />
         <Route path="/success/:id" element={<Success />} />
-        <Route path="/calendar" element={<Calendar />} />
+        <Route
+          path="/calendar"
+          element={isMobile ? <CalendarMobile /> : <Calendar />}
+        />
       </Routes>
     </BrowserRouter>
   );
