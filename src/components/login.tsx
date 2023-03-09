@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import logoPic from "../images/PETlogo.jpg";
 import eyeSlash from "../images/eyeSlash.svg";
+import eye from "../images/eye.svg";
 import {
   Wrapper,
   Box,
@@ -77,7 +78,11 @@ export default function Login() {
         <Label>Password</Label>
         <PasswordContainer>
           <EyeSlash onClick={togglePassword}>
-            <img src={eyeSlash} alt="didn't work" />
+            {passwordShown ? (
+              <img src={eye} alt="did work" />
+            ) : (
+              <img src={eyeSlash} alt="didn't work" />
+            )}
           </EyeSlash>
           <Input
             type={passwordShown ? "text" : "password"}
