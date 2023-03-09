@@ -9,7 +9,6 @@ import CreateAccount from "./components/createAccount";
 import EnterCode from "./components/enterCode";
 import Login from "./components/login";
 import ForgotPassword from "./components/forgotPassword";
-import WeeklyView from "./components/weeklyView";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/calendarMobile";
 
@@ -32,7 +31,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
-        <Route path="/" element={<WeeklyView startDate={new Date()} />} />
+        <Route
+          path="/"
+          element={isMobile ? <CalendarMobile /> : <Calendar />}
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/enter-code" element={<EnterCode />} />
@@ -45,10 +47,6 @@ function App() {
           element={<ResetPassword email={email!} />}
         />
         <Route path="/success/:id" element={<Success />} />
-        <Route
-          path="/calendar"
-          element={isMobile ? <CalendarMobile /> : <Calendar />}
-        />
       </Routes>
     </BrowserRouter>
   );
