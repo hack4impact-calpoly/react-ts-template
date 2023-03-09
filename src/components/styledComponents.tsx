@@ -137,6 +137,7 @@ const Label = styled.text`
 
 const PasswordContainer = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   width: 100%;
 `;
 
@@ -144,11 +145,7 @@ const EyeSlash = styled.image`
   cursor: pointer;
   position: absolute;
   align-self: center;
-  margin: 0;
-  @media (max-width: 500px) {
-    right: 25px;
-    justify-content: center;
-  }
+  padding-right: 2px;
 `;
 
 const Question = styled.text`
