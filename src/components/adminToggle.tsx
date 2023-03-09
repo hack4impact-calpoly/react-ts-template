@@ -14,26 +14,22 @@ const CheckBox = styled.div`
   align-items: center;
   justify-content: center;
   border: solid 2px #1b4c5a;
-  padding: 3%;
-  padding-right: 3%;
-  padding-left: 3%;
-  width: 5%;
+  width: 2rem;
+  height: 2rem;
 `;
 const Check = styled.div`
   border-radius: 5px;
   border: solid 0.5px #c4c4c4;
   background-color: #1b4c5a;
-  height: 10%;
-  width: 10%;
-  padding: 70%;
+  height: 1.3rem;
+  width: 1.3rem;
 `;
 
 const NotCheck = styled.div`
   border-radius: 5px;
   background-color: white;
-  height: 10%;
-  width: 10%;
-  padding: 70%;
+  height: 1.3rem;
+  width: 1.3rem;
 `;
 
 const Row = styled.div`
@@ -45,6 +41,8 @@ const Row = styled.div`
 const ViewingBox = styled(Box)`
   border: 0;
   box-shadow: none;
+  padding: 0;
+  width: 100%;
 `;
 
 const ViewingText = styled(Label)`
