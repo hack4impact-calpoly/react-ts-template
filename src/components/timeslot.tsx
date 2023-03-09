@@ -4,6 +4,8 @@ import styled from "styled-components";
 import timeslots from "./timeslots";
 import Checked from "../images/Checked.png";
 import Unchecked from "../images/Unchecked.png";
+import OffSlider from "../images/OffSlider.png";
+import OnSlider from "../images/OnSlider.png";
 
 import {
   Wrapper,
@@ -37,6 +39,12 @@ import {
 //   background: none;
 //   vertical-align: middle;
 // `;
+
+const CheckBox = styled.div`
+  border: solid 2px #1b4c5a;
+  scale: 25%;
+`;
+
 const Boxes = styled(Box)`
   border: 0;
   box-shadow: none;
@@ -76,6 +84,9 @@ const Row = styled.div`
 export default function Timeslot() {
   const [timeSlots, setTimeSlots] = useState(timeslots);
 
+  const [volunteerView, setVolunteerView] = useState(false);
+  const [riderView, setRiderView] = useState(false);
+
   function toggleChecked(index: number) {
     const updatedTimeSlots = timeSlots.map((timeslot, i) => {
       if (i === index) {
@@ -88,19 +99,55 @@ export default function Timeslot() {
     setTimeSlots(updatedTimeSlots);
   }
 
+  function toggleSlider(index: number) {
+    const updatedTimeSlots = timeSlots.map((timeslot, i) => {
+      if (i === index) {
+        // Increment the clicked counter;
+        return { time: timeslot.time, checked: !timeslot.checked };
+      }
+      // The rest haven't changed
+      return { time: timeslot.time, checked: timeslot.checked };
+    });
+    setTimeSlots(updatedTimeSlots);
+  }
+
+  const toggleVolunteer = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setVolunteerView(!volunteerView);
+    setRiderView(false);
+  };
+  const toggleRider = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setRiderView(!riderView);
+    setVolunteerView(false);
+  };
+
   return (
     <Wrapper>
       <Boxed>
         {timeSlots.map((timeslot, index) => (
           <Row>
             <Boxes>
-              <ButtonToggle onClick={() => toggleChecked(index)}>
-                {timeslot.checked ? (
-                  <img src={Checked} alt="Checked Img" />
-                ) : (
-                  <img src={Unchecked} alt="Unchecked Img" />
-                )}
-              </ButtonToggle>
+              <CheckBox onClick={toggleVolunteer}>
+                <ButtonToggle onClick={() => toggleChecked(index)}>
+                  {timeslot.checked ? (
+                    <img src={Checked} alt="Checked Img" />
+                  ) : (
+                    <img src={Unchecked} alt="Unchecked Img" />
+                  )}
+                </ButtonToggle>
+              </CheckBox>
+              <CheckBox onClick={toggleRider}>
+                <ButtonToggle onClick={() => toggleSlider(index)}>
+                  {timeslot.checked ? (
+                    <img src={OnSlider} alt="On Slider img" />
+                  ) : (
+                    <img src={OffSlider} alt="Off Slider Img" />
+                  )}
+                </ButtonToggle>
+              </CheckBox>
             </Boxes>
             <TimeBox>{timeslot.time}</TimeBox>
           </Row>
