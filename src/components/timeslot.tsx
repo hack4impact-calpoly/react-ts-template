@@ -43,27 +43,20 @@ const Boxed = styled(Box)``;
 const ButtonToggle = styled(Button)``;
 
 export default function Timeslot() {
-  // const [dropdownShown0, setDropdownShown0] = useState(false);
+  const [checkMark, setCheckMark] = useState(false);
+  const [count, setCounter] = useState(0);
   // const [showChecked, setshowChecked] = useState(false);
   // // const [showUnchecked, setshowUnchecked] = useState(false);
-  const [counters, setCounters] = useState(timeslots);
 
-  function toggleChecked(index: any) {
+  const toggleChecked = (
+    timeslot: { time: string; checked: boolean },
+    index: number
+  ) => {
     // When the handler is invoked
     // inverse the boolean state of passwordShown
-    // timeslots[index].checked = !timeslots[index.checked];
-
-    // const nextCounters = counters.map((c, i) => {
-    //   if (i === index) {
-    //     // Increment the clicked counter
-    //     //return c + 1;
-    //     return !timeslots[index.checked];
-    //   } else {
-    //     // The rest haven't changed
-    //     return timeslots[index.checked];
-    //   }
-    // });
-    setCounters(!timeslots[index].checked);
+    setCheckMark(!timeslot.checked);
+    timeslots[index].checked = !timeslots[index].checked;
+    // setUpdateCheck(!timeslot.checked);
   };
   // const toggleUnchecked = () => {
   //   // When the handler is invoked
@@ -71,6 +64,7 @@ export default function Timeslot() {
   //   setshowUnchecked(!showUnchecked);
   //   setshowChecked(false);
   // };
+
   // const [dropdownShown0, setDropdownShown0] = useState(false);
 
   return (
@@ -79,13 +73,14 @@ export default function Timeslot() {
         {timeslots.map((timeslot, index) => (
           <Box>
             {timeslot.time}
-            <ButtonToggle onClick={() => toggleChecked(index)}>
-              {timeslot.checked ? (
+            <ButtonToggle onClick={() => toggleChecked(timeslot, index)}>
+              {timeslot.checked && checkMark ? (
                 <img src={Checked} alt="Checked Img" />
               ) : (
                 <img src={Unchecked} alt="Unchecked Img" />
               )}
             </ButtonToggle>
+            <Button onClick={() => setCounter(count + 1)}> hi {count}</Button>
           </Box>
         ))}
       </Boxed>
