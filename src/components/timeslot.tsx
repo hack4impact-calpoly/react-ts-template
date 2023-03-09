@@ -40,48 +40,76 @@ import {
 
 const Boxed = styled(Box)``;
 
-const ButtonToggle = styled(Button)``;
+const ButtonToggle = styled(Button)`
+  cursor: pointer;
+  scale: 25%;
+  margin-top: -5%;
+  margin-left: -6%;
+  outline: none;
+  background-color: white;
+  border: none;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 3%;
+`;
 
 export default function Timeslot() {
-  const [checkMark, setCheckMark] = useState(false);
-  const [count, setCounter] = useState(0);
+  const [timeSlots, setTimeSlots] = useState(timeslots);
+  // const [checkMark, setCheckMark] = useState(false);
   // const [showChecked, setshowChecked] = useState(false);
   // // const [showUnchecked, setshowUnchecked] = useState(false);
 
-  const toggleChecked = (
-    timeslot: { time: string; checked: boolean },
-    index: number
-  ) => {
-    // When the handler is invoked
-    // inverse the boolean state of passwordShown
-    setCheckMark(!timeslot.checked);
-    timeslots[index].checked = !timeslots[index].checked;
-    // setUpdateCheck(!timeslot.checked);
-  };
-  // const toggleUnchecked = () => {
+  // const toggleChecked = (
+  //   timeslot: { time: string; checked: boolean },
+  //   index: number
+  // ) => {
   //   // When the handler is invoked
   //   // inverse the boolean state of passwordShown
-  //   setshowUnchecked(!showUnchecked);
-  //   setshowChecked(false);
+  //   timeslots[index].checked = !timeslots[index].checked;
+  //   setTimeSlots(timeslots);
+  //   // setCheckMark(timeslot.checked);
+  //   // setUpdateCheck(!timeslot.checked);
   // };
+
+  function toggleChecked(index: number) {
+    const updatedTimeSlots = timeSlots.map((timeslot, i) => {
+      if (i === index) {
+        // Increment the clicked counter;
+        return { time: timeslot.time, checked: !timeslot.checked };
+      }
+      // The rest haven't changed
+      return { time: timeslot.time, checked: timeslot.checked };
+    });
+    // delete timeslots[index];
+    // // const newTime :timeslotsType = {timeslots[index].time, updatedTimeSlot};
+    // timeslots.splice(index, );
+    // delete timeslots[index];
+    // timeslots.splice(index, {timeslots[index].time, updatedTimeSlot});
+    setTimeSlots(updatedTimeSlots);
+  }
 
   // const [dropdownShown0, setDropdownShown0] = useState(false);
 
   return (
     <Wrapper>
       <Boxed>
-        {timeslots.map((timeslot, index) => (
-          <Box>
-            {timeslot.time}
-            <ButtonToggle onClick={() => toggleChecked(timeslot, index)}>
-              {timeslot.checked && checkMark ? (
-                <img src={Checked} alt="Checked Img" />
-              ) : (
-                <img src={Unchecked} alt="Unchecked Img" />
-              )}
-            </ButtonToggle>
-            <Button onClick={() => setCounter(count + 1)}> hi {count}</Button>
-          </Box>
+        {timeSlots.map((timeslot, index) => (
+          <Row>
+            <Box>
+              {/* {setCheckMark(false)} */}
+              <ButtonToggle onClick={() => toggleChecked(index)}>
+                {timeslot.checked ? (
+                  <img src={Checked} alt="Checked Img" />
+                ) : (
+                  <img src={Unchecked} alt="Unchecked Img" />
+                )}
+              </ButtonToggle>
+            </Box>
+            <Box>{timeslot.time}</Box>
+          </Row>
         ))}
       </Boxed>
     </Wrapper>
