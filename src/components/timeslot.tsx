@@ -8,7 +8,7 @@ import Unchecked from "../images/Unchecked.png";
 import {
   Wrapper,
   Box,
-  Button,
+  // Button,
   // Input,
   // Label,
   // PasswordContainer,
@@ -37,42 +37,44 @@ import {
 //   background: none;
 //   vertical-align: middle;
 // `;
+const Boxes = styled(Box)`
+  border: 0;
+  box-shadow: none;
+`;
 
-const Boxed = styled(Box)``;
+const TimeBox = styled(Box)`
+  white-space: nowrap;
+  text-overflow: clip;
+  border: 0;
+  box-shadow: none;
+`;
 
-const ButtonToggle = styled(Button)`
+const Boxed = styled(Box)`
+  border: 0;
+  box-shadow: none;
+
+  /* height: 400px;
+  overflow: scroll; */
+`;
+
+const ButtonToggle = styled.image`
   cursor: pointer;
+  align-self: center;
   scale: 25%;
-  margin-top: -5%;
-  margin-left: -6%;
-  outline: none;
-  background-color: white;
-  border: none;
+  box-shadow: none;
+  height: 40epx;
 `;
 
 const Row = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 3%;
+  box-shadow: none;
+  height: 20%;
+  border: solid 0.5px black;
 `;
 
 export default function Timeslot() {
   const [timeSlots, setTimeSlots] = useState(timeslots);
-  // const [checkMark, setCheckMark] = useState(false);
-  // const [showChecked, setshowChecked] = useState(false);
-  // // const [showUnchecked, setshowUnchecked] = useState(false);
-
-  // const toggleChecked = (
-  //   timeslot: { time: string; checked: boolean },
-  //   index: number
-  // ) => {
-  //   // When the handler is invoked
-  //   // inverse the boolean state of passwordShown
-  //   timeslots[index].checked = !timeslots[index].checked;
-  //   setTimeSlots(timeslots);
-  //   // setCheckMark(timeslot.checked);
-  //   // setUpdateCheck(!timeslot.checked);
-  // };
 
   function toggleChecked(index: number) {
     const updatedTimeSlots = timeSlots.map((timeslot, i) => {
@@ -83,23 +85,15 @@ export default function Timeslot() {
       // The rest haven't changed
       return { time: timeslot.time, checked: timeslot.checked };
     });
-    // delete timeslots[index];
-    // // const newTime :timeslotsType = {timeslots[index].time, updatedTimeSlot};
-    // timeslots.splice(index, );
-    // delete timeslots[index];
-    // timeslots.splice(index, {timeslots[index].time, updatedTimeSlot});
     setTimeSlots(updatedTimeSlots);
   }
-
-  // const [dropdownShown0, setDropdownShown0] = useState(false);
 
   return (
     <Wrapper>
       <Boxed>
         {timeSlots.map((timeslot, index) => (
           <Row>
-            <Box>
-              {/* {setCheckMark(false)} */}
+            <Boxes>
               <ButtonToggle onClick={() => toggleChecked(index)}>
                 {timeslot.checked ? (
                   <img src={Checked} alt="Checked Img" />
@@ -107,8 +101,8 @@ export default function Timeslot() {
                   <img src={Unchecked} alt="Unchecked Img" />
                 )}
               </ButtonToggle>
-            </Box>
-            <Box>{timeslot.time}</Box>
+            </Boxes>
+            <TimeBox>{timeslot.time}</TimeBox>
           </Row>
         ))}
       </Boxed>
