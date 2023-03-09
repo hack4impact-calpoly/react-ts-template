@@ -62,6 +62,7 @@ const StyledTable = styled.table`
   }
   table {
     width: 100%;
+    table-layout: fixed;
   }
 `;
 
@@ -104,9 +105,61 @@ const StyledDiv1 = styled.text`
   font-weight: bold;
 `;
 
+const StyledDiv10 = styled.text`
+  background-color: #cce1e7;
+  opacity: 70%;
+  width: 100%;
+  padding-top: 0.7em;
+  padding-bottom: 0.7em;
+  margin-top: 0.3em;
+  font-weight: bold;
+`;
+
+const StyledDiv11 = styled.text`
+  background-color: #cce1e7;
+  opacity: 70%;
+  width: 100%;
+  padding-top: 0.7em;
+  padding-bottom: 0.7em;
+  margin-top: 0.3em;
+  font-weight: bold;
+`;
+
+const StyledDiv11_2 = styled.text`
+  background-color: #cce1e7;
+  opacity: 70%;
+  width: 100%;
+  padding-top: 0.7em;
+  padding-bottom: 0.7em;
+  margin-top: 0.3em;
+  font-weight: bold;
+`;
+
+const StyledDiv12 = styled.text`
+  background-color: #cce1e7;
+  opacity: 70%;
+  width: 100%;
+  padding-top: 0.7em;
+  padding-bottom: 0.7em;
+  margin-top: 1.2em;
+  margin-bottom: 0.9em;
+  font-weight: bold;
+`;
+
+const StyledDiv1255 = styled.text`
+  background-color: #cce1e7;
+  opacity: 70%;
+  width: 100%;
+  padding-top: 0.7em;
+  padding-bottom: 0.7em;
+  margin-bottom: 0.3em;
+  font-weight: bold;
+`;
+
 const OuterDiv = styled.text`
   display: flex;
   flex-direction: column;
+  overflow: visible;
 `;
 
 export interface WeeklyViewProps {
@@ -183,8 +236,33 @@ export default function WeeklyView({ startDate }: WeeklyViewProps) {
               {days.map((day) => (
                 <td key={`${day.toDateString()}-${hour}`}>
                   <OuterDiv>
-                    <StyledDiv>{`${hour}:00-${hour}:30`}</StyledDiv>
-                    <StyledDiv1>{`${hour}:30-${hour + 1}:00`}</StyledDiv1>
+                    {hour === 10 ? (
+                      <>
+                        <StyledDiv>{`${hour}:00-${hour}:30`}</StyledDiv>
+                        <StyledDiv10>{`${hour}:35-${hour + 1}:05`}</StyledDiv10>
+                      </>
+                    ) : hour === 11 ? (
+                      <>
+                        <StyledDiv11>{`${hour}:10-${hour}:40`}</StyledDiv11>
+                        <StyledDiv11_2>{`${hour}:45-${
+                          hour + 1
+                        }:15`}</StyledDiv11_2>
+                      </>
+                    ) : hour === 12 ? (
+                      <StyledDiv12>{`${hour}:20-${hour}:50`}</StyledDiv12>
+                    ) : hour === 1 ? (
+                      <>
+                        <StyledDiv1255>{`${
+                          hour + 11
+                        }:55-${hour}:25`}</StyledDiv1255>
+                        <StyledDiv1>{`${hour}:30-${hour + 1}:00`}</StyledDiv1>
+                      </>
+                    ) : (
+                      <>
+                        <StyledDiv>{`${hour}:00-${hour}:30`}</StyledDiv>
+                        <StyledDiv1>{`${hour}:30-${hour + 1}:00`}</StyledDiv1>
+                      </>
+                    )}
                   </OuterDiv>
                 </td>
               ))}
