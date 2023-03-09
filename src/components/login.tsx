@@ -51,7 +51,7 @@ export default function Login() {
 
   // async function signIn() {
   //   try {
-  //       const user = await Auth.signIn(email, password);
+  //       const user = await Auth.signIn(username: email, password);
   //   } catch (error) {
   //       console.log('error signing in', error);
   //   }

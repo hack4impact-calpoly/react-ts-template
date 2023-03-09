@@ -31,14 +31,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
-<<<<<<< HEAD
         <Route
           path="/"
           element={isMobile ? <CalendarMobile /> : <Calendar />}
         />
-=======
-        <Route path="/" element={<Calendar />} />
->>>>>>> 1814f768488a9610e798fc797390737797ca5f45
         <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/enter-code" element={<EnterCode />} />
