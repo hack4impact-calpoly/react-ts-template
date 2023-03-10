@@ -19,12 +19,7 @@ const RiderInfo = styled.div`
   margin-bottom: 15%;
   margin-left: 2%;
 `;
-const Button = styled.button`
-  background: palevioletred;
-  border-radius: 3px;
-  border: none;
-  color: white;
-`;
+
 const LogoRider = styled.img`
   width: 7%;
   position: absolute;
@@ -100,12 +95,9 @@ type UserType = {
 // (line 103) so it turns back to 0 every run. Hopefully this logic works once we get the
 // props working on the other pages.
 export default function TimeslotMobileContent({ user, bookings }: UserType) {
-  const [popupShown, setPopUpShown] = useState(false);
   const [booked, setBooked] = useState(true);
   const [onOff, setOnOff] = useState(true);
-  const togglePopup = () => {
-    setPopUpShown(!popupShown);
-  };
+
   // eslint-disable-next-line no-param-reassign
   bookings = 0;
   const handleSlide = () => {
@@ -144,14 +136,7 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
   // console.log("onOff", onOff);
   return (
     <WrapperMobile>
-      <HeaderMobile>Schedule</HeaderMobile>
-
-      {/* delete this later */}
-      <Button type="button" onClick={togglePopup}>
-        Click Me
-      </Button>
-
-      <BoxMobile style={{ display: popupShown ? "block" : "none" }}>
+      <BoxMobile style={{ display: "block" }}>
         <BoxMobileContent>
           <HeaderMobile>Appointment Info</HeaderMobile>
           <RiderInfo

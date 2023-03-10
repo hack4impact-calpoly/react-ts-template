@@ -11,6 +11,7 @@ import Login from "./components/login";
 import ForgotPassword from "./components/forgotPassword";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/calendarMobile";
+import MobileTimeslots from "./components/mobileTimeslots";
 
 Amplify.configure(awsconfig);
 
@@ -47,6 +48,10 @@ function App() {
           element={<ResetPassword email={email!} />}
         />
         <Route path="/success/:id" element={<Success />} />
+        <Route
+          path="/mobile-timeslots"
+          element={<MobileTimeslots userType="volunteer" />}
+        />
       </Routes>
     </BrowserRouter>
   );
