@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import eyeSlash from "../images/eyeSlash.svg";
+import eye from "../images/eye.svg";
 import backArrow from "../images/backArrow.png";
 import {
   Wrapper,
@@ -27,24 +28,25 @@ export default function ResetPassword(this: any) {
     showPassword2: false,
     code: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const [error, setError] = useState({
     password: "",
     confirmPassword: "",
   });
   // handling the show password icons
-  const handleClickShowPassword = () => {
-    // get rid of this later too
-    const username = "igloo405@gmail.com";
-    // get rid of this later this should be in enter code
-    // Send confirmation code to user's email
-    Auth.forgotPassword(username)
-      // eslint-disable-next-line no-console
-      .then((data) => console.log(data))
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err));
-    setInput({ ...input, showPassword: !input.showPassword });
-  };
+  // const handleClickShowPassword = () => {
+  //   // get rid of this later too
+  //   const username = "igloo405@gmail.com";
+  //   // get rid of this later this should be in enter code
+  //   // Send confirmation code to user's email
+  //   Auth.forgotPassword(username)
+  //     // eslint-disable-next-line no-console
+  //     .then((data) => console.log(data))
+  //     // eslint-disable-next-line no-console
+  //     .catch((err) => console.log(err));
+  //   setInput({ ...input, showPassword: !input.showPassword });
+  // };
   const handleClickShowPassword2 = () => {
     setInput({ ...input, showPassword2: !input.showPassword2 });
   };
@@ -150,7 +152,7 @@ export default function ResetPassword(this: any) {
         <Label>New Password</Label>
         <PasswordContainer>
           <Input
-            type={input.showPassword ? "text" : "password"}
+            type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Enter Password"
             value={input.password}
@@ -159,8 +161,12 @@ export default function ResetPassword(this: any) {
             required
           />
           {/* changes the truth value of show password */}
-          <EyeSlash onClick={handleClickShowPassword}>
-            <img src={eyeSlash} alt="didn't work" />
+          <EyeSlash onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? (
+              <img src={eye} alt="did work" />
+            ) : (
+              <img src={eyeSlash} alt="didn't work" />
+            )}
           </EyeSlash>
         </PasswordContainer>
         {error.password && <ErrorMessage>{error.password}</ErrorMessage>}

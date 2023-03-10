@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import styled from "styled-components";
 import eyeSlash from "../images/eyeSlash.svg";
+import eye from "../images/eye.svg";
 import backArrow from "../images/backArrow.png";
 import {
   Box,
@@ -201,6 +202,13 @@ export default function CreateAccount() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <EyeSlash onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? (
+              <img src={eye} alt="did work" />
+            ) : (
+              <img src={eyeSlash} alt="didn't work" />
+            )}
+          </EyeSlash>
           <EyeSlash onClick={() => setShowPassword(!showPassword)}>
             <img src={eyeSlash} alt="eyeSlash" />
           </EyeSlash>
