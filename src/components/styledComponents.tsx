@@ -145,7 +145,7 @@ const EyeSlash = styled.image`
   cursor: pointer;
   position: absolute;
   align-self: center;
-  padding-right: 2px;
+  padding-right: 5px;
 `;
 
 const Question = styled.text`
