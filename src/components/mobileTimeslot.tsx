@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import caretDown from "../images/CaretDown.png";
-import TimeslotMobileContent from "./timeslotMobileContent";
+import MobileTimeslotContent from "./mobileTimeslotContent";
 
 const Caret = styled.img`
   margin-left: 10%;
@@ -65,7 +65,7 @@ export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
       </Slot>
       <Dropdown>
         {isDropdownOpen && (
-          <TimeslotMobileContent user={user!} bookings={bookings!} />
+          <MobileTimeslotContent user={user!} bookings={bookings!} />
         )}
       </Dropdown>
     </div>

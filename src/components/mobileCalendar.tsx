@@ -1,10 +1,10 @@
 import React from "react";
-import WeeklyMobile from "./weeklyViewMobile";
+import MobileWeeklyView from "./mobileWeeklyView";
 
 export default function CalendarMobile() {
   return (
     <div>
-      <WeeklyMobile startDate={new Date()} />
+      <MobileWeeklyView startDate={new Date()} />
     </div>
   );
 }

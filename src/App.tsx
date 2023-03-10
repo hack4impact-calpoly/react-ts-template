@@ -10,7 +10,7 @@ import EnterCode from "./components/enterCode";
 import Login from "./components/login";
 import ForgotPassword from "./components/forgotPassword";
 import Calendar from "./components/calendar";
-import CalendarMobile from "./components/calendarMobile";
+import CalendarMobile from "./components/mobileCalendar";
 import MobileTimeslots from "./components/mobileTimeslots";
 
 Amplify.configure(awsconfig);
