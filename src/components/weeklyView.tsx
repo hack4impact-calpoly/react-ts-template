@@ -95,6 +95,7 @@ const StyledDiv = styled.text`
   border-bottom: 3px solid #90bfcc;
   font-weight: bold;
 `;
+/*
 
 const StyledDiv1 = styled.text`
   background-color: #cce1e7;
@@ -155,12 +156,58 @@ const StyledDiv1255 = styled.text`
   margin-bottom: 0.3em;
   font-weight: bold;
 `;
-
+*/
 const OuterDiv = styled.text`
   display: flex;
   flex-direction: column;
   overflow: visible;
 `;
+
+export interface TimeSlotsData {
+  startTime: Date;
+  endTime: Date;
+  unavailableDates: Date[];
+  volunteerBookings: String[];
+  riderBookings: String[];
+}
+
+const tmpTimes = [
+  {
+    startTime: new Date("March 5, 2023 09:00:00"),
+    endTime: new Date("March 5, 2023 09:30:00"),
+    unavailableDates: [],
+    volunteerBookings: [],
+    riderBookings: [],
+  },
+  {
+    startTime: new Date("March 6, 2023 02:00:00"),
+    endTime: new Date("March 6, 2023 02:30:00"),
+    unavailableDates: [],
+    volunteerBookings: [],
+    riderBookings: [],
+  },
+  {
+    startTime: new Date("March 7, 2023 05:30:00"),
+    endTime: new Date("March 7, 2023 6:00:00"),
+    unavailableDates: [],
+    volunteerBookings: [],
+    riderBookings: [],
+  },
+  {
+    startTime: new Date("March 8, 2023 12:30:00"),
+    endTime: new Date("March 8, 2023 1:00:00"),
+    unavailableDates: [],
+    volunteerBookings: [],
+    riderBookings: [],
+  },
+  {
+    startTime: new Date("March 11, 2023 10:00:00"),
+    endTime: new Date("March 11, 2023 10:30:00"),
+    unavailableDates: [],
+    volunteerBookings: [],
+    riderBookings: [],
+  },
+];
 
 export interface WeeklyViewProps {
   startDate: Date;
@@ -236,6 +283,20 @@ export default function WeeklyView({ startDate }: WeeklyViewProps) {
               {days.map((day) => (
                 <td key={`${day.toDateString()}-${hour}`}>
                   <OuterDiv>
+                    {/* tmpTimes.map((slot) => (
+                    /* 
+                    
+                      //if (slot.startTime.getHours()===hour) {
+                    map tmpTimeslots, check if day of week of timeslot===local day variable
+                    check if hour (whole number, ignore minutes) === local hour var
+                    if both true, render CalendarTimeSlot COMPONENT (component should be a button or clickable div) (pass in timeslot we're currently on (mapped value) as prop)
+                      - inside Timeslot component,
+                      - we sort the timeslots by time (if not already sorted)
+                      - check if both :00 and :30 exist to decide how to render location, pass in some variable to indicate what should be done for padding/location (could be 0, 1, 2 or something)) 
+                    */}
+                    <StyledDiv>{`${hour}h ${day}day`}</StyledDiv>
+                    {/*
+                    
                     {hour === 10 ? (
                       <>
                         <StyledDiv>{`${hour}:00-${hour}:30`}</StyledDiv>
@@ -263,6 +324,7 @@ export default function WeeklyView({ startDate }: WeeklyViewProps) {
                         <StyledDiv1>{`${hour}:30-${hour + 1}:00`}</StyledDiv1>
                       </>
                     )}
+                    */}
                   </OuterDiv>
                 </td>
               ))}
