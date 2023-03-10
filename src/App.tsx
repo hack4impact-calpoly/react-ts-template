@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Amplify } from "aws-amplify";
@@ -9,24 +9,32 @@ import CreateAccount from "./components/createAccount";
 import EnterCode from "./components/enterCode";
 import Login from "./components/login";
 import ForgotPassword from "./components/forgotPassword";
-import WeeklyView from "./components/weeklyView";
-import TimeslotMobileContent from "./components/timeslotMobileContent";
-import AppointmentPopup from "./components/appointmentPopup";
-import WeeklyViewMobile from "./components/weeklyViewMobile";
-import MonthlyView from "./components/monthlyView";
+import Calendar from "./components/calendar";
+import CalendarMobile from "./components/calendarMobile";
 
 Amplify.configure(awsconfig);
 
 function App() {
   const [email, setEmailProp] = useState<string>();
-  const [user] = useState<string>();
-  const [bookings] = useState<number>();
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.outerWidth <= 500);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <BrowserRouter>
       <Routes>
         {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
-        <Route path="/" element={<WeeklyView startDate={new Date()} />} />
+        <Route
+          path="/"
+          element={isMobile ? <CalendarMobile /> : <Calendar />}
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/enter-code" element={<EnterCode />} />
@@ -39,17 +47,6 @@ function App() {
           element={<ResetPassword email={email!} />}
         />
         <Route path="/success/:id" element={<Success />} />
-        {/* delete these later */}
-        <Route
-          path="/timeslotMobile"
-          element={<TimeslotMobileContent user={user!} bookings={bookings!} />}
-        />
-        <Route
-          path="/weeklyViewMobile"
-          element={<WeeklyViewMobile startDate={new Date()} />}
-        />
-        <Route path="/apptPopUp" element={<AppointmentPopup />} />
-        <Route path="/MonthlyView" element={<MonthlyView />} />
       </Routes>
     </BrowserRouter>
   );

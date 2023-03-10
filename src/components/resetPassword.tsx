@@ -101,6 +101,8 @@ export default function ResetPassword({ email }: EmailProps) {
         <Description>
           Your new password must be different from previous used passwords
         </Description>
+        {/* displays error message when input doesn't meet requirements */}
+        {errorReal && <ErrorMessage>{errorReal}</ErrorMessage>}
         <Label>Verification Code</Label>
         <Input
           type="text"
@@ -142,8 +144,6 @@ export default function ResetPassword({ email }: EmailProps) {
             <img src={eyeSlash} alt="didn't work" />
           </EyeSlash>
         </PasswordContainer>
-        {/* displays error message when input doesn't meet requirements */}
-        {errorReal && <ErrorMessage>{errorReal}</ErrorMessage>}
         <Button onClick={handleClick}>Submit</Button>
       </Box>
     </Wrapper>

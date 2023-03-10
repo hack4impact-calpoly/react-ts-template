@@ -88,6 +88,7 @@ export default function EnterCode() {
         <Description>
           We’ve sent an email to {username} with your authentication code.
         </Description>
+        {error !== "" && <ErrorMessage>{error}</ErrorMessage>}
         <Input
           value={code}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -96,7 +97,6 @@ export default function EnterCode() {
         />
         <Resend onClick={resendCode}>Resend code</Resend>
         <Button onClick={codeVerification}>Verify</Button>
-        <ErrorMessage>{error}</ErrorMessage>
       </Box>
     </Wrapper>
   );
