@@ -70,7 +70,13 @@ export default function CreateAccount() {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false);
+  // Password toggle handler
+  const togglePassword = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown(!passwordShown);
+  };
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -198,19 +204,16 @@ export default function CreateAccount() {
         <Label>Password</Label>
         <PasswordContainer>
           <Input
-            type={showPassword ? "text" : "password"}
+            type={passwordShown ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <EyeSlash onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? (
+          <EyeSlash onClick={togglePassword}>
+            {passwordShown ? (
               <img src={eye} alt="did work" />
             ) : (
               <img src={eyeSlash} alt="didn't work" />
             )}
-          </EyeSlash>
-          <EyeSlash onClick={() => setShowPassword(!showPassword)}>
-            <img src={eyeSlash} alt="eyeSlash" />
           </EyeSlash>
         </PasswordContainer>
         <Button onClick={handleSubmit}>Sign Up</Button>

@@ -24,12 +24,25 @@ export default function ResetPassword(this: any) {
   const [input, setInput] = useState({
     password: "",
     confirmPassword: "",
-    showPassword: false,
-    showPassword2: false,
+    // showPassword: false,
+    // showPassword2: false,
     code: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
-
+  // const [showPassword, setShowPassword] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false);
+  // Password toggle handler
+  const togglePassword = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown(!passwordShown);
+  };
+  const [passwordShown1, setPasswordShown1] = useState(false);
+  // Password toggle handler
+  const togglePassword1 = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown1(!passwordShown1);
+  };
   const [error, setError] = useState({
     password: "",
     confirmPassword: "",
@@ -47,9 +60,9 @@ export default function ResetPassword(this: any) {
   //     .catch((err) => console.log(err));
   //   setInput({ ...input, showPassword: !input.showPassword });
   // };
-  const handleClickShowPassword2 = () => {
-    setInput({ ...input, showPassword2: !input.showPassword2 });
-  };
+  // const handleClickShowPassword2 = () => {
+  //   setInput({ ...input, showPassword2: !input.showPassword2 });
+  // };
   // checking whether passwords match and if they meet requirements (only requirement so far is <5char)
   const validateInput = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
@@ -152,7 +165,7 @@ export default function ResetPassword(this: any) {
         <Label>New Password</Label>
         <PasswordContainer>
           <Input
-            type={showPassword ? "text" : "password"}
+            type={passwordShown ? "text" : "password"}
             name="password"
             placeholder="Enter Password"
             value={input.password}
@@ -161,8 +174,8 @@ export default function ResetPassword(this: any) {
             required
           />
           {/* changes the truth value of show password */}
-          <EyeSlash onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? (
+          <EyeSlash onClick={togglePassword}>
+            {passwordShown ? (
               <img src={eye} alt="did work" />
             ) : (
               <img src={eyeSlash} alt="didn't work" />
@@ -173,7 +186,7 @@ export default function ResetPassword(this: any) {
         <Label>Confirm New Password</Label>
         <PasswordContainer>
           <Input
-            type={input.showPassword2 ? "text" : "password"}
+            type={passwordShown1 ? "text" : "password"}
             name="confirmPassword"
             placeholder="Confirm Password"
             value={input.confirmPassword}
@@ -181,8 +194,12 @@ export default function ResetPassword(this: any) {
             onBlur={validateInput}
             required
           />
-          <EyeSlash onClick={handleClickShowPassword2}>
-            <img src={eyeSlash} alt="didn't work" />
+          <EyeSlash onClick={togglePassword1}>
+            {passwordShown1 ? (
+              <img src={eye} alt="did work" />
+            ) : (
+              <img src={eyeSlash} alt="didn't work" />
+            )}
           </EyeSlash>
         </PasswordContainer>
         {/* displays error message when input doesn't meet requirements */}
