@@ -10,7 +10,7 @@ import OnSlider from "../images/OnSlider.png";
 import {
   Wrapper,
   Box,
-  // Button,
+  Button,
   // Input,
   // Label,
   // PasswordContainer,
@@ -40,11 +40,6 @@ import {
 //   vertical-align: middle;
 // `;
 
-const CheckBox = styled.div`
-  border: solid 2px #1b4c5a;
-  scale: 25%;
-`;
-
 const Boxes = styled(Box)`
   border: 0;
   box-shadow: none;
@@ -68,7 +63,7 @@ const Boxed = styled(Box)`
 const ButtonToggle = styled.image`
   cursor: pointer;
   align-self: center;
-  scale: 25%;
+  scale: 15%;
   box-shadow: none;
   height: 40epx;
 `;
@@ -111,13 +106,13 @@ export default function Timeslot() {
     setTimeSlots(updatedTimeSlots);
   }
 
-  const toggleVolunteer = () => {
+  const toggle1 = () => {
     // When the handler is invoked
     // inverse the boolean state of passwordShown
     setVolunteerView(!volunteerView);
     setRiderView(false);
   };
-  const toggleRider = () => {
+  const toggle2 = () => {
     // When the handler is invoked
     // inverse the boolean state of passwordShown
     setRiderView(!riderView);
@@ -130,16 +125,18 @@ export default function Timeslot() {
         {timeSlots.map((timeslot, index) => (
           <Row>
             <Boxes>
-              <CheckBox onClick={toggleVolunteer}>
-                <ButtonToggle onClick={() => toggleChecked(index)}>
-                  {timeslot.checked ? (
-                    <img src={Checked} alt="Checked Img" />
-                  ) : (
-                    <img src={Unchecked} alt="Unchecked Img" />
-                  )}
-                </ButtonToggle>
-              </CheckBox>
-              <CheckBox onClick={toggleRider}>
+              <Button onClick={toggle1}>
+                {volunteerView && (
+                  <ButtonToggle onClick={() => toggleChecked(index)}>
+                    {timeslot.checked ? (
+                      <img src={Checked} alt="Checked Img" />
+                    ) : (
+                      <img src={Unchecked} alt="Unchecked Img" />
+                    )}
+                  </ButtonToggle>
+                )}
+              </Button>
+              <Button onClick={toggle2}>
                 <ButtonToggle onClick={() => toggleSlider(index)}>
                   {timeslot.checked ? (
                     <img src={OnSlider} alt="On Slider img" />
@@ -147,7 +144,7 @@ export default function Timeslot() {
                     <img src={OffSlider} alt="Off Slider Img" />
                   )}
                 </ButtonToggle>
-              </CheckBox>
+              </Button>
             </Boxes>
             <TimeBox>{timeslot.time}</TimeBox>
           </Row>
