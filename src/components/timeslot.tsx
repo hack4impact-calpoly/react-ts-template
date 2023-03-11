@@ -113,6 +113,21 @@ export default function Timeslot() {
     setShowVolunteers(false);
   };
 
+  // const [checkMark, setCheckMark] = useState(false);
+  // const [showChecked, setshowChecked] = useState(false);
+  // // const [showUnchecked, setshowUnchecked] = useState(false);
+
+  // const toggleChecked = (
+  //   timeslot: { time: string; checked: boolean },
+  //   index: number
+  // ) => {
+  //   // When the handler is invoked
+  //   // inverse the boolean state of passwordShown
+  //   timeslots[index].checked = !timeslots[index].checked;
+  //   setTimeSlots(timeslots);
+  //   // setCheckMark(timeslot.checked);
+  //   // setUpdateCheck(!timeslot.checked);
+  // };
   function filterTimeSlots(
     isVolunteers: boolean,
     ts: {
@@ -130,26 +145,14 @@ export default function Timeslot() {
     const updatedTimeSlots = timeSlots.map((timeslot, i) => {
       if (i === index) {
         // Increment the clicked counter;
-        return {
-          startTime: timeslot.startTime,
-          endTime: timeslot.endTime,
-          checked: !timeslot.checked,
-        };
+        return { time: timeslot.time, checked: !timeslot.checked };
       }
-      if (volunteer) {
+      if (userType === "volunteer") {
         // The rest haven't changed
-        return {
-          startTime: timeslot.startTime,
-          endTime: timeslot.endTime,
-          checked: timeslot.checked,
-        };
+        return { time: timeslot.time, checked: timeslot.checked };
       }
       // set rest to false to allow rider to set only one time
-      return {
-        startTime: timeslot.startTime,
-        endTime: timeslot.endTime,
-        checked: false,
-      };
+      return { time: timeslot.time, checked: false };
     });
     // delete timeslots[index];
     // // const newTime :timeslotsType = {timeslots[index].time, updatedTimeSlot};
@@ -159,11 +162,6 @@ export default function Timeslot() {
     setTimeSlots(updatedTimeSlots);
   }
 
-  const formatTime = (time: Date) =>
-    time.toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-    });
   // const [dropdownShown0, setDropdownShown0] = useState(false);
 
   return (
