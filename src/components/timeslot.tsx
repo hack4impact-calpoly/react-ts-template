@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Wrapper, Box, Button, Description } from "./styledComponents";
+import { Wrapper, Box, Description } from "./styledComponents";
 import timeslots from "./timeslots";
 import Checked from "../images/Checked.png";
 import Unchecked from "../images/Unchecked.png";
@@ -48,14 +48,41 @@ const TimeBox = styled(Box)`
   text-overflow: clip;
   border: 0;
   box-shadow: none;
+  padding: 0;
+  width: 100%;
 `;
 
-const ButtonToggle = styled(Button)`
+const ButtonToggle = styled.button`
   cursor: pointer;
-  scale: 25%;
   outline: none;
-  background-color: white;
+  background-color: transparent;
   border: none;
+  padding: 0;
+  margin: 0px;
+`;
+
+const CheckedImg = styled.img`
+  width: 70px;
+  margin: 0px;
+  align-self: left;
+`;
+
+const UnCheckedImg = styled.img`
+  width: 70px;
+  margin: 0px;
+  align-self: left;
+`;
+
+const OnSliderImg = styled.img`
+  width: 80px;
+  margin: 0px;
+  align-self: left;
+`;
+
+const OffSliderImg = styled.img`
+  width: 80px;
+  margin: 0px;
+  align-self: left;
 `;
 
 const Row = styled.div`
@@ -73,11 +100,12 @@ const Slots = styled(Box)`
   flex-direction: column;
   align-items: center;
   overflow-y: scroll;
-  height: 70vh; /* For 100% screen height */
+  /* height: 70vh; For 100% screen height */
   /* width: max; */
   //width: 70vw; /* For 100% screen width */
   border: none;
   box-shadow: none;
+  width: 100%;
 `;
 const Slot = styled(Box)`
   /* font-family: "Rubik", sans-serif;
@@ -90,10 +118,11 @@ const Slot = styled(Box)`
   display: flex;
   flex-direction: row;
   padding: 3%;
+  align-items: left;
   /* border: none; */
-  width: 100%;
+  width: 80%;
   // width: fit-content;
-  // block-size: fit-content;
+  block-size: fit-content;
 `;
 
 export default function Timeslot() {
@@ -135,9 +164,6 @@ export default function Timeslot() {
           startTime: timeslot.startTime,
           endTime: timeslot.endTime,
           checked: !timeslot.checked,
-          render() {
-            console.log(i);
-          },
         };
       }
       if (volunteer) {
@@ -188,9 +214,9 @@ export default function Timeslot() {
                 <>
                   <ButtonToggle onClick={() => toggleChecked(index, true)}>
                     {showVolunteers && timeslot.checked ? (
-                      <img src={Checked} alt="Checked Img" />
+                      <CheckedImg src={Checked} alt="Checked Img" />
                     ) : (
-                      <img src={Unchecked} alt="Unchecked Img" />
+                      <UnCheckedImg src={Unchecked} alt="Unchecked Img" />
                     )}
                   </ButtonToggle>
                   <TimeBox>{`${formatTime(timeslot.startTime)} to ${formatTime(
@@ -204,9 +230,9 @@ export default function Timeslot() {
                   )}`}</TimeBox>
                   <ButtonToggle onClick={() => toggleChecked(index + 1, false)}>
                     {showRiders && timeslot.checked ? (
-                      <img src={On} alt="On Img" />
+                      <OnSliderImg src={On} alt="On Img" />
                     ) : (
-                      <img src={Off} alt="Off Img" />
+                      <OffSliderImg src={Off} alt="Off Img" />
                     )}
                   </ButtonToggle>
                 </>
