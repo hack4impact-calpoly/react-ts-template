@@ -201,7 +201,7 @@ export default function Timeslot() {
                   <TimeBox>{`${formatTime(timeslot.startTime)} to ${formatTime(
                     timeslot.endTime
                   )}`}</TimeBox>
-                  <ButtonToggle onClick={() => toggleChecked(index, false)}>
+                  <ButtonToggle onClick={() => toggleChecked(index + 1, false)}>
                     {showRiders && timeslot.checked ? (
                       <img src={On} alt="On Img" />
                     ) : (
