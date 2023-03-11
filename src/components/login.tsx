@@ -39,16 +39,6 @@ export default function Login() {
     // inverse the boolean state of passwordShown
     setPasswordShown(!passwordShown);
   };
-  const [validEmail, setValidEmail] = React.useState(false);
-  const handleOnChangeEmail = (email1: string) => {
-    const re =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (re.test(email1)) {
-      setValidEmail(false);
-    } else {
-      setValidEmail(true);
-    }
-  };
 
   async function signIn() {
     try {
@@ -86,10 +76,7 @@ export default function Login() {
     <Wrapper>
       <Box>
         <Logo src={logoPic} alt="PET logo" />
-        {validEmail && (
-          <ErrorMessage>Invalid email. Please try again.</ErrorMessage>
-        )}
-        <ErrorMessage>{error}</ErrorMessage>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <Label>Email</Label>
         <Input
           placeholder=""
@@ -104,9 +91,6 @@ export default function Login() {
               e.currentTarget.value.length,
               e.currentTarget.value.length
             );
-          }}
-          onBlur={() => {
-            handleOnChangeEmail(email);
           }}
         />
 
