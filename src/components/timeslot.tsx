@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// import React from "react";
 import styled from "styled-components";
 import { Wrapper, Box, Button, Description } from "./styledComponents";
 import timeslots from "./timeslots";
@@ -42,16 +43,33 @@ const ViewingDescription = styled(Description)`
   padding-top: 4%;
 `;
 
-const TimeBox = styled(Box)`
-  white-space: nowrap;
-  text-overflow: clip;
-  border: 0;
-  box-shadow: none;
-`;
+// const ChevronDown = styled.img`
+//   width: auto;
+//   display: block;
+//   margin-left: auto;
+//   margin-right: auto;
+//   transform: rotate(270deg);
+// `;
+// const ChevronUp = styled.img`
+//   width: auto;
+//   display: block;
+//   margin-left: auto;
+//   margin-right: auto;
+//   transform: rotate(90deg);
+// `;
+// const StyledBtn = styled.button`
+//   border: none;
+//   background: none;
+//   vertical-align: middle;
+// `;
+
+const Boxed = styled(Box)``;
 
 const ButtonToggle = styled(Button)`
   cursor: pointer;
   scale: 25%;
+  margin-top: -5%;
+  margin-left: -6%;
   outline: none;
   background-color: white;
   border: none;
@@ -61,42 +79,24 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
   padding: 3%;
-  border: none;
-  width: fit-content;
-  block-size: fit-content;
-`;
-
-const Slots = styled(Box)`
-  //justify content limits view of timeslots
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* overflow-y: scroll; */
-  height: 70vh; /* For 100% screen height */
-  /* width: 70vw; For 100% screen width */
-  border: none;
-  box-shadow: none;
-`;
-const Slot = styled(Box)`
-  display: flex;
-  flex-direction: row;
-  /* font-family: "Rubik", sans-serif;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #c4c4c4;
-  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
-  /* height: 30vh; /* For 10% screen height */
-  /* width: 30vw; /* For 10% screen width */
-  display: flex;
-  flex-direction: row;
-  padding: 3%;
-  /* border: none; */
-  width: fit-content;
-  block-size: fit-content;
 `;
 
 export default function Timeslot() {
   const [timeSlots, setTimeSlots] = useState(timeslots);
+  // let filteredTimeslots: { time: String }[] = [];
+  // if (userType === "volunteer") {
+  //   // Filter timeslots between 9 AM and 5 PM for volunteers
+  //   filteredTimeslots = timeslots.filter(
+  //     (timeslot) =>
+  //       timeslot.startTime.getHours() >= 9 && timeslot.endTime.getHours() <= 17
+  //   );
+  // } else if (userType === "rider") {
+  //   // Filter timeslots between 10 AM and 2 PM for riders
+  //   filteredTimeslots = timeslots.filter(
+  //     (timeslot) =>
+  //       timeslot.startTime.getHours() >= 10 && timeslot.endTime.getHours() <= 14
+  //   );
+  // }
 
   const [showVolunteers, setShowVolunteers] = useState(false);
   const [showRiders, setShowRiders] = useState(false);
@@ -178,13 +178,13 @@ export default function Timeslot() {
         </CheckBox>
         <ViewingDescription>Rider only</ViewingDescription>
       </Row>
-      <Slots>
+      <Boxed>
         {timeSlots
           .filter((ts) => filterTimeSlots(showVolunteers, ts))
           .map((timeslot, index) => (
-            <Slot>
-              {showVolunteers ? (
-                <>
+            <Row>
+              <Box>
+                {showVolunteers ? (
                   <ButtonToggle onClick={() => toggleChecked(index, true)}>
                     {showVolunteers && timeslot.checked ? (
                       <img src={Checked} alt="Checked Img" />
@@ -192,15 +192,7 @@ export default function Timeslot() {
                       <img src={Unchecked} alt="Unchecked Img" />
                     )}
                   </ButtonToggle>
-                  <TimeBox>{`${formatTime(timeslot.startTime)} to ${formatTime(
-                    timeslot.endTime
-                  )}`}</TimeBox>
-                </>
-              ) : (
-                <>
-                  <TimeBox>{`${formatTime(timeslot.startTime)} to ${formatTime(
-                    timeslot.endTime
-                  )}`}</TimeBox>
+                ) : (
                   <ButtonToggle onClick={() => toggleChecked(index, false)}>
                     {showRiders && timeslot.checked ? (
                       <img src={On} alt="On Img" />
@@ -208,11 +200,14 @@ export default function Timeslot() {
                       <img src={Off} alt="Off Img" />
                     )}
                   </ButtonToggle>
-                </>
-              )}
-            </Slot>
+                )}
+                <Box>{`${formatTime(timeslot.startTime)} to ${formatTime(
+                  timeslot.endTime
+                )}`}</Box>
+              </Box>
+            </Row>
           ))}
-      </Slots>
+      </Boxed>
     </Wrapper>
   );
 }
