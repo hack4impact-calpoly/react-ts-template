@@ -10,7 +10,7 @@ import EnterCode from "./components/enterCode";
 import Login from "./components/login";
 import ForgotPassword from "./components/forgotPassword";
 import WeeklyView from "./components/weeklyView";
-import TimeSlot from "./components/filteredTimeSlots";
+import TimeSlot from "./components/timeslot";
 
 Amplify.configure(awsconfig);
 
@@ -34,7 +34,7 @@ function App() {
           element={<ResetPassword email={email!} />}
         />
         <Route path="/success/:id" element={<Success />} />
-        <Route path="/test" element={<TimeSlot userType="volunteer" />} />
+        <Route path="/test" element={<TimeSlot />} />
       </Routes>
     </BrowserRouter>
   );
