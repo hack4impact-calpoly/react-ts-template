@@ -69,19 +69,17 @@ const Row = styled.div`
 
 const Slots = styled(Box)`
   //justify content limits view of timeslots
-  /* display: flex;
+  /* display: flex; */
   flex-direction: column;
   align-items: center;
-  /* overflow-y: scroll; */
+  overflow-y: scroll;
   height: 70vh; /* For 100% screen height */
-  width: max;
+  /* width: max; */
   //width: 70vw; /* For 100% screen width */
   border: none;
   box-shadow: none;
 `;
 const Slot = styled(Box)`
-  display: flex;
-  flex-direction: row;
   /* font-family: "Rubik", sans-serif;
   align-items: center;
   justify-content: center;
