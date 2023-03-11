@@ -40,6 +40,7 @@ const ViewingDescription = styled(Description)`
   padding-left: 3%;
   font-size: 100%;
   padding-top: 4%;
+  width: max;
 `;
 
 const TimeBox = styled(Box)`
@@ -73,7 +74,8 @@ const Slots = styled(Box)`
   align-items: center;
   /* overflow-y: scroll; */
   height: 70vh; /* For 100% screen height */
-  /* width: 70vw; For 100% screen width */
+  width: max;
+  //width: 70vw; /* For 100% screen width */
   border: none;
   box-shadow: none;
 `;
@@ -91,8 +93,9 @@ const Slot = styled(Box)`
   flex-direction: row;
   padding: 3%;
   /* border: none; */
-  width: fit-content;
-  block-size: fit-content;
+  width: 100%;
+  // width: fit-content;
+  // block-size: fit-content;
 `;
 
 export default function Timeslot() {
