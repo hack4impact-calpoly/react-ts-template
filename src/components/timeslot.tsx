@@ -83,6 +83,20 @@ const Row = styled.div`
 
 export default function Timeslot() {
   const [timeSlots, setTimeSlots] = useState(timeslots);
+  // let filteredTimeslots: { time: String }[] = [];
+  // if (userType === "volunteer") {
+  //   // Filter timeslots between 9 AM and 5 PM for volunteers
+  //   filteredTimeslots = timeslots.filter(
+  //     (timeslot) =>
+  //       timeslot.startTime.getHours() >= 9 && timeslot.endTime.getHours() <= 17
+  //   );
+  // } else if (userType === "rider") {
+  //   // Filter timeslots between 10 AM and 2 PM for riders
+  //   filteredTimeslots = timeslots.filter(
+  //     (timeslot) =>
+  //       timeslot.startTime.getHours() >= 10 && timeslot.endTime.getHours() <= 14
+  //   );
+  // }
 
   const [showVolunteers, setShowVolunteers] = useState(false);
   const [showRiders, setShowRiders] = useState(false);
@@ -114,19 +128,43 @@ export default function Timeslot() {
   //   // setCheckMark(timeslot.checked);
   //   // setUpdateCheck(!timeslot.checked);
   // };
-
-  function toggleChecked(index: number, userType: String) {
+  function filterTimeSlots(
+    isVolunteers: boolean,
+    ts: {
+      startTime: Date;
+      endTime: Date;
+      checked: boolean;
+    }
+  ) {
+    if (isVolunteers) {
+      return ts.startTime.getHours() >= 9 && ts.endTime.getHours() <= 17;
+    }
+    return ts.startTime.getHours() >= 10 && ts.endTime.getHours() <= 14;
+  }
+  function toggleChecked(index: number, volunteer: boolean) {
     const updatedTimeSlots = timeSlots.map((timeslot, i) => {
       if (i === index) {
         // Increment the clicked counter;
-        return { time: timeslot.time, checked: !timeslot.checked };
+        return {
+          startTime: timeslot.startTime,
+          endTime: timeslot.endTime,
+          checked: !timeslot.checked,
+        };
       }
-      if (userType === "volunteer") {
+      if (volunteer) {
         // The rest haven't changed
-        return { time: timeslot.time, checked: timeslot.checked };
+        return {
+          startTime: timeslot.startTime,
+          endTime: timeslot.endTime,
+          checked: timeslot.checked,
+        };
       }
       // set rest to false to allow rider to set only one time
-      return { time: timeslot.time, checked: false };
+      return {
+        startTime: timeslot.startTime,
+        endTime: timeslot.endTime,
+        checked: false,
+      };
     });
     // delete timeslots[index];
     // // const newTime :timeslotsType = {timeslots[index].time, updatedTimeSlot};
@@ -136,6 +174,11 @@ export default function Timeslot() {
     setTimeSlots(updatedTimeSlots);
   }
 
+  const formatTime = (time: Date) =>
+    time.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
   // const [dropdownShown0, setDropdownShown0] = useState(false);
 
   return (
@@ -153,30 +196,34 @@ export default function Timeslot() {
         <ViewingDescription>Rider only</ViewingDescription>
       </Row>
       <Boxed>
-        {timeSlots.map((timeslot, index) => (
-          <Row>
-            <Box>
-              {showVolunteers ? (
-                <ButtonToggle onClick={() => toggleChecked(index, "volunteer")}>
-                  {showVolunteers && timeslot.checked ? (
-                    <img src={Checked} alt="Checked Img" />
-                  ) : (
-                    <img src={Unchecked} alt="Unchecked Img" />
-                  )}
-                </ButtonToggle>
-              ) : (
-                <ButtonToggle onClick={() => toggleChecked(index, "rider")}>
-                  {showRiders && timeslot.checked ? (
-                    <img src={On} alt="On Img" />
-                  ) : (
-                    <img src={Off} alt="Off Img" />
-                  )}
-                </ButtonToggle>
-              )}
-            </Box>
-            <Box>{timeslot.time}</Box>
-          </Row>
-        ))}
+        {timeSlots
+          .filter((ts) => filterTimeSlots(showVolunteers, ts))
+          .map((timeslot, index) => (
+            <Row>
+              <Box>
+                {showVolunteers ? (
+                  <ButtonToggle onClick={() => toggleChecked(index, true)}>
+                    {showVolunteers && timeslot.checked ? (
+                      <img src={Checked} alt="Checked Img" />
+                    ) : (
+                      <img src={Unchecked} alt="Unchecked Img" />
+                    )}
+                  </ButtonToggle>
+                ) : (
+                  <ButtonToggle onClick={() => toggleChecked(index, false)}>
+                    {showRiders && timeslot.checked ? (
+                      <img src={On} alt="On Img" />
+                    ) : (
+                      <img src={Off} alt="Off Img" />
+                    )}
+                  </ButtonToggle>
+                )}
+                <Box>{`${formatTime(timeslot.startTime)} to ${formatTime(
+                  timeslot.endTime
+                )}`}</Box>
+              </Box>
+            </Row>
+          ))}
       </Boxed>
     </Wrapper>
   );
