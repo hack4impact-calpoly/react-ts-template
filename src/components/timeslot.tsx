@@ -115,14 +115,18 @@ export default function Timeslot() {
   //   // setUpdateCheck(!timeslot.checked);
   // };
 
-  function toggleChecked(index: number) {
+  function toggleChecked(index: number, userType: String) {
     const updatedTimeSlots = timeSlots.map((timeslot, i) => {
       if (i === index) {
         // Increment the clicked counter;
         return { time: timeslot.time, checked: !timeslot.checked };
       }
-      // The rest haven't changed
-      return { time: timeslot.time, checked: timeslot.checked };
+      if (userType === "volunteer") {
+        // The rest haven't changed
+        return { time: timeslot.time, checked: timeslot.checked };
+      }
+      // set rest to false to allow rider to set only one time
+      return { time: timeslot.time, checked: false };
     });
     // delete timeslots[index];
     // // const newTime :timeslotsType = {timeslots[index].time, updatedTimeSlot};
@@ -153,7 +157,7 @@ export default function Timeslot() {
           <Row>
             <Box>
               {showVolunteers ? (
-                <ButtonToggle onClick={() => toggleChecked(index)}>
+                <ButtonToggle onClick={() => toggleChecked(index, "volunteer")}>
                   {showVolunteers && timeslot.checked ? (
                     <img src={Checked} alt="Checked Img" />
                   ) : (
@@ -161,7 +165,7 @@ export default function Timeslot() {
                   )}
                 </ButtonToggle>
               ) : (
-                <ButtonToggle onClick={() => toggleChecked(index)}>
+                <ButtonToggle onClick={() => toggleChecked(index, "rider")}>
                   {showRiders && timeslot.checked ? (
                     <img src={On} alt="On Img" />
                   ) : (
