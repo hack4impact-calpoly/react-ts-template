@@ -1,8 +1,10 @@
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { Auth } from "aws-amplify";
 import logoPic from "../images/PETlogo.jpg";
 import eyeSlash from "../images/eyeSlash.svg";
-// import { Auth } from "aws-amplify";
+
 import {
   Wrapper,
   Box,
@@ -23,13 +25,12 @@ const Logo = styled.img`
   width: 150px;
 `;
 
-function addAccount() {
-  alert("You clicked login");
-}
-
 export default function Login() {
+  // const [user, setUser] = useState("");
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   // Initialize a boolean state
   const [passwordShown, setPasswordShown] = useState(false);
   // Password toggle handler
@@ -49,13 +50,37 @@ export default function Login() {
     }
   };
 
-  // async function signIn() {
-  //   try {
-  //       const user = await Auth.signIn(username: email, password);
-  //   } catch (error) {
-  //       console.log('error signing in', error);
-  //   }
-  // }
+  async function signIn() {
+    try {
+      console.log(email);
+      const { user } = await Auth.signIn({
+        username: email,
+        password,
+      });
+      console.log("Success!");
+      console.log(user);
+      // Navigates to Home page with weekly calendar
+      navigate("/");
+    } catch (errore) {
+      console.log("error signing in", errore);
+      if (errore instanceof Error) {
+        setError(errore.message);
+      } else {
+        setError(String(errore));
+      }
+    }
+  }
+
+  const handleSubmit = () => {
+    setError("");
+
+    if (!email || !password) {
+      setError("All Fields Required");
+      return;
+    }
+
+    signIn();
+  };
 
   return (
     <Wrapper>
@@ -64,6 +89,7 @@ export default function Login() {
         {validEmail && (
           <ErrorMessage>Invalid email. Please try again.</ErrorMessage>
         )}
+        <ErrorMessage>{error}</ErrorMessage>
         <Label>Email</Label>
         <Input
           placeholder=""
@@ -83,6 +109,7 @@ export default function Login() {
             handleOnChangeEmail(email);
           }}
         />
+
         <Label>Password</Label>
         <PasswordContainer>
           <EyeSlash onClick={togglePassword}>
@@ -112,7 +139,7 @@ export default function Login() {
           />
         </PasswordContainer>
         <TextLink to="/forgot-password">Forgot password?</TextLink>
-        <Button onClick={addAccount}>Log In</Button>
+        <Button onClick={handleSubmit}>Log In</Button>
         <Question>
           Don&apos;t have an account?&nbsp;
           <TextLink to="/create-account">Create Account</TextLink>
