@@ -100,7 +100,7 @@ const Slots = styled(Box)`
   flex-direction: column;
   align-items: center;
   overflow-y: scroll;
-  /* height: 70vh; For 100% screen height */
+  height: 100vh; // For 100% screen height
   /* width: max; */
   //width: 70vw; /* For 100% screen width */
   border: none;
