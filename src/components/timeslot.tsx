@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Wrapper, Box, Description } from "./styledComponents";
+import { Box, Description } from "./styledComponents";
 import timeslots from "./timeslots";
 import Checked from "../images/Checked.png";
 import Unchecked from "../images/Unchecked.png";
 import On from "../images/OnSlider.png";
 import Off from "../images/OffSlider.png";
+
+const Wrapper = styled.section`
+  display: flex;
+  align-items: left;
+  justify-content: center;
+  padding: 4%;
+  max-height: 600px;
+  overflow-y: scroll;
+`;
 
 const CheckBox = styled.div`
   border-radius: 5px;
@@ -99,13 +108,13 @@ const Slots = styled(Box)`
   /* display: flex; */
   flex-direction: column;
   align-items: center;
-  overflow-y: scroll;
-  height: 100vh; // For 100% screen height
+  // For 100% screen height
   /* width: max; */
   //width: 70vw; /* For 100% screen width */
   border: none;
   box-shadow: none;
   width: 100%;
+  height: 100%;
 `;
 const Slot = styled(Box)`
   /* font-family: "Rubik", sans-serif;
