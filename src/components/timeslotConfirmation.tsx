@@ -30,7 +30,7 @@ const Warning = styled.img`
 `;
 export default function TimeSlotConfirmation({
   userType,
-  status,
+  status="",
 }: TimeSlotProps) {
   return (
     <Wrapper>

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "reactjs-popup/dist/index.css";
 import styled from "styled-components";
-import { Box } from "./styledComponents";
+import { Box, Wrapper } from "./styledComponents";
 import AppointmentInfo from "./appointmentInfo";
 
 const Header = styled.h1`
@@ -37,7 +36,7 @@ const ConfirmButton = styled(Link)`
   cursor: pointer;
 `;
 const ButtonText = styled.text`
-  display: none;
+  font-weight: bold;
 `;
 
 export default function AppointmentPopup() {
@@ -46,7 +45,7 @@ export default function AppointmentPopup() {
     setPopupShown(!popupShown);
   };
   return (
-    <div>
+    <Wrapper>
       <ButtonPop type="button" onClick={togglePopup}>
         Click Me
       </ButtonPop>
@@ -57,6 +56,6 @@ export default function AppointmentPopup() {
           <ButtonText>Confirm</ButtonText>
         </ConfirmButton>
       </Box>
-    </div>
+    </Wrapper>
   );
 }
