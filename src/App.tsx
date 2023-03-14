@@ -12,7 +12,8 @@ import ForgotPassword from "./components/forgotPassword";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobileCalendar";
 import MobileTimeslots from "./components/mobileTimeslots";
-import TimeSlotConfirmation from "./components/timeslotConfirmation";
+import TimeSlotConfirmation from "./components/timeSlotConfirmation";
+import AppointmentPopup from "./components/appointmentPopup";
 
 Amplify.configure(awsconfig);
 
@@ -53,9 +54,10 @@ function App() {
           element={<MobileTimeslots userType="volunteer" />}
         />
         <Route
-          path="/test"
+          path="/time-slot-confirmation"
           element={<TimeSlotConfirmation userType="volunteer" status="book" />}
         />
+        <Route path="/t" element={<AppointmentPopup />} />
       </Routes>
     </BrowserRouter>
   );
