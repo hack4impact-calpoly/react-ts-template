@@ -12,13 +12,13 @@ import ForgotPassword from "./components/forgotPassword";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobileCalendar";
 import MobileTimeslots from "./components/mobileTimeslots";
+import TimeSlotConfirmation from "./components/timeslotConfirmation";
 
 Amplify.configure(awsconfig);
 
 function App() {
   const [email, setEmailProp] = useState<string>();
   const [isMobile, setIsMobile] = useState<boolean>(false);
-
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.outerWidth <= 500);
@@ -51,6 +51,10 @@ function App() {
         <Route
           path="/mobile-timeslots"
           element={<MobileTimeslots userType="volunteer" />}
+        />
+        <Route
+          path="/test"
+          element={<TimeSlotConfirmation userType="volunteer" status="book" />}
         />
       </Routes>
     </BrowserRouter>
