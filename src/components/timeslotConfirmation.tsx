@@ -88,32 +88,34 @@ export default function TimeSlotConfirmation({
         </SurroundingBox>
       )}
       {userType !== "admin" && status === "cancel" && (
-        <Box>
+        <SurroundingBox>
+          <Ximg src={ExitX} />
           <Warning src={warning} />
           <Header>Confirm cancellation?</Header>
           <Description>
             You are choosing to cancel one or more time slots. Are you sure you
             want to do this?
           </Description>
-          <Row>
-            <Button>Cancel</Button>
-            <Button>Confirm</Button>
-          </Row>
-        </Box>
+          <ButtonRow>
+            <CancelButton>Cancel</CancelButton>
+            <ConfirmButton>Confirm</ConfirmButton>
+          </ButtonRow>
+        </SurroundingBox>
       )}
       {userType !== "admin" && status === "book" && (
-        <Box>
+        <SurroundingBox>
+          <Ximg src={ExitX} />
           <Warning src={warning} />
           <Header>Confirm booking?</Header>
           <Description>
             You are choosing to book one or more time slots. Are you sure you
             want to do this?
           </Description>
-          <Row>
-            <Button>Cancel</Button>
-            <Button>Book</Button>
-          </Row>
-        </Box>
+          <ButtonRow>
+            <CancelButton>Cancel</CancelButton>
+            <ConfirmButton>Book</ConfirmButton>
+          </ButtonRow>
+        </SurroundingBox>
       )}
     </OuterWrapper>
   );

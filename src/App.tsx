@@ -55,7 +55,7 @@ function App() {
         />
         <Route
           path="/time-slot-confirmation"
-          element={<TimeSlotConfirmation userType="admin" status="cancel" />}
+          element={<TimeSlotConfirmation userType="volunteer" status="book" />}
         />
         <Route path="/t" element={<AppointmentPopup />} />
       </Routes>
