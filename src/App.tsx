@@ -12,7 +12,7 @@ import ForgotPassword from "./components/forgotPassword";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobileCalendar";
 import MobileTimeslots from "./components/mobileTimeslots";
-import TimeSlotConfirmation from "./components/timeSlotConfirmation";
+import TimeSlotConfirmation from "./components/timeslotConfirmation";
 import AppointmentPopup from "./components/appointmentPopup";
 
 Amplify.configure(awsconfig);
