@@ -25,18 +25,27 @@ const ButtonPop = styled.button`
   cursor: pointer;
 `;
 const ConfirmButton = styled(Link)`
-  background: #1b4c5a;
-  border: solid 0.5px #6c6b6b;
+  background-color: #1b4c5a;
   color: white;
-  height: 2.8rem;
-  margin-top: 2rem;
-  font-weight: bold;
-  width: 15%;
-  align-self: center;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  /* display: inline-block; */
+  height: 1rem;
+  width: 5rem;
+  display: flex;
+  justify-content: space-around;
+  align-self: flex-end;
   cursor: pointer;
+  margin-top: 5%;
 `;
 const ButtonText = styled.text`
   font-weight: bold;
+`;
+
+const SurroundingBox = styled(Box)`
+  display: flex;
+  justify-content: center;
 `;
 
 export default function AppointmentPopup() {
@@ -49,13 +58,13 @@ export default function AppointmentPopup() {
       <ButtonPop type="button" onClick={togglePopup}>
         Click Me
       </ButtonPop>
-      <Box style={{ display: popupShown ? "block" : "none" }}>
+      <SurroundingBox style={{ display: popupShown ? "block" : "none" }}>
         <Header>Appointment Info</Header>
         <AppointmentInfo />
         <ConfirmButton type="button" to="/time-slot-confirmation">
-          <ButtonText>Confirm</ButtonText>
+          <ButtonText>Book</ButtonText>
         </ConfirmButton>
-      </Box>
+      </SurroundingBox>
     </Wrapper>
   );
 }
