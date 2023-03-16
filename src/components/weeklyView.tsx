@@ -1,168 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import chevronLeft from "../images/chevronLeft.svg";
+import FullCalendar from "@fullcalendar/react";
+import timeGridPlugin from "@fullcalendar/timegrid";
 
 const Wrapper = styled.div`
   font-family: "Rubik", sans-serif;
   padding: 1rem;
 `;
-
-const Head = styled.div`
-  display: flex;
-  align-items: center;
-  vertical-align: middle;
-  height: 3rem;
-  padding-left: 3.5rem;
-`;
-
-const StyledBtn = styled.button`
-  border: none;
-  background: none;
-  vertical-align: middle;
-`;
-
-const ChevronLeft = styled.img`
-  width: auto;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-`;
-
-const ChevronRight = styled.img`
-  width: auto;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  transform: scaleX(-1);
-`;
-
-const StyledTable = styled.table`
-  border-collapse: collapse;
-  td {
-    border: 3px solid #dfdfdf;
-  }
-  th,
-  td,
-  tr {
-
-  },
-  border: 3px solid #dfdfdf;
-  text-align: center;
-  td:nth-child(8n + 1) {
-    border: none;
-    padding-top: 0;
-    font-size: 16px;
-    text-align: right;
-  }
-  thead {
-    color: #747474;
-  }
-  tbody td + td {
-    width: 11rem;
-  }
-  table {
-    width: 100%;
-    table-layout: fixed;
-  }
-`;
-
-const StyledTD = styled.td`
-  padding-top: 0;
-  vertical-align: top;
-`;
-
-const LargeText = styled.text`
-  color: #000000;
-  font-weight: bold;
-  font-size: 30px;
-  width: 8em;
-
-  margin: 2rem 0.5rem;
-  @media (max-width: 500px) {
-    margin: 2rem 0rem;
-    padding: auto;
-    width: fit-content;
-    align-self: center;
-  }
-`;
-
-const StyledDiv = styled.text`
-  background-color: #cce1e7;
-  opacity: 70%;
-  width: 100%;
-  padding-top: 0.7em;
-  padding-bottom: 0.7em;
-  border-bottom: 3px solid #90bfcc;
-  font-weight: bold;
-`;
-/*
-
-const StyledDiv1 = styled.text`
-  background-color: #cce1e7;
-  opacity: 70%;
-  width: 100%;
-  padding-top: 0.7em;
-  padding-bottom: 0.7em;
-  font-weight: bold;
-`;
-
-const StyledDiv10 = styled.text`
-  background-color: #cce1e7;
-  opacity: 70%;
-  width: 100%;
-  padding-top: 0.7em;
-  padding-bottom: 0.7em;
-  margin-top: 0.3em;
-  font-weight: bold;
-`;
-
-const StyledDiv11 = styled.text`
-  background-color: #cce1e7;
-  opacity: 70%;
-  width: 100%;
-  padding-top: 0.7em;
-  padding-bottom: 0.7em;
-  margin-top: 0.3em;
-  font-weight: bold;
-`;
-
-const StyledDiv11_2 = styled.text`
-  background-color: #cce1e7;
-  opacity: 70%;
-  width: 100%;
-  padding-top: 0.7em;
-  padding-bottom: 0.7em;
-  margin-top: 0.3em;
-  font-weight: bold;
-`;
-
-const StyledDiv12 = styled.text`
-  background-color: #cce1e7;
-  opacity: 70%;
-  width: 100%;
-  padding-top: 0.7em;
-  padding-bottom: 0.7em;
-  margin-top: 1.2em;
-  margin-bottom: 0.9em;
-  font-weight: bold;
-`;
-
-const StyledDiv1255 = styled.text`
-  background-color: #cce1e7;
-  opacity: 70%;
-  width: 100%;
-  padding-top: 0.7em;
-  padding-bottom: 0.7em;
-  margin-bottom: 0.3em;
-  font-weight: bold;
-`;
-*/
-const OuterDiv = styled.text`
-  display: flex;
-  flex-direction: column;
-  overflow: visible;
-`;
-
 export interface TimeSlotsData {
   startTime: Date;
   endTime: Date;
@@ -170,7 +14,7 @@ export interface TimeSlotsData {
   volunteerBookings: String[];
   riderBookings: String[];
 }
-
+/*
 const tmpTimes = [
   {
     startTime: new Date("March 5, 2023 09:00:00"),
@@ -178,24 +22,25 @@ const tmpTimes = [
     unavailableDates: [],
     volunteerBookings: [],
     riderBookings: [],
+    topOfHour: true,
   },
   {
-    startTime: new Date("March 6, 2023 02:00:00"),
-    endTime: new Date("March 6, 2023 02:30:00"),
+    startTime: new Date("March 6, 2023 12:20:00"),
+    endTime: new Date("March 6, 2023 12:50:00"),
     unavailableDates: [],
     volunteerBookings: [],
     riderBookings: [],
   },
   {
-    startTime: new Date("March 7, 2023 05:30:00"),
-    endTime: new Date("March 7, 2023 6:00:00"),
+    startTime: new Date("March 7, 2023 11:10:00"),
+    endTime: new Date("March 7, 2023 11:40:00"),
     unavailableDates: [],
     volunteerBookings: [],
     riderBookings: [],
   },
   {
-    startTime: new Date("March 8, 2023 12:30:00"),
-    endTime: new Date("March 8, 2023 1:00:00"),
+    startTime: new Date("March 8, 2023 4:30:00"),
+    endTime: new Date("March 8, 2023 5:00:00"),
     unavailableDates: [],
     volunteerBookings: [],
     riderBookings: [],
@@ -208,12 +53,47 @@ const tmpTimes = [
     riderBookings: [],
   },
 ];
+*/
+
+const tmpTimes = [
+  {
+    start: new Date("March 5, 2023 09:00:00").toISOString(),
+    end: new Date("March 5, 2023 09:30:00").toISOString(),
+    backgroundColor: "#90BFCC",
+    textColor: "black",
+  },
+  {
+    start: new Date("March 6, 2023 12:20:00"),
+    end: new Date("March 6, 2023 12:50:00"),
+    backgroundColor: "#90BFCC",
+    textColor: "black",
+  },
+  {
+    start: new Date("March 7, 2023 11:10:00"),
+    end: new Date("March 7, 2023 11:40:00"),
+    backgroundColor: "#90BFCC",
+    textColor: "black",
+  },
+  {
+    start: new Date("March 8, 2023 4:30:00"),
+    end: new Date("March 8, 2023 5:00:00"),
+    backgroundColor: "#90BFCC",
+    textColor: "black",
+  },
+  {
+    start: new Date("March 11, 2023 10:00:00"),
+    end: new Date("March 11, 2023 10:30:00"),
+    backgroundColor: "#90BFCC",
+    textColor: "black",
+  },
+];
 
 export interface WeeklyViewProps {
   startDate: Date;
 }
 
-export default function WeeklyView({ startDate }: WeeklyViewProps) {
+export default function WeeklyView() {
+  /*
   const [currentDate, setCurrentDate] = useState(startDate);
   const days: Date[] = [];
   for (let i = 0; i < 7; i++) {
@@ -239,7 +119,27 @@ export default function WeeklyView({ startDate }: WeeklyViewProps) {
     return new Date(day.getTime() + 6 * 24 * 60 * 60 * 1000);
   }
 
+  /*
+  const handleCalenderTimeClick = (CalendarTimeSlot: TimeSlotsData) => {
+    // eslint-disable-next-line no-alert
+    alert(
+      `yay! you can click! ${CalendarTimeSlot.startTime.toLocaleTimeString()}`
+    );
+  };
+  */
+
   return (
+    <FullCalendar
+      plugins={[timeGridPlugin]}
+      initialView="timeGridWeek"
+      events={tmpTimes}
+      allDaySlot={false}
+      displayEventEnd
+      displayEventTime
+      dayHeaderFormat={{ weekday: "short", day: "numeric" }}
+    />
+    /*
+  
     <Wrapper>
       <Head>
         <LargeText>
@@ -282,66 +182,18 @@ export default function WeeklyView({ startDate }: WeeklyViewProps) {
               <StyledTD>{`${hour}`}</StyledTD>
               {days.map((day) => (
                 <td key={`${day.toDateString()}-${hour}`}>
-                  <OuterDiv>
-                    {/* tmpTimes.map((slot) => (
-                    /* 
-                    
-                      //if (slot.startTime.getHours()===hour) {
-                    map tmpTimeslots, check if day of week of timeslot===local day variable
-                    check if hour (whole number, ignore minutes) === local hour var
-                    if both true, render CalendarTimeSlot COMPONENT (component should be a button or clickable div) (pass in timeslot we're currently on (mapped value) as prop)
-                      - inside Timeslot component,
-                      - we sort the timeslots by time (if not already sorted)
-                      - check if both :00 and :30 exist to decide how to render location, pass in some variable to indicate what should be done for padding/location (could be 0, 1, 2 or something)) 
-                    */}
-                    <StyledDiv>{`${hour}h ${day}day`}</StyledDiv>
-                    {/*
-                    
-                    {hour === 10 ? (
-                      <>
-                        <StyledDiv>{`${hour}:00-${hour}:30`}</StyledDiv>
-                        <StyledDiv10>{`${hour}:35-${hour + 1}:05`}</StyledDiv10>
-                      </>
-                    ) : hour === 11 ? (
-                      <>
-                        <StyledDiv11>{`${hour}:10-${hour}:40`}</StyledDiv11>
-                        <StyledDiv11_2>{`${hour}:45-${
-                          hour + 1
-                        }:15`}</StyledDiv11_2>
-                      </>
-                    ) : hour === 12 ? (
-                      <StyledDiv12>{`${hour}:20-${hour}:50`}</StyledDiv12>
-                    ) : hour === 1 ? (
-                      <>
-                        <StyledDiv1255>{`${
-                          hour + 11
-                        }:55-${hour}:25`}</StyledDiv1255>
-                        <StyledDiv1>{`${hour}:30-${hour + 1}:00`}</StyledDiv1>
-                      </>
-                    ) : (
-                      <>
-                        <StyledDiv>{`${hour}:00-${hour}:30`}</StyledDiv>
-                        <StyledDiv1>{`${hour}:30-${hour + 1}:00`}</StyledDiv1>
-                      </>
-                    )}
-                    */}
-                  </OuterDiv>
                 </td>
               ))}
             </tr>
           ))}
+          {tmpTimes.map((slot) => (
+            <StyledSlot>{`${slot.startTime.toLocaleTimeString()}`}</StyledSlot>
+          ))}
         </tbody>
       </StyledTable>
     </Wrapper>
+  */
   );
 }
 
-export {
-  Wrapper,
-  Head,
-  StyledBtn,
-  ChevronLeft,
-  ChevronRight,
-  StyledTable,
-  LargeText,
-};
+export { Wrapper };

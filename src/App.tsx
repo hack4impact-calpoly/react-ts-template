@@ -20,7 +20,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
-        <Route path="/" element={<WeeklyView startDate={new Date()} />} />
+        <Route path="/" element={<WeeklyView />} />
         <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/enter-code" element={<EnterCode />} />
