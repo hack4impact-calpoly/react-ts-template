@@ -38,6 +38,7 @@ const ConfirmButton = styled(Link)`
   align-self: flex-end;
   cursor: pointer;
   margin-top: 5%;
+  margin-left: 70%;
 `;
 const ButtonText = styled.text`
   font-weight: bold;
