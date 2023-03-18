@@ -7,6 +7,18 @@ const Wrapper = styled.div`
   font-family: "Rubik", sans-serif;
   padding: 1rem;
 `;
+
+const CalDiv = styled.div`
+  font-family: "Rubik", sans-serif;
+  padding: 1rem;
+  width: 80%;
+  .fc-right .fc-prev-button,
+  .fc-right .fc-next-button {
+    background-color: #b1d583;
+    background-image: none;
+  }
+`;
+
 export interface TimeSlotsData {
   startTime: Date;
   endTime: Date;
@@ -129,15 +141,20 @@ export default function WeeklyView() {
   */
 
   return (
-    <FullCalendar
-      plugins={[timeGridPlugin]}
-      initialView="timeGridWeek"
-      events={tmpTimes}
-      allDaySlot={false}
-      displayEventEnd
-      displayEventTime
-      dayHeaderFormat={{ weekday: "short", day: "numeric" }}
-    />
+    <CalDiv>
+      <FullCalendar
+        plugins={[timeGridPlugin]}
+        initialView="timeGridWeek"
+        events={tmpTimes}
+        allDaySlot={false}
+        slotMinTime="8:00:00"
+        slotMaxTime="18:00:00"
+        expandRows={true}
+        displayEventEnd
+        displayEventTime
+        dayHeaderFormat={{ weekday: "short", day: "numeric" }}
+      />
+    </CalDiv>
     /*
   
     <Wrapper>
