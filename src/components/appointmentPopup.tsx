@@ -1,15 +1,8 @@
 import React, { useState } from "react";
-import "reactjs-popup/dist/index.css";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Box } from "./styledComponents";
+import { Box, Wrapper } from "./styledComponents";
 import AppointmentInfo from "./appointmentInfo";
-
-const Button = styled.button`
-  background: palevioletred;
-  border-radius: 3px;
-  border: none;
-  color: white;
-`;
 
 const Header = styled.h1`
   font-family: "Roboto";
@@ -20,6 +13,41 @@ const Header = styled.h1`
   background: white;
   color: #1b4c5a;
 `;
+const ButtonPop = styled.button`
+  background: #1b4c5a;
+  border: solid 0.5px #6c6b6b;
+  color: white;
+  height: 2.8rem;
+  margin-top: 2rem;
+  font-weight: bold;
+  width: 15%;
+  align-self: center;
+  cursor: pointer;
+`;
+const ConfirmButton = styled(Link)`
+  background-color: #1b4c5a;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  /* display: inline-block; */
+  height: 1rem;
+  width: 5rem;
+  display: flex;
+  justify-content: space-around;
+  align-self: flex-end;
+  cursor: pointer;
+  margin-top: 5%;
+  margin-left: 70%;
+`;
+const ButtonText = styled.text`
+  font-weight: bold;
+`;
+
+const SurroundingBox = styled(Box)`
+  display: flex;
+  justify-content: center;
+`;
 
 export default function AppointmentPopup() {
   const [popupShown, setPopupShown] = useState(false);
@@ -27,14 +55,17 @@ export default function AppointmentPopup() {
     setPopupShown(!popupShown);
   };
   return (
-    <div>
-      <Button type="button" onClick={togglePopup}>
+    <Wrapper>
+      <ButtonPop type="button" onClick={togglePopup}>
         Click Me
-      </Button>
-      <Box style={{ display: popupShown ? "block" : "none" }}>
+      </ButtonPop>
+      <SurroundingBox style={{ display: popupShown ? "block" : "none" }}>
         <Header>Appointment Info</Header>
         <AppointmentInfo />
-      </Box>
-    </div>
+        <ConfirmButton type="button" to="/time-slot-confirmation">
+          <ButtonText>Book</ButtonText>
+        </ConfirmButton>
+      </SurroundingBox>
+    </Wrapper>
   );
 }

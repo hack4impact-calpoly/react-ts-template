@@ -9,17 +9,18 @@ import CreateAccount from "./components/createAccount";
 import EnterCode from "./components/enterCode";
 import Login from "./components/login";
 import ForgotPassword from "./components/forgotPassword";
+import TimeSlot from "./components/timeslot";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobileCalendar";
 import MobileTimeslots from "./components/mobileTimeslots";
 import TimeslotSuccess from "./components/timeslotSuccess";
+import TimeSlotConfirmation from "./components/timeslotConfirmation";
 
 Amplify.configure(awsconfig);
 
 function App() {
   const [email, setEmailProp] = useState<string>();
   const [isMobile, setIsMobile] = useState<boolean>(false);
-
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.outerWidth <= 500);
@@ -49,11 +50,16 @@ function App() {
           element={<ResetPassword email={email!} />}
         />
         <Route path="/success/:id" element={<Success />} />
+        <Route path="/timeslot" element={<TimeSlot />} />
         <Route
           path="/mobile-timeslots"
           element={<MobileTimeslots userType="volunteer" />}
         />
         <Route path="/timeslot-success" element={<TimeslotSuccess />} />
+        <Route
+          path="/timeslot-confirmation"
+          element={<TimeSlotConfirmation userType="volunteer" status="book" />}
+        />
       </Routes>
     </BrowserRouter>
   );
