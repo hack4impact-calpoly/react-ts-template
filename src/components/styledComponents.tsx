@@ -50,7 +50,10 @@ const Header = styled.text`
     line-height: 28px;
   }
 `;
-
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 const CenteredHeader = styled.text`
   cursor: text;
   margin: 1.5rem 0rem;
@@ -204,4 +207,5 @@ export {
   Question,
   TextLink,
   ErrorMessage,
+  Row,
 };
