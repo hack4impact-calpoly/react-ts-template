@@ -12,8 +12,8 @@ const StyledModal = styled(Modal)`
   align-items: center;
 `;
 const StyledBox = styled.div`
-  width: 66rem;
-  height: 48rem;
+  width: 70rem;
+  height: 871px;
   background: #ffffff;
   border: none;
 `;
