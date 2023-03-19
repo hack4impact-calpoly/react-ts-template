@@ -13,6 +13,7 @@ import TimeSlot from "./components/timeslot";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobileCalendar";
 import MobileTimeslots from "./components/mobileTimeslots";
+import TimeslotSuccess from "./components/timeslotSuccess";
 import TimeSlotConfirmation from "./components/timeslotConfirmation";
 
 Amplify.configure(awsconfig);
@@ -54,8 +55,9 @@ function App() {
           path="/mobile-timeslots"
           element={<MobileTimeslots userType="volunteer" />}
         />
+        <Route path="/timeslot-success" element={<TimeslotSuccess />} />
         <Route
-          path="/time-slot-confirmation"
+          path="/timeslot-confirmation"
           element={<TimeSlotConfirmation userType="volunteer" status="book" />}
         />
       </Routes>
