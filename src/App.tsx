@@ -59,7 +59,6 @@ function App() {
           path="/time-slot-confirmation"
           element={<TimeSlotConfirmation userType="volunteer" status="book" />}
         />
-        <Route path="/t" element={<AppointmentPopup />} />
       </Routes>
     </BrowserRouter>
   );
