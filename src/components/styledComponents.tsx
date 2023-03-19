@@ -139,23 +139,16 @@ const Label = styled.text`
 `;
 
 const PasswordContainer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
   width: 100%;
-  position: relative;
 `;
 
 const EyeSlash = styled.image`
   cursor: pointer;
   position: absolute;
-  right: 2px;
-  top: 7px;
-  bottom: 3px;
-  margin: 0;
-  padding: 0 10px;
-  @media (max-width: 500px) {
-    width: 5px;
-    right: 25px;
-    top: 2px;
-  }
+  align-self: center;
+  padding-right: 5px;
 `;
 
 const Question = styled.text`

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import eyeSlash from "../images/eyeSlash.svg";
+import eye from "../images/eye.svg";
 import backArrow from "../images/backArrow.png";
 import {
   Wrapper,
@@ -29,18 +30,29 @@ export default function ResetPassword({ email }: EmailProps) {
   const [input, setInput] = useState({
     password: "",
     confirmPassword: "",
-    showPassword: false,
-    showPassword2: false,
+    // showPassword: false,
+    // showPassword2: false,
     code: "",
   });
+  // const [showPassword, setShowPassword] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false);
+  // Password toggle handler
+  const togglePassword = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown(!passwordShown);
+  };
+  const [passwordShown1, setPasswordShown1] = useState(false);
+  // Password toggle handler
+  const togglePassword1 = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown1(!passwordShown1);
+  };
+
+  // helper function for validating the input
   const [errorReal, setErrorReal] = useState("");
 
-  const handleClickShowPassword = () => {
-    setInput({ ...input, showPassword: !input.showPassword });
-  };
-  const handleClickShowPassword2 = () => {
-    setInput({ ...input, showPassword2: !input.showPassword2 });
-  };
   const onInputChange = (e: { target: any }) => {
     const { name, value } = e.target;
     setInput((prev) => ({
@@ -118,7 +130,7 @@ export default function ResetPassword({ email }: EmailProps) {
         <Label>New Password</Label>
         <PasswordContainer>
           <Input
-            type={input.showPassword ? "text" : "password"}
+            type={passwordShown ? "text" : "password"}
             name="password"
             placeholder="Enter Password"
             value={input.password}
@@ -126,22 +138,30 @@ export default function ResetPassword({ email }: EmailProps) {
             required
           />
           {/* changes the truth value of show password */}
-          <EyeSlash onClick={handleClickShowPassword}>
-            <img src={eyeSlash} alt="didn't work" />
+          <EyeSlash onClick={togglePassword}>
+            {passwordShown ? (
+              <img src={eye} alt="did work" />
+            ) : (
+              <img src={eyeSlash} alt="didn't work" />
+            )}
           </EyeSlash>
         </PasswordContainer>
         <Label>Confirm New Password</Label>
         <PasswordContainer>
           <Input
-            type={input.showPassword2 ? "text" : "password"}
+            type={passwordShown1 ? "text" : "password"}
             name="confirmPassword"
             placeholder="Confirm Password"
             value={input.confirmPassword}
             onChange={onInputChange}
             required
           />
-          <EyeSlash onClick={handleClickShowPassword2}>
-            <img src={eyeSlash} alt="didn't work" />
+          <EyeSlash onClick={togglePassword1}>
+            {passwordShown1 ? (
+              <img src={eye} alt="did work" />
+            ) : (
+              <img src={eyeSlash} alt="didn't work" />
+            )}
           </EyeSlash>
         </PasswordContainer>
         <Button onClick={handleClick}>Submit</Button>
