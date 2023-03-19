@@ -1,7 +1,7 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useState } from "react";
 import styled from "styled-components";
 import chevronLeft from "../images/chevronLeft.svg";
-import plusCircle from "../images/plusCircle.svg";
 
 const Wrapper = styled.div`
   font-family: "Rubik", sans-serif;
@@ -45,14 +45,12 @@ const ChevronRight = styled.img`
   display: block;
   transform: scaleX(-1);
 `;
-const PlusCircle = styled.img`
-  display: flex;
-  align-self: end;
-`;
 const WeekDates = styled.table`
   @media (max-width: 500px) {
     width: 100%;
     padding-top: 5%;
+    font-weight: lighter;
+    color: #6c6b6b;
     td {
       display: flex;
       flex-direction: column;
@@ -67,6 +65,7 @@ const Header1 = styled.text`
     align-self: left;
     font-size: 140%;
     padding-bottom: 8%;
+    color: #1b4c5a;
   }
 `;
 
@@ -77,6 +76,7 @@ const Month = styled.text`
   @media (max-width: 500px) {
     font-size: 140%;
     align-self: center;
+    color: #1b4c5a;
   }
 `;
 
@@ -107,7 +107,6 @@ export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
   return (
     <Wrapper>
       <Head>
-        <PlusCircle src={plusCircle} />
         <Header1>Schedule</Header1>
         <WeeklySwitch>
           <Arrow type="button" onClick={handlePrevWeek}>

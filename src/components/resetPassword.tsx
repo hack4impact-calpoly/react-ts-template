@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
@@ -18,7 +19,12 @@ import {
   ErrorMessage,
 } from "./styledComponents";
 
-export default function ResetPassword(this: any) {
+// email prop that is set in forgot password page
+type EmailProps = {
+  email: string;
+};
+
+export default function ResetPassword({ email }: EmailProps) {
   const navigate = useNavigate();
   // useState variables
   const [input, setInput] = useState({
@@ -43,102 +49,59 @@ export default function ResetPassword(this: any) {
     // inverse the boolean state of passwordShown
     setPasswordShown1(!passwordShown1);
   };
-  const [error, setError] = useState({
-    password: "",
-    confirmPassword: "",
-  });
-  // handling the show password icons
-  // const handleClickShowPassword = () => {
-  //   // get rid of this later too
-  //   const username = "igloo405@gmail.com";
-  //   // get rid of this later this should be in enter code
-  //   // Send confirmation code to user's email
-  //   Auth.forgotPassword(username)
-  //     // eslint-disable-next-line no-console
-  //     .then((data) => console.log(data))
-  //     // eslint-disable-next-line no-console
-  //     .catch((err) => console.log(err));
-  //   setInput({ ...input, showPassword: !input.showPassword });
-  // };
-  // const handleClickShowPassword2 = () => {
-  //   setInput({ ...input, showPassword2: !input.showPassword2 });
-  // };
-  // checking whether passwords match and if they meet requirements (only requirement so far is <5char)
-  const validateInput = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
 
-    setError((prev) => {
-      const stateObj = { ...prev, [name]: "" };
-
-      switch (name) {
-        case "password":
-          if (input.confirmPassword && value !== input.confirmPassword) {
-            stateObj.confirmPassword = "Passwords do not match.";
-          } else {
-            stateObj.confirmPassword = input.confirmPassword
-              ? ""
-              : error.confirmPassword;
-          }
-          break;
-        case "confirmPassword":
-          if (!value) {
-            stateObj.confirmPassword = "Please confirm password.";
-          } else if (input.password && value !== input.password) {
-            stateObj.confirmPassword = "Passwords do not match.";
-          } else if (
-            input.password &&
-            value === input.password &&
-            input.password.length < 8
-          ) {
-            stateObj.confirmPassword = "must be more than 8 characters";
-          }
-
-          break;
-        default:
-          break;
-      }
-
-      return stateObj;
-    });
-  };
   // helper function for validating the input
+  const [errorReal, setErrorReal] = useState("");
+
   const onInputChange = (e: { target: any }) => {
     const { name, value } = e.target;
-
     setInput((prev) => ({
       ...prev,
       [name]: value,
     }));
-    validateInput(e);
   };
 
   // changes windows to different pages
-  const handleClick = () => {
-    const username = "igloo405@gmail.com";
-    // const code = "094d9e8b-7a16-410d-869a-dc4ffec62829";
-    if (
-      input.confirmPassword === input.password &&
-      input.password.length > 8 &&
-      input.code.length > 0
-    ) {
+  const handleClick = async () => {
+    // console.log(email);
+    setErrorReal("");
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // checking if password reaches requirements when user hits submit
+    if (!passwordRegex.test(input.password)) {
+      setErrorReal(
+        "Password needs at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character"
+      );
+      return;
+    }
+    // checking if the passwords match
+    if (input.confirmPassword !== input.password) {
+      setErrorReal("Passwords do not match");
+    }
+    // checking if password matches and code is filled out
+    if (input.confirmPassword === input.password && input.code.length > 0) {
       // Collect confirmation code and new password, then
-      Auth.forgotPasswordSubmit(username, input.code, input.password)
+      // try to send request and catch any errors or if no errors nav to success page
+      try {
+        await Auth.forgotPasswordSubmit(email, input.code, input.password)
+          // eslint-disable-next-line no-console
+          .then((data) => console.log(data));
+        navigate("/success/reset", { replace: true });
+      } catch (errore) {
         // eslint-disable-next-line no-console
-        .then((data) => console.log(data))
-        // eslint-disable-next-line no-console
-        .catch((err) => console.log(err));
-
-      // DELETE THESE CONSOLE STATEMENTS LATER
-      // eslint-disable-next-line no-console
-      console.log("nice");
-      // eslint-disable-next-line no-console
-      console.log(input.code);
-
-      navigate("/success/reset");
+        console.log("error signing up:", errore);
+        // setting the error message to be displayed on frontend if there is an error message
+        if (errore instanceof Error) {
+          setErrorReal(errore.message);
+        } else {
+          setErrorReal(String(errore));
+          navigate("/success/reset", { replace: true });
+        }
+      }
     }
   };
   const handleBackClick = () => {
-    navigate("/enter-code");
+    navigate("/login");
   };
 
   return (
@@ -150,6 +113,8 @@ export default function ResetPassword(this: any) {
         <Description>
           Your new password must be different from previous used passwords
         </Description>
+        {/* displays error message when input doesn't meet requirements */}
+        {errorReal && <ErrorMessage>{errorReal}</ErrorMessage>}
         <Label>Verification Code</Label>
         <Input
           type="text"
@@ -170,7 +135,6 @@ export default function ResetPassword(this: any) {
             placeholder="Enter Password"
             value={input.password}
             onChange={onInputChange}
-            onBlur={validateInput}
             required
           />
           {/* changes the truth value of show password */}
@@ -182,7 +146,6 @@ export default function ResetPassword(this: any) {
             )}
           </EyeSlash>
         </PasswordContainer>
-        {error.password && <ErrorMessage>{error.password}</ErrorMessage>}
         <Label>Confirm New Password</Label>
         <PasswordContainer>
           <Input
@@ -191,7 +154,6 @@ export default function ResetPassword(this: any) {
             placeholder="Confirm Password"
             value={input.confirmPassword}
             onChange={onInputChange}
-            onBlur={validateInput}
             required
           />
           <EyeSlash onClick={togglePassword1}>
@@ -202,10 +164,6 @@ export default function ResetPassword(this: any) {
             )}
           </EyeSlash>
         </PasswordContainer>
-        {/* displays error message when input doesn't meet requirements */}
-        {error.confirmPassword && (
-          <ErrorMessage>{error.confirmPassword}</ErrorMessage>
-        )}
         <Button onClick={handleClick}>Submit</Button>
       </Box>
     </Wrapper>
