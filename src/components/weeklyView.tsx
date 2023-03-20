@@ -10,12 +10,16 @@ const Wrapper = styled.div`
 
 const CalDiv = styled.div`
   font-family: "Rubik", sans-serif;
-  padding: 1rem;
   width: 80%;
-  .fc-right .fc-prev-button,
-  .fc-right .fc-next-button {
+  right,
+  prev-button,
+  next-button {
     background-color: #b1d583;
     background-image: none;
+  }
+  td {
+    text-align: center;
+    font-weight: bold;
   }
 `;
 
