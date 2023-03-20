@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
+// fake props
+import { bookings } from "./booking";
 
 const Wrapper = styled.div`
   font-family: "Rubik", sans-serif;
@@ -23,89 +25,11 @@ const CalDiv = styled.div`
   }
 `;
 
-export interface TimeSlotsData {
-  startTime: Date;
-  endTime: Date;
-  unavailableDates: Date[];
-  volunteerBookings: String[];
-  riderBookings: String[];
-}
-/*
-const tmpTimes = [
-  {
-    startTime: new Date("March 5, 2023 09:00:00"),
-    endTime: new Date("March 5, 2023 09:30:00"),
-    unavailableDates: [],
-    volunteerBookings: [],
-    riderBookings: [],
-    topOfHour: true,
-  },
-  {
-    startTime: new Date("March 6, 2023 12:20:00"),
-    endTime: new Date("March 6, 2023 12:50:00"),
-    unavailableDates: [],
-    volunteerBookings: [],
-    riderBookings: [],
-  },
-  {
-    startTime: new Date("March 7, 2023 11:10:00"),
-    endTime: new Date("March 7, 2023 11:40:00"),
-    unavailableDates: [],
-    volunteerBookings: [],
-    riderBookings: [],
-  },
-  {
-    startTime: new Date("March 8, 2023 4:30:00"),
-    endTime: new Date("March 8, 2023 5:00:00"),
-    unavailableDates: [],
-    volunteerBookings: [],
-    riderBookings: [],
-  },
-  {
-    startTime: new Date("March 11, 2023 10:00:00"),
-    endTime: new Date("March 11, 2023 10:30:00"),
-    unavailableDates: [],
-    volunteerBookings: [],
-    riderBookings: [],
-  },
-];
-*/
-
-const tmpTimes = [
-  {
-    start: new Date("March 5, 2023 09:00:00").toISOString(),
-    end: new Date("March 5, 2023 09:30:00").toISOString(),
-    backgroundColor: "#90BFCC",
-    textColor: "black",
-  },
-  {
-    start: new Date("March 6, 2023 12:20:00"),
-    end: new Date("March 6, 2023 12:50:00"),
-    backgroundColor: "#90BFCC",
-    textColor: "black",
-  },
-  {
-    start: new Date("March 7, 2023 11:10:00"),
-    end: new Date("March 7, 2023 11:40:00"),
-    backgroundColor: "#90BFCC",
-    textColor: "black",
-  },
-  {
-    start: new Date("March 8, 2023 4:30:00"),
-    end: new Date("March 8, 2023 5:00:00"),
-    backgroundColor: "#90BFCC",
-    textColor: "black",
-  },
-  {
-    start: new Date("March 11, 2023 10:00:00"),
-    end: new Date("March 11, 2023 10:30:00"),
-    backgroundColor: "#90BFCC",
-    textColor: "black",
-  },
-];
-
 export interface WeeklyViewProps {
-  startDate: Date;
+  start: Date;
+  end: Date;
+  backgroundColor: "#90BFCC";
+  textColor: "black";
 }
 
 export default function WeeklyView() {
@@ -144,12 +68,23 @@ export default function WeeklyView() {
   };
   */
 
+  const [calTimeslots, setCalTimeslots] = useState(bookings);
+
+  const updatedSlots = calTimeslots.map((timeslot) => {
+    return {
+      start: timeslot.startTime,
+      end: timeslot.endTime,
+      backgroundColor: "#90BFCC",
+      textColor: "black",
+    };
+  });
+
   return (
     <CalDiv>
       <FullCalendar
         plugins={[timeGridPlugin]}
         initialView="timeGridWeek"
-        events={tmpTimes}
+        events={updatedSlots}
         allDaySlot={false}
         slotMinTime="8:00:00"
         slotMaxTime="18:00:00"
