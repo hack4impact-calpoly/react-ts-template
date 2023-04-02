@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import caretDown from "../images/CaretDown.png";
+import caretDown from "../../images/CaretDown.png";
 import MobileTimeslotContent from "./mobileTimeslotContent";
 
 const Caret = styled.img`

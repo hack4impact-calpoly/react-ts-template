@@ -2,7 +2,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import arrow from "../images/backArrow.png";
+import arrow from "../../images/backArrow.png";
 import {
   Wrapper,
   Box,
@@ -13,7 +13,7 @@ import {
   Input,
   Label,
   ErrorMessage,
-} from "./styledComponents";
+} from "../styledComponents";
 
 // setEmail prop that is set in a form in this page
 type ForgotPasswordProps = {
