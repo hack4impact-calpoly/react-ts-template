@@ -3,7 +3,7 @@ import Monthly from "./monthlyView";
 import Weekly from "./weeklyView";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./adminToggle";
-import Popup from "./popup/timeslotPopup";
+import Popup from "./timeslotPopup";
 
 const StyledMonthly = styled.div`
   padding: 6% 6% 8% 0;

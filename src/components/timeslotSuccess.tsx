@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../../images/horseRider.svg";
+import logo from "../images/horseRider.svg";
 import {
   Wrapper,
   Box,
   Button,
   CenteredDescription,
   CenteredHeader,
-} from "../styledComponents";
+} from "./styledComponents";
 
 const Logo = styled.img`
   width: 2.5em;

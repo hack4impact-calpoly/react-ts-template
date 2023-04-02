@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Modal } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import x from "../../images/X.svg";
+import x from "../images/X.svg";
 
 const StyledModal = styled(Modal)`
   padding-left: 14px;

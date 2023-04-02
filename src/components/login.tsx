@@ -2,9 +2,9 @@ import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import logoPic from "../../images/PETlogo.jpg";
-import eyeSlash from "../../images/eyeSlash.svg";
-import eye from "../../images/eye.svg";
+import logoPic from "../images/PETlogo.jpg";
+import eyeSlash from "../images/eyeSlash.svg";
+import eye from "../images/eye.svg";
 import {
   Wrapper,
   Box,
@@ -16,7 +16,7 @@ import {
   Question,
   TextLink,
   ErrorMessage,
-} from "../styledComponents";
+} from "./styledComponents";
 
 const Logo = styled.img`
   display: flex;
