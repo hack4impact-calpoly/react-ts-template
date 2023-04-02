@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Box, Description } from "./styledComponents";
+import { Box, Description } from "../styledComponents";
 import timeslots from "./timeslots";
-import Checked from "../images/Checked.png";
-import Unchecked from "../images/Unchecked.png";
-import On from "../images/onslider.png";
-import Off from "../images/offslider.png";
+import Checked from "../../images/Checked.png";
+import Unchecked from "../../images/Unchecked.png";
+import On from "../../images/onslider.png";
+import Off from "../../images/offslider.png";
 
 const Wrapper = styled.section`
   display: flex;
