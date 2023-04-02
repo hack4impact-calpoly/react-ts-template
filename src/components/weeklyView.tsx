@@ -67,17 +67,15 @@ export default function WeeklyView() {
     );
   };
   */
-
+  // eslint-disable-next-line
   const [calTimeslots, setCalTimeslots] = useState(bookings);
 
-  const updatedSlots = calTimeslots.map((timeslot) => {
-    return {
-      start: timeslot.startTime,
-      end: timeslot.endTime,
-      backgroundColor: "#90BFCC",
-      textColor: "black",
-    };
-  });
+  const updatedSlots = calTimeslots.map((timeslot) => ({
+    start: timeslot.startTime,
+    end: timeslot.endTime,
+    backgroundColor: "#90BFCC",
+    textColor: "black",
+  }));
 
   return (
     <CalDiv>
@@ -88,7 +86,7 @@ export default function WeeklyView() {
         allDaySlot={false}
         slotMinTime="8:00:00"
         slotMaxTime="18:00:00"
-        expandRows={true}
+        expandRows
         displayEventEnd
         displayEventTime
         dayHeaderFormat={{ weekday: "short", day: "numeric" }}
