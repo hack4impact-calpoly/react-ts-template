@@ -37,7 +37,7 @@ export default function Calendar() {
           </StyledMonthly>
           <Toggle />
         </LeftColumn>
-        <Weekly startDate={new Date()} />
+        <Weekly />
       </Wrapper>
       <Popup />
     </div>
