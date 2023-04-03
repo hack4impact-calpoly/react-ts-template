@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Box, Wrapper } from "./styledComponents";
-import AppointmentInfo from "./appointmentInfo";
+import { Box, Wrapper } from "../styledComponents";
+import AppointmentInfo from "../appointmentInfo";
 
 const Header = styled.h1`
   font-family: "Roboto";
