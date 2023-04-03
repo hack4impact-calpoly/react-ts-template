@@ -1,8 +1,8 @@
 // import React, { ChangeEvent, useState } from "react";
 import React from "react";
 import styled from "styled-components";
-import warning from "../images/warning.svg";
-import ExitX from "../images/exitx.png";
+import warning from "../../images/warning.svg";
+import ExitX from "../../images/exitx.png";
 
 import {
   Wrapper,
@@ -19,7 +19,7 @@ import {
   // Question,
   // TextLink,
   // ErrorMessage,
-} from "./styledComponents";
+} from "../styledComponents";
 
 export type TimeSlotProps = {
   userType: String;
