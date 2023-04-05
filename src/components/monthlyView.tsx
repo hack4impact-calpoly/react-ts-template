@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import styled from "styled-components";
-import "react-calendar/dist/Calendar.css";
 
 const CalendarContainer = styled.div`
   .react-calendar {
@@ -111,32 +110,8 @@ const CalendarContainer = styled.div`
     background-color: #e6e6e6;
   }
   .react-calendar__tile--now {
-    border: 2px solid #04b2d9;
-  }
-  .react-calendar__tile--now:enabled:hover,
-  .react-calendar__tile--now:enabled:focus {
     background: white;
-    border: 2px solid #04b2d9;
-  }
-  .react-calendar__tile--hasActive {
-    background: #76baff;
-  }
-  .react-calendar__tile--hasActive:enabled:hover,
-  .react-calendar__tile--hasActive:enabled:focus {
-    background: #a9d4ff;
-  }
-  .react-calendar__tile--active {
-    background: white;
-    border: 2px solid #04b2d9;
-  }
-  .react-calendar__tile--active:enabled:hover,
-  .react-calendar__tile--active:enabled:focus {
-    background: white;
-    border: 2px solid #04b2d9;
-  }
-  .react-calendar--selectRange .react-calendar__tile--hover {
-    background: white;
-    border: 2px solid #04b2d9;
+    box-shadow: 0px 0px 0px 1px #04b2d9 inset;
   }
   .react-calendar__month-view__weekdays__weekday abbr {
     text-decoration: none;
@@ -165,6 +140,7 @@ export default function MonthlyView() {
         defaultView="month"
         tileDisabled={tileDisabled}
         view="month"
+        calendarType="US"
       />
     </CalendarContainer>
   );
