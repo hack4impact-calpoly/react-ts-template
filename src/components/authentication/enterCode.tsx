@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import lock from "../images/lock.svg";
-import arrow from "../images/backArrow.png";
+import lock from "../../images/lock.svg";
+import arrow from "../../images/backArrow.png";
 import {
   Wrapper,
   Box,
@@ -13,7 +13,7 @@ import {
   Description,
   ErrorMessage,
   CenteredHeader,
-} from "./styledComponents";
+} from "../styledComponents";
 
 const Lock = styled.img`
   color: #011338;

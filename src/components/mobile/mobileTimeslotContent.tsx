@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import "@fontsource/roboto";
 import { useState } from "react";
-import Horse from "../images/horseRider.svg";
-import Dude from "../images/dude.png";
-import Bookmark from "../images/bookmark.png";
-import OnSlide from "../images/onslider.png";
-import OffSlide from "../images/offslider.png";
+import Horse from "../../images/horseRider.svg";
+import Dude from "../../images/dude.png";
+import Bookmark from "../../images/bookmark.png";
+import OnSlide from "../../images/onslider.png";
+import OffSlide from "../../images/offslider.png";
 
 const RiderInfo = styled.div`
   display: flex;

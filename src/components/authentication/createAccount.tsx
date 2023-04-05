@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import styled from "styled-components";
-import eyeSlash from "../images/eyeSlash.svg";
-import eye from "../images/eye.svg";
-import backArrow from "../images/backArrow.png";
+import eyeSlash from "../../images/eyeSlash.svg";
+import eye from "../../images/eye.svg";
+import backArrow from "../../images/backArrow.png";
 import {
   Box,
   BackArrow,
@@ -18,7 +18,7 @@ import {
   TextLink,
   ErrorMessage,
   Wrapper,
-} from "./styledComponents";
+} from "../styledComponents";
 
 const Select = styled.select`
   box-sizing: border-box;
