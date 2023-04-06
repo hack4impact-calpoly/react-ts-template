@@ -21,6 +21,7 @@ const LeftColumn = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   padding: 0 50px 0 50px;
+  gap: 40px;
 `;
 const RightColumn = styled.div`
   padding-right: 50px;

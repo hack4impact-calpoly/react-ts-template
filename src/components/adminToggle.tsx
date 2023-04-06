@@ -10,6 +10,7 @@ const CheckBox = styled.div`
   border: 2px solid #1b4c5a;
   width: 43px;
   height: 43px;
+  cursor: pointer;
 `;
 const Check = styled.div`
   border-radius: 4px;
@@ -24,6 +25,7 @@ const NotCheck = styled.div`
   background-color: white;
   height: 21px;
   width: 21px;
+  cursor: pointer;
 `;
 
 const Row = styled.div`
