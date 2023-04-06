@@ -9,7 +9,7 @@ import CreateAccount from "./components/authentication/createAccount";
 import EnterCode from "./components/authentication/enterCode";
 import Login from "./components/authentication/login";
 import ForgotPassword from "./components/authentication/forgotPassword";
-import TimeSlot from "./components/popup/timeslot";
+import Timeslots from "./components/popup/timeslots";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobile/mobileCalendar";
 import MobileTimeslots from "./components/mobile/mobileTimeslots";
@@ -50,15 +50,15 @@ function App() {
           element={<ResetPassword email={email!} />}
         />
         <Route path="/success/:id" element={<Success />} />
-        <Route path="/timeslot" element={<TimeSlot />} />
+        <Route path="/timeslots" element={<Timeslots userType="rider" />} />
         <Route
           path="/mobile-timeslots"
-          element={<MobileTimeslots userType="volunteer" />}
+          element={<MobileTimeslots userType="rider" />}
         />
         <Route path="/timeslot-success" element={<TimeslotSuccess />} />
         <Route
           path="/timeslot-confirmation"
-          element={<TimeSlotConfirmation userType="volunteer" status="book" />}
+          element={<TimeSlotConfirmation userType="rider" status="book" />}
         />
       </Routes>
     </BrowserRouter>

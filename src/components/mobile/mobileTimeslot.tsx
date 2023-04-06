@@ -1,11 +1,24 @@
 import { useState } from "react";
 import styled from "styled-components";
-import caretDown from "../../images/CaretDown.png";
+import caretDown from "../../images/CaretDown.svg";
 import MobileTimeslotContent from "./mobileTimeslotContent";
 
-const Caret = styled.img`
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CaretDown = styled.img`
   margin-left: 10%;
   cursor: pointer;
+`;
+
+const CaretUp = styled.img`
+  margin-left: 10%;
+  cursor: pointer;
+  transform: scaleY(-1);
 `;
 
 const Text = styled.text`
@@ -23,7 +36,7 @@ const Slot = styled.section`
   font-family: "Rubik", sans-serif;
   align-items: center;
   justify-content: center;
-  margin: 4%;
+  margin-bottom: 20px;
   box-sizing: border-box;
   background: rgba(144, 191, 204, 0.7);
   border: 1px solid #c4c4c4;
@@ -34,17 +47,21 @@ const Slot = styled.section`
 
 const Dropdown = styled.section`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 `;
 
 interface TimeslotProps {
+  userType: "volunteer" | "rider" | "admin";
   startTime: Date;
   endTime: Date;
 }
 
-export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
+export default function MobileTimeslot({
+  userType,
+  startTime,
+  endTime,
+}: TimeslotProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [user] = useState<string>();
   const [bookings] = useState<number>();
 
   const toggleDropdown = () => {
@@ -58,16 +75,20 @@ export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
     });
 
   return (
-    <div>
+    <Wrapper>
       <Slot>
         <Text>{`${formatTime(startTime)} to ${formatTime(endTime)}`}</Text>
-        <Caret src={caretDown} onClick={toggleDropdown} />
+        {isDropdownOpen ? (
+          <CaretUp src={caretDown} onClick={toggleDropdown} />
+        ) : (
+          <CaretDown src={caretDown} onClick={toggleDropdown} />
+        )}
       </Slot>
       <Dropdown>
         {isDropdownOpen && (
-          <MobileTimeslotContent user={user!} bookings={bookings!} />
+          <MobileTimeslotContent user={userType!} bookings={bookings!} />
         )}
       </Dropdown>
-    </div>
+    </Wrapper>
   );
 }

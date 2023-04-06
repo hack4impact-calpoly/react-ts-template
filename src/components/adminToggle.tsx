@@ -1,72 +1,59 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Wrapper, Box, Label, Description } from "./styledComponents";
 import "@fontsource/roboto";
 
-const Encompasing = styled(Wrapper)`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const CheckBox = styled.div`
-  border-radius: 5px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 2px #1b4c5a;
-  width: 2rem;
-  height: 2rem;
+  border: 2px solid #1b4c5a;
+  width: 43px;
+  height: 43px;
+  cursor: pointer;
 `;
 const Check = styled.div`
-  border-radius: 5px;
+  border-radius: 4px;
   border: solid 0.5px #c4c4c4;
   background-color: #1b4c5a;
-  height: 1.3rem;
-  width: 1.3rem;
+  height: 21px;
+  width: 21px;
 `;
 
 const NotCheck = styled.div`
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: white;
-  height: 1.3rem;
-  width: 1.3rem;
+  height: 21px;
+  width: 21px;
+  cursor: pointer;
 `;
 
 const Row = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 3%;
+  align-items: center;
+  padding-bottom: 10px;
 `;
 
-const ViewingBox = styled(Box)`
-  border: 0;
-  box-shadow: none;
-  padding: 0;
-  width: 100%;
-`;
-
-const ViewingText = styled(Label)`
-  padding-bottom: 10%;
-  font-size: 130%;
+const ViewingText = styled.p`
+  font-size: 20px;
   font-family: "Roboto";
+  font-weight: 700;
+  padding-bottom: 10px;
 `;
 
-const ViewingDescription = styled(Description)`
+const ViewingDescription = styled.p`
   font-family: "Roboto";
-  padding-left: 3%;
-  font-size: 100%;
-  padding-top: 4%;
-`;
-
-const ShowTimes = styled.div`
-  font-family: "Roboto";
+  font-size: 16px;
+  font-weight: 700;
+  padding-left: 20px;
 `;
 
 export default function AdminToggle() {
   // Initialize a boolean state
   const [showVolunteers, setShowVolunteers] = useState(false);
   const [showRiders, setShowRiders] = useState(false);
-  const [showBoth, setShowBoth] = useState(false);
+  const [showBoth, setShowBoth] = useState(true);
   // Password toggle handler
   const toggleVolunteer = () => {
     // When the handler is invoked
@@ -91,32 +78,26 @@ export default function AdminToggle() {
   };
 
   return (
-    <Encompasing>
-      <ViewingBox>
-        {(showVolunteers || showBoth) && (
-          <ShowTimes>show volunteer times</ShowTimes>
-        )}
-        {(showRiders || showBoth) && <ShowTimes>show rider times</ShowTimes>}
-        <ViewingText>Viewing:</ViewingText>
-        <Row>
-          <CheckBox onClick={toggleBoth}>
-            {showBoth ? <Check /> : <NotCheck />}
-          </CheckBox>
-          <ViewingDescription>Both</ViewingDescription>
-        </Row>
-        <Row>
-          <CheckBox onClick={toggleVolunteer}>
-            {showVolunteers ? <Check /> : <NotCheck />}
-          </CheckBox>
-          <ViewingDescription>Volunteer only</ViewingDescription>
-        </Row>
-        <Row>
-          <CheckBox onClick={toggleRider}>
-            {showRiders ? <Check /> : <NotCheck />}
-          </CheckBox>
-          <ViewingDescription>Rider only</ViewingDescription>
-        </Row>
-      </ViewingBox>
-    </Encompasing>
+    <div>
+      <ViewingText>Viewing:</ViewingText>
+      <Row>
+        <CheckBox onClick={toggleBoth}>
+          {showBoth ? <Check /> : <NotCheck />}
+        </CheckBox>
+        <ViewingDescription>Both</ViewingDescription>
+      </Row>
+      <Row>
+        <CheckBox onClick={toggleVolunteer}>
+          {showVolunteers ? <Check /> : <NotCheck />}
+        </CheckBox>
+        <ViewingDescription>Volunteer only</ViewingDescription>
+      </Row>
+      <Row>
+        <CheckBox onClick={toggleRider}>
+          {showRiders ? <Check /> : <NotCheck />}
+        </CheckBox>
+        <ViewingDescription>Rider only</ViewingDescription>
+      </Row>
+    </div>
   );
 }
