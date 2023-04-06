@@ -2,7 +2,7 @@ import styled from "styled-components";
 import "@fontsource/roboto";
 import { useState } from "react";
 import Horse from "../../images/horseRider.svg";
-import Dude from "../../images/dude.png";
+import Dude from "../../images/person.svg";
 import Bookmark from "../../images/bookmark.png";
 import OnSlide from "../../images/onslider.png";
 import OffSlide from "../../images/offslider.png";
@@ -21,16 +21,13 @@ const RiderInfo = styled.div`
 `;
 
 const LogoRider = styled.img`
-  width: 7%;
-  position: absolute;
+  width: 30px;
 `;
 const LogoDude = styled.img`
-  width: 5.5%;
-  position: absolute;
+  width: 30px;
 `;
 const LogoBookmark = styled.img`
-  width: 6%;
-  position: absolute;
+  width: 30px;
 `;
 
 // height 380px so that it stays that height (right now height changes based on rendering of components)
@@ -39,7 +36,7 @@ const BoxMobile = styled.div`
   display: flex;
   font-family: "Rubik", sans-serif;
   background: white;
-  width: 85%;
+  // width: 85%;
 `;
 const HeaderMobile = styled.h1`
   color: #1b4c5a;
@@ -56,17 +53,18 @@ const WrapperMobile = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-bottom: 10px;
 `;
 const BoxMobileContent = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 3%;
-  margin-left: 4%;
+  margin: 4%;
+  width: 310px;
 `;
 const RiderContent = styled.text`
   flex-direction: row;
   width: 100%;
-  margin-left: 15%;
+  margin-left: 10px;
   font-size: 16px;
   font-weight: 700;
 `;
@@ -136,7 +134,7 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
   // console.log("onOff", onOff);
   return (
     <WrapperMobile>
-      <BoxMobile style={{ display: "block" }}>
+      <BoxMobile>
         <BoxMobileContent>
           <HeaderMobile>Appointment Info</HeaderMobile>
           <RiderInfo
@@ -145,7 +143,7 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
                 (user === "admin" && onOff === true) ||
                 user === "rider" ||
                 user === "volunteer"
-                  ? "block"
+                  ? "flex"
                   : "none",
             }}
           >
@@ -158,19 +156,19 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
               display:
                 user === "rider" || (user === "admin" && onOff === false)
                   ? "none"
-                  : "block",
+                  : "flex",
             }}
           >
             <LogoDude src={Dude} />{" "}
             <RiderContent>Volunteers: Jane Doe, John Smith</RiderContent>
           </RiderInfo>
           {booked === false ? (
-            <RiderInfo style={{ display: user === "admin" ? "none" : "block" }}>
+            <RiderInfo style={{ display: user === "admin" ? "none" : "flex" }}>
               <LogoBookmark src={Bookmark} />{" "}
               <RiderContent>Status: Booked</RiderContent>
             </RiderInfo>
           ) : (
-            <RiderInfo style={{ display: user === "admin" ? "none" : "block" }}>
+            <RiderInfo style={{ display: user === "admin" ? "none" : "flex" }}>
               <LogoBookmark src={Bookmark} />{" "}
               <RiderContent>Status: Unbooked</RiderContent>
             </RiderInfo>
@@ -184,7 +182,7 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
                 display:
                   user === "admin" || (user === "rider" && bookings === 1)
                     ? "none"
-                    : "block",
+                    : "flex",
               }}
               onClick={handleClick}
             >
@@ -196,7 +194,7 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
                 display:
                   user === "admin" || (user === "rider" && bookings === 1)
                     ? "none"
-                    : "block",
+                    : "flex",
               }}
               onClick={handleClick}
             >
@@ -205,13 +203,13 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
           )}
           {onOff === true ? (
             <OnOffSlide
-              style={{ display: user === "admin" ? "block" : "none" }}
+              style={{ display: user === "admin" ? "flex" : "none" }}
               onClick={handleSlide}
               src={OnSlide}
             />
           ) : (
             <OnOffSlide
-              style={{ display: user === "admin" ? "block" : "none" }}
+              style={{ display: user === "admin" ? "flex" : "none" }}
               onClick={handleSlide}
               src={OffSlide}
             />

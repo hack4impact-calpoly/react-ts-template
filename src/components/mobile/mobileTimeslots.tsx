@@ -2,13 +2,10 @@ import styled from "styled-components";
 import MobileTimeslot from "./mobileTimeslot";
 
 const Slots = styled.section`
-  overflowy: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 5%;
-  margin-left: 0%;
 `;
 
 interface TimeslotsProps {
