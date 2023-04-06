@@ -5,9 +5,6 @@ import logo from "../images/PETlogo2.svg";
 import Toggle from "./adminToggle";
 import Popup from "./popup/timeslotPopup";
 
-const StyledMonthly = styled.div`
-  padding: 6% 6% 8% 0;
-`;
 const Logo = styled.img`
   position: absolute;
   right: 2%;
@@ -16,14 +13,18 @@ const Logo = styled.img`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 8% 0 0 8%;
+  padding-top: 130px;
 `;
 const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 0 2% 0 0;
+  padding: 0 50px 0 50px;
+`;
+const RightColumn = styled.div`
+  padding-right: 50px;
+  width: 100%;
 `;
 
 export default function Calendar() {
@@ -32,12 +33,12 @@ export default function Calendar() {
       <Logo src={logo} />
       <Wrapper>
         <LeftColumn>
-          <StyledMonthly>
-            <Monthly />
-          </StyledMonthly>
+          <Monthly />
           <Toggle />
         </LeftColumn>
-        <Weekly />
+        <RightColumn>
+          <Weekly />
+        </RightColumn>
       </Wrapper>
       <Popup />
     </div>
