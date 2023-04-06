@@ -67,7 +67,7 @@ const Slot = styled(Box)`
 `;
 
 interface TimeslotProps {
-  userType: "volunteer" | "rider";
+  userType: "volunteer" | "rider" | "admin";
   startTime: Date;
   endTime: Date;
 }

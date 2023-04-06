@@ -53,12 +53,12 @@ function App() {
         <Route path="/timeslots" element={<Timeslots userType="rider" />} />
         <Route
           path="/mobile-timeslots"
-          element={<MobileTimeslots userType="volunteer" />}
+          element={<MobileTimeslots userType="rider" />}
         />
         <Route path="/timeslot-success" element={<TimeslotSuccess />} />
         <Route
           path="/timeslot-confirmation"
-          element={<TimeSlotConfirmation userType="volunteer" status="book" />}
+          element={<TimeSlotConfirmation userType="rider" status="book" />}
         />
       </Routes>
     </BrowserRouter>

@@ -51,13 +51,17 @@ const Dropdown = styled.section`
 `;
 
 interface TimeslotProps {
+  userType: "volunteer" | "rider" | "admin";
   startTime: Date;
   endTime: Date;
 }
 
-export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
+export default function MobileTimeslot({
+  userType,
+  startTime,
+  endTime,
+}: TimeslotProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [user] = useState<string>();
   const [bookings] = useState<number>();
 
   const toggleDropdown = () => {
@@ -82,7 +86,7 @@ export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
       </Slot>
       <Dropdown>
         {isDropdownOpen && (
-          <MobileTimeslotContent user={user!} bookings={bookings!} />
+          <MobileTimeslotContent user={userType!} bookings={bookings!} />
         )}
       </Dropdown>
     </Wrapper>

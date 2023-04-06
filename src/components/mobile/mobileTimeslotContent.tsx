@@ -3,7 +3,7 @@ import "@fontsource/roboto";
 import { useState } from "react";
 import Horse from "../../images/horseRider.svg";
 import Dude from "../../images/person.svg";
-import Bookmark from "../../images/bookmark.png";
+import Bookmark from "../../images/bookmark.svg";
 import OnSlide from "../../images/onslider.png";
 import OffSlide from "../../images/offslider.png";
 
@@ -16,7 +16,7 @@ const RiderInfo = styled.div`
   line-height: 19px;
   color: black;
   background: white;
-  margin-bottom: 15%;
+  margin-bottom: 25px;
   margin-left: 2%;
 `;
 
@@ -68,6 +68,12 @@ const RiderContent = styled.text`
   font-size: 16px;
   font-weight: 700;
 `;
+
+const TimeslotButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
 const TimeslotButton = styled.button`
   color: #1b4c5a;
   border: none;
@@ -75,7 +81,6 @@ const TimeslotButton = styled.button`
   font-weight: 700;
   font-size: 14px;
   line-height: 16px;
-  margin-left: 45%;
   margin-bottom: 5%;
   cursor: pointer;
 `;
@@ -125,7 +130,7 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
 
   // HARD CODED
   // eslint-disable-next-line no-param-reassign
-  user = "admin";
+  // user = "admin";
   // eslint-disable-next-line no-console
   // console.log(user);
   // eslint-disable-next-line no-console
@@ -177,29 +182,33 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
               because I am only making the appt pop up. Will probably have to add more functionality
               when implementing the pop up in the calendar */}
           {booked === true ? (
-            <TimeslotButton
-              style={{
-                display:
-                  user === "admin" || (user === "rider" && bookings === 1)
-                    ? "none"
-                    : "flex",
-              }}
-              onClick={handleClick}
-            >
-              Book time slot
-            </TimeslotButton>
+            <TimeslotButtonWrapper>
+              <TimeslotButton
+                style={{
+                  display:
+                    user === "admin" || (user === "rider" && bookings === 1)
+                      ? "none"
+                      : "flex",
+                }}
+                onClick={handleClick}
+              >
+                Book time slot
+              </TimeslotButton>
+            </TimeslotButtonWrapper>
           ) : (
-            <TimeslotButton
-              style={{
-                display:
-                  user === "admin" || (user === "rider" && bookings === 1)
-                    ? "none"
-                    : "flex",
-              }}
-              onClick={handleClick}
-            >
-              Cancel time slot
-            </TimeslotButton>
+            <TimeslotButtonWrapper>
+              <TimeslotButton
+                style={{
+                  display:
+                    user === "admin" || (user === "rider" && bookings === 1)
+                      ? "none"
+                      : "flex",
+                }}
+                onClick={handleClick}
+              >
+                Cancel time slot
+              </TimeslotButton>
+            </TimeslotButtonWrapper>
           )}
           {onOff === true ? (
             <OnOffSlide

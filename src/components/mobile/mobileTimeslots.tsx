@@ -9,7 +9,7 @@ const Slots = styled.section`
 `;
 
 interface TimeslotsProps {
-  userType: "volunteer" | "rider";
+  userType: "volunteer" | "rider" | "admin";
 }
 
 const timeslots = [
@@ -61,12 +61,15 @@ export default function MobileTimeslots({ userType }: TimeslotsProps) {
       (timeslot) =>
         timeslot.startTime.getHours() >= 10 && timeslot.endTime.getHours() <= 14
     );
+  } else {
+    filteredTimeslots = timeslots;
   }
 
   return (
     <Slots>
       {filteredTimeslots.map((timeslot) => (
         <MobileTimeslot
+          userType={userType}
           startTime={timeslot.startTime}
           endTime={timeslot.endTime}
         />
