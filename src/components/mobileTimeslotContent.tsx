@@ -16,21 +16,21 @@ const RiderInfo = styled.div`
   line-height: 19px;
   color: black;
   background: white;
-  margin-bottom: 15%;
+  margin-bottom: 10%;
   margin-left: 2%;
 `;
 
 const LogoRider = styled.img`
-  width: 7%;
-  position: absolute;
+  width: 10%;
+  position: flex;
 `;
 const LogoDude = styled.img`
-  width: 5.5%;
-  position: absolute;
+  width: 7%;
+  position: flex;
 `;
 const LogoBookmark = styled.img`
-  width: 6%;
-  position: absolute;
+  width: 8%;
+  position: flex;
 `;
 
 // height 380px so that it stays that height (right now height changes based on rendering of components)
@@ -39,7 +39,8 @@ const BoxMobile = styled.div`
   display: flex;
   font-family: "Rubik", sans-serif;
   background: white;
-  width: 85%;
+  width: 80%;
+  margin-left: -12%;
 `;
 const HeaderMobile = styled.h1`
   color: #1b4c5a;
@@ -64,9 +65,9 @@ const BoxMobileContent = styled.div`
   margin-left: 4%;
 `;
 const RiderContent = styled.text`
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
-  margin-left: 15%;
+  margin-left: 6%;
   font-size: 16px;
   font-weight: 700;
 `;
@@ -86,6 +87,9 @@ const OnOffSlide = styled.img`
   width: 20%;
   margin-left: 75%;
   margin-top: 20%;
+`;
+const RiderContentDiv = styled.div`
+  display: inline-block;
 `;
 type UserType = {
   user: string;
@@ -127,7 +131,7 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
 
   // HARD CODED
   // eslint-disable-next-line no-param-reassign
-  user = "admin";
+  // user = "admin";
   // eslint-disable-next-line no-console
   // console.log(user);
   // eslint-disable-next-line no-console
@@ -150,7 +154,9 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
             }}
           >
             <LogoRider src={Horse} />{" "}
-            <RiderContent> Riders: Jane Doe, John Smith</RiderContent>
+            <RiderContentDiv>
+              <RiderContent> Riders: Jane Doe, John Smith</RiderContent>
+            </RiderContentDiv>
           </RiderInfo>
 
           <RiderInfo
@@ -162,7 +168,9 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
             }}
           >
             <LogoDude src={Dude} />{" "}
-            <RiderContent>Volunteers: Jane Doe, John Smith</RiderContent>
+            <RiderContentDiv>
+              <RiderContent>Volunteers: Jane Doe, John Smith</RiderContent>
+            </RiderContentDiv>
           </RiderInfo>
           {booked === false ? (
             <RiderInfo style={{ display: user === "admin" ? "none" : "block" }}>

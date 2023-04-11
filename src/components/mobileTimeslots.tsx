@@ -1,18 +1,20 @@
 import styled from "styled-components";
 import MobileTimeslot from "./mobileTimeslot";
 
+// added height and margin-top and changed overflowy to overflow-y
 const Slots = styled.section`
-  overflowy: scroll;
-  display: flex;
+  overflow-y: auto;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 5%;
-  margin-left: 0%;
+  padding: 7%;
+  margin-top: 10%;
+  width: 100%;
+  height: 400px;
 `;
 
 interface TimeslotsProps {
-  userType: "volunteer" | "rider";
+  userType: string;
 }
 
 const timeslots = [
@@ -64,6 +66,9 @@ export default function MobileTimeslots({ userType }: TimeslotsProps) {
       (timeslot) =>
         timeslot.startTime.getHours() >= 10 && timeslot.endTime.getHours() <= 14
     );
+  } else if (userType === "admin") {
+    // show's all time slots for admin
+    filteredTimeslots = timeslots;
   }
 
   return (
@@ -72,6 +77,7 @@ export default function MobileTimeslots({ userType }: TimeslotsProps) {
         <MobileTimeslot
           startTime={timeslot.startTime}
           endTime={timeslot.endTime}
+          user={userType}
         />
       ))}
     </Slots>

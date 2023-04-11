@@ -17,6 +17,7 @@ const Text = styled.text`
   color: #000000;
 `;
 
+// width was 310px
 const Slot = styled.section`
   display: flex;
   flex-direction: row;
@@ -28,7 +29,7 @@ const Slot = styled.section`
   background: rgba(144, 191, 204, 0.7);
   border: 1px solid #c4c4c4;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 310px;
+  width: 80%;
   height: 53px;
 `;
 
@@ -40,11 +41,16 @@ const Dropdown = styled.section`
 interface TimeslotProps {
   startTime: Date;
   endTime: Date;
+  user: string;
 }
 
-export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
+export default function MobileTimeslot({
+  startTime,
+  endTime,
+  user,
+}: TimeslotProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [user] = useState<string>();
+  // const [user] = useState<string>();
   const [bookings] = useState<number>();
 
   const toggleDropdown = () => {
@@ -65,7 +71,7 @@ export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
       </Slot>
       <Dropdown>
         {isDropdownOpen && (
-          <MobileTimeslotContent user={user!} bookings={bookings!} />
+          <MobileTimeslotContent user={user} bookings={bookings!} />
         )}
       </Dropdown>
     </div>

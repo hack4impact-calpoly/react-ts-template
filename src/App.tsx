@@ -27,14 +27,16 @@ function App() {
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
+  // added additional attributes to the calendarmobile component for props
   return (
     <BrowserRouter>
       <Routes>
         {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
         <Route
           path="/"
-          element={isMobile ? <CalendarMobile /> : <Calendar />}
+          element={
+            isMobile ? <CalendarMobile user="" bookings={0} /> : <Calendar />
+          }
         />
         <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<CreateAccount />} />
