@@ -34,16 +34,9 @@ function ArrayField({
   defaultFieldValue,
   lengthLimit,
   getBadgeText,
-  errorMessage,
 }) {
   const labelElement = <Text>{label}</Text>;
-  const {
-    tokens: {
-      components: {
-        fieldmessages: { error: errorStyles },
-      },
-    },
-  } = useTheme();
+  const { tokens } = useTheme();
   const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
   const [isEditing, setIsEditing] = React.useState();
   React.useEffect(() => {
@@ -146,11 +139,6 @@ function ArrayField({
           >
             Add item
           </Button>
-          {errorMessage && hasError && (
-            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
-              {errorMessage}
-            </Text>
-          )}
         </>
       ) : (
         <Flex justifyContent="flex-end">
@@ -169,6 +157,7 @@ function ArrayField({
           <Button
             size="small"
             variation="link"
+            color={tokens.colors.brand.primary[80]}
             isDisabled={hasError}
             onClick={addItem}
           >
@@ -242,10 +231,9 @@ export default function TimeslotCreateForm(props) {
     currentValue,
     getDisplayValue
   ) => {
-    const value =
-      currentValue && getDisplayValue
-        ? getDisplayValue(currentValue)
-        : currentValue;
+    const value = getDisplayValue
+      ? getDisplayValue(currentValue)
+      : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -317,7 +305,7 @@ export default function TimeslotCreateForm(props) {
         label="Start time"
         isRequired={false}
         isReadOnly={false}
-        type="date"
+        type="time"
         value={startTime}
         onChange={(e) => {
           let { value } = e.target;
@@ -346,7 +334,7 @@ export default function TimeslotCreateForm(props) {
         label="End time"
         isRequired={false}
         isReadOnly={false}
-        type="date"
+        type="time"
         value={endTime}
         onChange={(e) => {
           let { value } = e.target;
@@ -391,8 +379,7 @@ export default function TimeslotCreateForm(props) {
         currentFieldValue={currentUnavailableDatesValue}
         label={"Unavailable dates"}
         items={unavailableDates}
-        hasError={errors?.unavailableDates?.hasError}
-        errorMessage={errors?.unavailableDates?.errorMessage}
+        hasError={errors.unavailableDates?.hasError}
         setFieldValue={setCurrentUnavailableDatesValue}
         inputFieldRef={unavailableDatesRef}
         defaultFieldValue={""}
@@ -440,8 +427,7 @@ export default function TimeslotCreateForm(props) {
         currentFieldValue={currentVolunteerBookingsValue}
         label={"Volunteer bookings"}
         items={volunteerBookings}
-        hasError={errors?.volunteerBookings?.hasError}
-        errorMessage={errors?.volunteerBookings?.errorMessage}
+        hasError={errors.volunteerBookings?.hasError}
         setFieldValue={setCurrentVolunteerBookingsValue}
         inputFieldRef={volunteerBookingsRef}
         defaultFieldValue={""}
@@ -491,8 +477,7 @@ export default function TimeslotCreateForm(props) {
         currentFieldValue={currentRiderBookingsValue}
         label={"Rider bookings"}
         items={riderBookings}
-        hasError={errors?.riderBookings?.hasError}
-        errorMessage={errors?.riderBookings?.errorMessage}
+        hasError={errors.riderBookings?.hasError}
         setFieldValue={setCurrentRiderBookingsValue}
         inputFieldRef={riderBookingsRef}
         defaultFieldValue={""}

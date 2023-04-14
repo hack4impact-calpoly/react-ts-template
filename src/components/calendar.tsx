@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { useEffect } from "react";
+import { DataStore } from "@aws-amplify/datastore";
+import { Timeslot } from "../models";
 import Monthly from "./monthlyView";
 import Weekly from "./weeklyView";
 import logo from "../images/PETlogo2.svg";
@@ -29,6 +32,16 @@ const RightColumn = styled.div`
 `;
 
 export default function Calendar() {
+  useEffect(() => {
+    const pullData = async () => {
+      const models = await DataStore.query(Timeslot);
+      console.log(models);
+      console.log(new Date("July 4 1776 14:30"));
+    };
+
+    pullData();
+  }, []);
+
   return (
     <div>
       <Logo src={logo} />
