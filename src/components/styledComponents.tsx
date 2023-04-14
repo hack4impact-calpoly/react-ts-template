@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Modal } from "@mui/material";
 import "@fontsource/rubik";
 import "@fontsource/roboto";
 
@@ -191,6 +192,26 @@ const ErrorMessage = styled.text`
   margin-bottom: 10px;
 `;
 
+const PopupDiv = styled(Modal)`
+  padding-left: 14px;
+  padding-right: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const PopupBox = styled.div`
+  width: 70rem;
+  height: 871px;
+  background: #ffffff;
+  border: none;
+`;
+const X = styled.img`
+  width: 2rem;
+  height: 2rem;
+  padding: 2rem;
+  cursor: pointer;
+`;
+
 export {
   Wrapper,
   Box,
@@ -208,4 +229,7 @@ export {
   TextLink,
   ErrorMessage,
   Row,
+  PopupDiv,
+  PopupBox,
+  X,
 };
