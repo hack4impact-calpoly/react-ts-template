@@ -4,10 +4,7 @@ import styled from "styled-components";
 import MobileTimeslots from "./mobileTimeslots";
 import MobileWeeklyView from "./mobileWeeklyView";
 import { Dropdown, Option } from "./Dropdown";
-// import caretDown from "../images/CaretDown.png";
 
-// padding-top: 23%;
-// display: flex;
 const CurrentDate = styled.text`
   font-family: "Rubik";
   font-style: normal;
@@ -20,6 +17,7 @@ const CurrentDate = styled.text`
   margin-top: 20%;
 `;
 
+// props used in mobileweeklyview as well
 type UserType = {
   user: string;
   bookings: number;
@@ -30,11 +28,6 @@ type UserType = {
   weekday: string;
   setWeekdayProp: (val: string) => void;
 };
-// setEmail prop that is set in a form in this page
-// type SelectedDayProp = {
-//   day: number;
-//   setDayProp: (val: number) => void;
-// };
 
 export default function CalendarMobile({
   user,
@@ -46,30 +39,21 @@ export default function CalendarMobile({
   weekday,
   setWeekdayProp,
 }: UserType) {
-  const currentTime = new Date();
-  // const currentDay = currentTime.getDay();
-  // const [selected, setSelected] = useState(currentDay);
+  // these values are hardcoded for conditional rendering of showing different slots
   // eslint-disable-next-line no-param-reassign
   user = "volunteer"; // hardcoded for now
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   bookings = 1;
-  console.log(`the day is ${day}`);
-  console.log(`the actual date is ${currentTime.getDate()}`);
-  // const numSub = currentTime.getDay() - day;
-  // converting this to the format in Day, Month Day(num)
-  // const currentTimeString: string[] = currentTime
-  //   .toDateString()
-  //   .split(" ")
-  //   .slice(0, 2); // replace 2 with 3
-  // currentTimeString.splice(1, 0, ", ");
-  // currentTimeString.splice(3, 0, " ");
+
+  // this is to create the current selected date string
   const currentTimeString: string[] = [];
   currentTimeString.push(weekday);
   currentTimeString.push(", ");
   currentTimeString.push(month);
   currentTimeString.push(" ");
   currentTimeString.push(day);
-  // currentTimeString.push((currentTime.getDate() - numSub).toString());
+
+  // this is for the toggle dropdown
   const [optionValue, setOptionValue] = useState("");
   const handleSelect = (e: {
     target: { value: React.SetStateAction<string> };
@@ -81,18 +65,17 @@ export default function CalendarMobile({
 
   return (
     <div>
-      {/* i think i need to pass in the day prop to mobile weekly view */}
+      {/* renders the calendar  */}
       <MobileWeeklyView
         startDate={new Date()}
         setDayProp={setDayProp}
         setMonthProp={setMonthProp}
         setWeekdayProp={setWeekdayProp}
       />
-
+      {/* creates the current selected date */}
       <CurrentDate>{currentTimeString}</CurrentDate>
-      {/* <AvailabilityDiv> */}
+      {/* this is for the toggle dropdown with different options on different user types */}
       <Dropdown onChange={handleSelect}>
-        {/* <OptionDiv> */}
         <Option selected value={user === "admin" ? "Both" : "Availability"} />
         <Option
           value={user !== "admin" ? "My Slots" : "Riders"}
@@ -105,6 +88,7 @@ export default function CalendarMobile({
           <div>0</div>
         )}
       </Dropdown>
+      {/* the timeslots will change depending on the usertype */}
       <MobileTimeslots userType={user} />
     </div>
   );

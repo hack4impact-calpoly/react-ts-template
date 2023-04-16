@@ -81,15 +81,13 @@ const Month = styled.text`
   }
 `;
 
+// setter props for setting the currently selected date to pass into mobile calendar + start date
 interface WeeklyViewMobileProps {
   startDate: Date;
   setDayProp: (val: string) => void;
   setMonthProp: (val: string) => void;
   setWeekdayProp: (val: string) => void;
 }
-// type SelectedDayProp = {
-//   setDayProp: (val: Number) => void;
-// };
 
 export default function WeeklyViewMobile({
   startDate,
@@ -115,39 +113,21 @@ export default function WeeklyViewMobile({
     const diff = day.getDate() - day.getDay() + (day.getDay() === -1 ? -7 : 0);
     return new Date(day.setDate(diff));
   }
+  // for getting todays day
   const currentTime = new Date();
   const currentDay = currentTime.getDay();
-  // need to send the month to the mobileCalendar page
+  // selected date will start on todays date
+  const [selected, setSelected] = useState(currentDay);
+
+  // getting the currently selected month to set
   const month = getStartOfWeek(currentDate).toLocaleDateString("en-us", {
     month: "long",
   });
   setMonthProp(month);
-  const dayz = getStartOfWeek(currentDate).toLocaleDateString("en-us", {
-    day: "numeric",
-  });
 
-  // const day = getStartOfWeek(currentDate).toLocaleDateString("en-us"), {
-  //   day: "numeric",
-  // });
-  console.log(dayz);
-  console.log(month);
-  console.log(currentDay);
-
-  const [selected, setSelected] = useState(currentDay);
-  // setDayProp(selected);
-
-  // IAN LOOK AT THIS SHIT RN BRUh
-  // this stuff is good to access the accurate information to pass into mobileCalendar
-  // basically these all need to become props to pass into the mobileCalendar
-  console.log(
-    `dada: ${days[selected].toLocaleDateString("en-us", { day: "numeric" })}`
-  );
+  // setting the currently selected day in number
   setDayProp(days[selected].toLocaleDateString("en-us", { day: "numeric" }));
-  console.log(
-    `dadaV2: ${days[selected].toLocaleDateString("en-us", {
-      weekday: "short",
-    })}`
-  );
+  // setting the currently selected day of the week
   setWeekdayProp(
     days[selected].toLocaleDateString("en-us", {
       weekday: "short",
@@ -186,6 +166,7 @@ export default function WeeklyViewMobile({
           <tr>
             {days.map((day, i) => (
               <th
+                // right now the styling is messing up the other days near the currently selected one but the functionality works
                 // eslint-disable-next-line react/no-array-index-key
                 key={i}
                 style={{
