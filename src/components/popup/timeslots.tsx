@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Box } from "../styledComponents";
 import Timeslot from "./timeslot";
+import { LazyTimeslot } from "../../models";
 
 const Wrapper = styled.section`
   display: flex;
@@ -26,7 +27,7 @@ const Slots = styled(Box)`
   height: 100%;
 `;
 
-const timeslots = [
+let timeslots = [
   {
     startTime: new Date(2023, 2, 7, 9, 0),
     endTime: new Date(2023, 2, 7, 10, 30),
@@ -71,9 +72,27 @@ const timeslots = [
 
 interface TimeslotsProps {
   userType: "volunteer" | "rider";
+  models: LazyTimeslot[] | "nothing";
 }
 
-export default function Timeslots({ userType }: TimeslotsProps) {
+export default function Timeslots({ userType, models }: TimeslotsProps) {
+  console.log(models);
+  if (models !== "nothing") {
+    timeslots = [];
+    models.forEach((model) => {
+      if (
+        typeof model.startTime === "string" &&
+        typeof model.endTime === "string"
+      ) {
+        timeslots.push({
+          startTime: new Date(`July 4 1776 ${model.startTime}`),
+          endTime: new Date(`July 4 1776 ${model.endTime}`),
+          checked: false,
+        });
+      }
+    });
+    console.log(timeslots);
+  }
   function filterTimeSlots(
     isVolunteers: boolean,
     ts: {
@@ -93,6 +112,7 @@ export default function Timeslots({ userType }: TimeslotsProps) {
       <Slots>
         {timeslots
           .filter((ts) => filterTimeSlots(userType === "volunteer", ts))
+          .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))
           .map((timeslot) => (
             <Timeslot
               userType={userType}

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import MobileTimeslot from "./mobileTimeslot";
+import { LazyTimeslot } from "../../models";
 
 const Slots = styled.section`
   display: flex;
@@ -10,9 +11,10 @@ const Slots = styled.section`
 
 interface TimeslotsProps {
   userType: "volunteer" | "rider" | "admin";
+  models: LazyTimeslot[] | "nothing";
 }
 
-const timeslots = [
+let timeslots = [
   {
     startTime: new Date(2023, 2, 7, 9, 0),
     endTime: new Date(2023, 2, 7, 10, 0),
@@ -47,8 +49,22 @@ const timeslots = [
   },
 ];
 
-export default function MobileTimeslots({ userType }: TimeslotsProps) {
+export default function MobileTimeslots({ userType, models }: TimeslotsProps) {
   let filteredTimeslots: { startTime: Date; endTime: Date }[] = [];
+  if (models !== "nothing") {
+    timeslots = [];
+    models.forEach((model) => {
+      if (
+        typeof model.startTime === "string" &&
+        typeof model.endTime === "string"
+      ) {
+        timeslots.push({
+          startTime: new Date(`July 4 1776 ${model.startTime}`),
+          endTime: new Date(`July 4 1776 ${model.endTime}`),
+        });
+      }
+    });
+  }
   if (userType === "volunteer") {
     // Filter timeslots between 9 AM and 5 PM for volunteers
     filteredTimeslots = timeslots.filter(
@@ -67,13 +83,15 @@ export default function MobileTimeslots({ userType }: TimeslotsProps) {
 
   return (
     <Slots>
-      {filteredTimeslots.map((timeslot) => (
-        <MobileTimeslot
-          userType={userType}
-          startTime={timeslot.startTime}
-          endTime={timeslot.endTime}
-        />
-      ))}
+      {filteredTimeslots
+        .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))
+        .map((timeslot) => (
+          <MobileTimeslot
+            userType={userType}
+            startTime={timeslot.startTime}
+            endTime={timeslot.endTime}
+          />
+        ))}
     </Slots>
   );
 }

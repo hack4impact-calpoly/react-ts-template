@@ -17,15 +17,11 @@ export declare type TimeslotUpdateFormInputValues = {
     startTime?: string;
     endTime?: string;
     unavailableDates?: string[];
-    volunteerBookings?: string[];
-    riderBookings?: string[];
 };
 export declare type TimeslotUpdateFormValidationValues = {
     startTime?: ValidationFunction<string>;
     endTime?: ValidationFunction<string>;
     unavailableDates?: ValidationFunction<string>;
-    volunteerBookings?: ValidationFunction<string>;
-    riderBookings?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TimeslotUpdateFormOverridesProps = {
@@ -33,8 +29,6 @@ export declare type TimeslotUpdateFormOverridesProps = {
     startTime?: PrimitiveOverrideProps<TextFieldProps>;
     endTime?: PrimitiveOverrideProps<TextFieldProps>;
     unavailableDates?: PrimitiveOverrideProps<TextFieldProps>;
-    volunteerBookings?: PrimitiveOverrideProps<TextFieldProps>;
-    riderBookings?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type TimeslotUpdateFormProps = React.PropsWithChildren<{
     overrides?: TimeslotUpdateFormOverridesProps | undefined | null;
