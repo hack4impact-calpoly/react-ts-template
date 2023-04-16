@@ -5,7 +5,7 @@ import { Timeslot } from "../models";
 import Monthly from "./monthlyView";
 import Weekly from "./weeklyView";
 import logo from "../images/PETlogo2.svg";
-import Toggle from "./adminToggle";
+import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
 
 const Logo = styled.img`
