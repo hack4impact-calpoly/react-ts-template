@@ -58,6 +58,7 @@ const WeekDates = styled.table`
     }
   }
 `;
+
 const Header1 = styled.text`
   display: none;
   @media (max-width: 500px) {
@@ -82,9 +83,16 @@ const Month = styled.text`
 
 interface WeeklyViewMobileProps {
   startDate: Date;
+  setDayProp: (val: number) => void;
 }
+// type SelectedDayProp = {
+//   setDayProp: (val: Number) => void;
+// };
 
-export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
+export default function WeeklyViewMobile({
+  startDate,
+  setDayProp,
+}: WeeklyViewMobileProps) {
   const [currentDate, setCurrentDate] = useState(startDate);
   const days: Date[] = [];
   for (let i = 0; i < 7; i++) {
@@ -103,6 +111,12 @@ export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
     const diff = day.getDate() - day.getDay() + (day.getDay() === -1 ? -7 : 0);
     return new Date(day.setDate(diff));
   }
+  const currentTime = new Date();
+  const currentDay = currentTime.getDay();
+
+  console.log(currentDay);
+  const [selected, setSelected] = useState(currentDay);
+  setDayProp(selected);
 
   return (
     <Wrapper>
@@ -134,8 +148,18 @@ export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
             ))}
           </tr>
           <tr>
-            {days.map((day) => (
-              <th key={day.toDateString()}>
+            {days.map((day, i) => (
+              <th
+                // eslint-disable-next-line react/no-array-index-key
+                key={i}
+                style={{
+                  borderRadius: i === selected ? "100%" : "initial",
+                  width: i === selected ? "22px" : "initial",
+                  height: i === selected ? "22px" : "initial",
+                  background: i === selected ? "#e0eff1" : "initial",
+                }}
+                onClick={() => setSelected(i)}
+              >
                 {day.toLocaleDateString("en-us", { day: "numeric" })}
               </th>
             ))}

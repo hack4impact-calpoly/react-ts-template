@@ -18,7 +18,11 @@ Amplify.configure(awsconfig);
 function App() {
   const [email, setEmailProp] = useState<string>();
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  // maybe i use this prop to pass into calendar mobile so that
+  // mobile weekly view page will change it onclick which in turn
+  // will change the current date
 
+  const [day, setDayProp] = useState<number>();
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.outerWidth <= 500);
@@ -35,7 +39,16 @@ function App() {
         <Route
           path="/"
           element={
-            isMobile ? <CalendarMobile user="" bookings={0} /> : <Calendar />
+            isMobile ? (
+              <CalendarMobile
+                user=""
+                bookings={0}
+                day={day!}
+                setDayProp={setDayProp}
+              />
+            ) : (
+              <Calendar />
+            )
           }
         />
         <Route path="/login" element={<Login />} />

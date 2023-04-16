@@ -23,26 +23,39 @@ const CurrentDate = styled.text`
 type UserType = {
   user: string;
   bookings: number;
+  day: number;
+  setDayProp: (val: number) => void;
 };
+// setEmail prop that is set in a form in this page
+// type SelectedDayProp = {
+//   day: number;
+//   setDayProp: (val: number) => void;
+// };
 
-// const AvailText = styled.div``;
-// figure out how to get the date to show up above the slots.
-// work on functionality for clicking a date so it shows up.
-// maybe connect the props from MobileTimeslots and MobileTimeslotContent
-export default function CalendarMobile({ user, bookings }: UserType) {
+export default function CalendarMobile({
+  user,
+  bookings,
+  day,
+  setDayProp,
+}: UserType) {
   const currentTime = new Date();
+  // const currentDay = currentTime.getDay();
+  // const [selected, setSelected] = useState(currentDay);
   // eslint-disable-next-line no-param-reassign
   user = "volunteer"; // hardcoded for now
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   bookings = 1;
-
+  console.log(`the day is ${day}`);
+  console.log(`the actual date is ${currentTime.getDate()}`);
+  const numSub = currentTime.getDay() - day;
   // converting this to the format in Day, Month Day(num)
   const currentTimeString: string[] = currentTime
     .toDateString()
     .split(" ")
-    .slice(0, 3);
+    .slice(0, 2); // replace 2 with 3
   currentTimeString.splice(1, 0, ", ");
   currentTimeString.splice(3, 0, " ");
+  currentTimeString.push((currentTime.getDate() - numSub).toString());
   const [optionValue, setOptionValue] = useState("");
   const handleSelect = (e: {
     target: { value: React.SetStateAction<string> };
@@ -54,7 +67,8 @@ export default function CalendarMobile({ user, bookings }: UserType) {
 
   return (
     <div>
-      <MobileWeeklyView startDate={new Date()} />
+      {/* i think i need to pass in the day prop to mobile weekly view */}
+      <MobileWeeklyView startDate={new Date()} setDayProp={setDayProp} />
 
       <CurrentDate>{currentTimeString}</CurrentDate>
       {/* <AvailabilityDiv> */}
