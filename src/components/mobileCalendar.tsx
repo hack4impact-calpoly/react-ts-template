@@ -23,8 +23,12 @@ const CurrentDate = styled.text`
 type UserType = {
   user: string;
   bookings: number;
-  day: number;
-  setDayProp: (val: number) => void;
+  day: string;
+  setDayProp: (val: string) => void;
+  month: string;
+  setMonthProp: (val: string) => void;
+  weekday: string;
+  setWeekdayProp: (val: string) => void;
 };
 // setEmail prop that is set in a form in this page
 // type SelectedDayProp = {
@@ -37,6 +41,10 @@ export default function CalendarMobile({
   bookings,
   day,
   setDayProp,
+  month,
+  setMonthProp,
+  weekday,
+  setWeekdayProp,
 }: UserType) {
   const currentTime = new Date();
   // const currentDay = currentTime.getDay();
@@ -47,15 +55,21 @@ export default function CalendarMobile({
   bookings = 1;
   console.log(`the day is ${day}`);
   console.log(`the actual date is ${currentTime.getDate()}`);
-  const numSub = currentTime.getDay() - day;
+  // const numSub = currentTime.getDay() - day;
   // converting this to the format in Day, Month Day(num)
-  const currentTimeString: string[] = currentTime
-    .toDateString()
-    .split(" ")
-    .slice(0, 2); // replace 2 with 3
-  currentTimeString.splice(1, 0, ", ");
-  currentTimeString.splice(3, 0, " ");
-  currentTimeString.push((currentTime.getDate() - numSub).toString());
+  // const currentTimeString: string[] = currentTime
+  //   .toDateString()
+  //   .split(" ")
+  //   .slice(0, 2); // replace 2 with 3
+  // currentTimeString.splice(1, 0, ", ");
+  // currentTimeString.splice(3, 0, " ");
+  const currentTimeString: string[] = [];
+  currentTimeString.push(weekday);
+  currentTimeString.push(", ");
+  currentTimeString.push(month);
+  currentTimeString.push(" ");
+  currentTimeString.push(day);
+  // currentTimeString.push((currentTime.getDate() - numSub).toString());
   const [optionValue, setOptionValue] = useState("");
   const handleSelect = (e: {
     target: { value: React.SetStateAction<string> };
@@ -68,7 +82,12 @@ export default function CalendarMobile({
   return (
     <div>
       {/* i think i need to pass in the day prop to mobile weekly view */}
-      <MobileWeeklyView startDate={new Date()} setDayProp={setDayProp} />
+      <MobileWeeklyView
+        startDate={new Date()}
+        setDayProp={setDayProp}
+        setMonthProp={setMonthProp}
+        setWeekdayProp={setWeekdayProp}
+      />
 
       <CurrentDate>{currentTimeString}</CurrentDate>
       {/* <AvailabilityDiv> */}

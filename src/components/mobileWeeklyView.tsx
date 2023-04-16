@@ -83,7 +83,9 @@ const Month = styled.text`
 
 interface WeeklyViewMobileProps {
   startDate: Date;
-  setDayProp: (val: number) => void;
+  setDayProp: (val: string) => void;
+  setMonthProp: (val: string) => void;
+  setWeekdayProp: (val: string) => void;
 }
 // type SelectedDayProp = {
 //   setDayProp: (val: Number) => void;
@@ -92,6 +94,8 @@ interface WeeklyViewMobileProps {
 export default function WeeklyViewMobile({
   startDate,
   setDayProp,
+  setMonthProp,
+  setWeekdayProp,
 }: WeeklyViewMobileProps) {
   const [currentDate, setCurrentDate] = useState(startDate);
   const days: Date[] = [];
@@ -113,10 +117,42 @@ export default function WeeklyViewMobile({
   }
   const currentTime = new Date();
   const currentDay = currentTime.getDay();
+  // need to send the month to the mobileCalendar page
+  const month = getStartOfWeek(currentDate).toLocaleDateString("en-us", {
+    month: "long",
+  });
+  setMonthProp(month);
+  const dayz = getStartOfWeek(currentDate).toLocaleDateString("en-us", {
+    day: "numeric",
+  });
 
+  // const day = getStartOfWeek(currentDate).toLocaleDateString("en-us"), {
+  //   day: "numeric",
+  // });
+  console.log(dayz);
+  console.log(month);
   console.log(currentDay);
+
   const [selected, setSelected] = useState(currentDay);
-  setDayProp(selected);
+  // setDayProp(selected);
+
+  // IAN LOOK AT THIS SHIT RN BRUh
+  // this stuff is good to access the accurate information to pass into mobileCalendar
+  // basically these all need to become props to pass into the mobileCalendar
+  console.log(
+    `dada: ${days[selected].toLocaleDateString("en-us", { day: "numeric" })}`
+  );
+  setDayProp(days[selected].toLocaleDateString("en-us", { day: "numeric" }));
+  console.log(
+    `dadaV2: ${days[selected].toLocaleDateString("en-us", {
+      weekday: "short",
+    })}`
+  );
+  setWeekdayProp(
+    days[selected].toLocaleDateString("en-us", {
+      weekday: "short",
+    })
+  );
 
   return (
     <Wrapper>

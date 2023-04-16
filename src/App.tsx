@@ -22,7 +22,9 @@ function App() {
   // mobile weekly view page will change it onclick which in turn
   // will change the current date
 
-  const [day, setDayProp] = useState<number>();
+  const [day, setDayProp] = useState<string>();
+  const [month, setMonthProp] = useState<string>();
+  const [weekday, setWeekdayProp] = useState<string>();
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.outerWidth <= 500);
@@ -45,6 +47,10 @@ function App() {
                 bookings={0}
                 day={day!}
                 setDayProp={setDayProp}
+                month={month!}
+                setMonthProp={setMonthProp}
+                weekday={weekday!}
+                setWeekdayProp={setWeekdayProp}
               />
             ) : (
               <Calendar />
