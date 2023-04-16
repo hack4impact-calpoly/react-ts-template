@@ -4,7 +4,7 @@ import "./App.css";
 import { Amplify } from "aws-amplify";
 import { DataStore } from "@aws-amplify/datastore";
 import { LazyTimeslot, Timeslot } from "./models";
-import awsmobile from "./aws-exports";
+import awsconfig from "./aws-exports";
 import Success from "./components/authentication/success";
 import ResetPassword from "./components/authentication/resetPassword";
 import CreateAccount from "./components/authentication/createAccount";
@@ -18,7 +18,7 @@ import MobileTimeslots from "./components/mobile/mobileTimeslots";
 import TimeslotSuccess from "./components/popup/timeslotSuccess";
 import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
 
-Amplify.configure(awsmobile);
+Amplify.configure(awsconfig);
 
 function App() {
   const [email, setEmailProp] = useState<string>();

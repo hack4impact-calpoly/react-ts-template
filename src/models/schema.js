@@ -35,18 +35,34 @@ export const schema = {
                 "volunteerBookings": {
                     "name": "volunteerBookings",
                     "isArray": true,
-                    "type": "ID",
+                    "type": {
+                        "model": "Booking"
+                    },
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "timeslotID"
+                        ]
+                    }
                 },
                 "riderBookings": {
                     "name": "riderBookings",
                     "isArray": true,
-                    "type": "ID",
+                    "type": {
+                        "model": "Booking"
+                    },
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "timeslotID"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -90,8 +106,8 @@ export const schema = {
                 }
             ]
         },
-        "Event": {
-            "name": "Event",
+        "Booking": {
+            "name": "Booking",
             "fields": {
                 "id": {
                     "name": "id",
@@ -121,19 +137,18 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "timeslotId": {
-                    "name": "timeslotId",
-                    "isArray": true,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "userId": {
-                    "name": "userId",
+                "timeslotID": {
+                    "name": "timeslotID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createdAt": {
@@ -154,11 +169,29 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Events",
+            "pluralName": "Bookings",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byTimeslot",
+                        "fields": [
+                            "timeslotID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userID"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -216,6 +249,22 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "bookings": {
+                    "name": "bookings",
+                    "isArray": true,
+                    "type": {
+                        "model": "Booking"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "userID"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -261,6 +310,6 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "codegenVersion": "3.3.5",
-    "version": "3b7fdccda88586932e9aec648a7552e7"
+    "codegenVersion": "3.4.1",
+    "version": "824e4e9880749aeeb66ba127ed2c001a"
 };

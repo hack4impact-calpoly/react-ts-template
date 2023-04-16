@@ -34,9 +34,16 @@ function ArrayField({
   defaultFieldValue,
   lengthLimit,
   getBadgeText,
+  errorMessage,
 }) {
   const labelElement = <Text>{label}</Text>;
-  const { tokens } = useTheme();
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
   const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
   const [isEditing, setIsEditing] = React.useState();
   React.useEffect(() => {
@@ -139,6 +146,11 @@ function ArrayField({
           >
             Add item
           </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
         </>
       ) : (
         <Flex justifyContent="flex-end">
@@ -157,7 +169,6 @@ function ArrayField({
           <Button
             size="small"
             variation="link"
-            color={tokens.colors.brand.primary[80]}
             isDisabled={hasError}
             onClick={addItem}
           >
@@ -184,19 +195,11 @@ export default function TimeslotCreateForm(props) {
     startTime: "",
     endTime: "",
     unavailableDates: [],
-    volunteerBookings: [],
-    riderBookings: [],
   };
   const [startTime, setStartTime] = React.useState(initialValues.startTime);
   const [endTime, setEndTime] = React.useState(initialValues.endTime);
   const [unavailableDates, setUnavailableDates] = React.useState(
     initialValues.unavailableDates
-  );
-  const [volunteerBookings, setVolunteerBookings] = React.useState(
-    initialValues.volunteerBookings
-  );
-  const [riderBookings, setRiderBookings] = React.useState(
-    initialValues.riderBookings
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
@@ -204,36 +207,25 @@ export default function TimeslotCreateForm(props) {
     setEndTime(initialValues.endTime);
     setUnavailableDates(initialValues.unavailableDates);
     setCurrentUnavailableDatesValue("");
-    setVolunteerBookings(initialValues.volunteerBookings);
-    setCurrentVolunteerBookingsValue("");
-    setRiderBookings(initialValues.riderBookings);
-    setCurrentRiderBookingsValue("");
     setErrors({});
   };
   const [currentUnavailableDatesValue, setCurrentUnavailableDatesValue] =
     React.useState("");
   const unavailableDatesRef = React.createRef();
-  const [currentVolunteerBookingsValue, setCurrentVolunteerBookingsValue] =
-    React.useState("");
-  const volunteerBookingsRef = React.createRef();
-  const [currentRiderBookingsValue, setCurrentRiderBookingsValue] =
-    React.useState("");
-  const riderBookingsRef = React.createRef();
   const validations = {
     startTime: [],
     endTime: [],
     unavailableDates: [],
-    volunteerBookings: [],
-    riderBookings: [],
   };
   const runValidationTasks = async (
     fieldName,
     currentValue,
     getDisplayValue
   ) => {
-    const value = getDisplayValue
-      ? getDisplayValue(currentValue)
-      : currentValue;
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -254,8 +246,6 @@ export default function TimeslotCreateForm(props) {
           startTime,
           endTime,
           unavailableDates,
-          volunteerBookings,
-          riderBookings,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -314,8 +304,6 @@ export default function TimeslotCreateForm(props) {
               startTime: value,
               endTime,
               unavailableDates,
-              volunteerBookings,
-              riderBookings,
             };
             const result = onChange(modelFields);
             value = result?.startTime ?? value;
@@ -343,8 +331,6 @@ export default function TimeslotCreateForm(props) {
               startTime,
               endTime: value,
               unavailableDates,
-              volunteerBookings,
-              riderBookings,
             };
             const result = onChange(modelFields);
             value = result?.endTime ?? value;
@@ -367,8 +353,6 @@ export default function TimeslotCreateForm(props) {
               startTime,
               endTime,
               unavailableDates: values,
-              volunteerBookings,
-              riderBookings,
             };
             const result = onChange(modelFields);
             values = result?.unavailableDates ?? values;
@@ -379,7 +363,8 @@ export default function TimeslotCreateForm(props) {
         currentFieldValue={currentUnavailableDatesValue}
         label={"Unavailable dates"}
         items={unavailableDates}
-        hasError={errors.unavailableDates?.hasError}
+        hasError={errors?.unavailableDates?.hasError}
+        errorMessage={errors?.unavailableDates?.errorMessage}
         setFieldValue={setCurrentUnavailableDatesValue}
         inputFieldRef={unavailableDatesRef}
         defaultFieldValue={""}
@@ -405,103 +390,6 @@ export default function TimeslotCreateForm(props) {
           ref={unavailableDatesRef}
           labelHidden={true}
           {...getOverrideProps(overrides, "unavailableDates")}
-        ></TextField>
-      </ArrayField>
-      <ArrayField
-        onChange={async (items) => {
-          let values = items;
-          if (onChange) {
-            const modelFields = {
-              startTime,
-              endTime,
-              unavailableDates,
-              volunteerBookings: values,
-              riderBookings,
-            };
-            const result = onChange(modelFields);
-            values = result?.volunteerBookings ?? values;
-          }
-          setVolunteerBookings(values);
-          setCurrentVolunteerBookingsValue("");
-        }}
-        currentFieldValue={currentVolunteerBookingsValue}
-        label={"Volunteer bookings"}
-        items={volunteerBookings}
-        hasError={errors.volunteerBookings?.hasError}
-        setFieldValue={setCurrentVolunteerBookingsValue}
-        inputFieldRef={volunteerBookingsRef}
-        defaultFieldValue={""}
-      >
-        <TextField
-          label="Volunteer bookings"
-          isRequired={false}
-          isReadOnly={false}
-          value={currentVolunteerBookingsValue}
-          onChange={(e) => {
-            let { value } = e.target;
-            if (errors.volunteerBookings?.hasError) {
-              runValidationTasks("volunteerBookings", value);
-            }
-            setCurrentVolunteerBookingsValue(value);
-          }}
-          onBlur={() =>
-            runValidationTasks(
-              "volunteerBookings",
-              currentVolunteerBookingsValue
-            )
-          }
-          errorMessage={errors.volunteerBookings?.errorMessage}
-          hasError={errors.volunteerBookings?.hasError}
-          ref={volunteerBookingsRef}
-          labelHidden={true}
-          {...getOverrideProps(overrides, "volunteerBookings")}
-        ></TextField>
-      </ArrayField>
-      <ArrayField
-        onChange={async (items) => {
-          let values = items;
-          if (onChange) {
-            const modelFields = {
-              startTime,
-              endTime,
-              unavailableDates,
-              volunteerBookings,
-              riderBookings: values,
-            };
-            const result = onChange(modelFields);
-            values = result?.riderBookings ?? values;
-          }
-          setRiderBookings(values);
-          setCurrentRiderBookingsValue("");
-        }}
-        currentFieldValue={currentRiderBookingsValue}
-        label={"Rider bookings"}
-        items={riderBookings}
-        hasError={errors.riderBookings?.hasError}
-        setFieldValue={setCurrentRiderBookingsValue}
-        inputFieldRef={riderBookingsRef}
-        defaultFieldValue={""}
-      >
-        <TextField
-          label="Rider bookings"
-          isRequired={false}
-          isReadOnly={false}
-          value={currentRiderBookingsValue}
-          onChange={(e) => {
-            let { value } = e.target;
-            if (errors.riderBookings?.hasError) {
-              runValidationTasks("riderBookings", value);
-            }
-            setCurrentRiderBookingsValue(value);
-          }}
-          onBlur={() =>
-            runValidationTasks("riderBookings", currentRiderBookingsValue)
-          }
-          errorMessage={errors.riderBookings?.errorMessage}
-          hasError={errors.riderBookings?.hasError}
-          ref={riderBookingsRef}
-          labelHidden={true}
-          {...getOverrideProps(overrides, "riderBookings")}
         ></TextField>
       </ArrayField>
       <Flex

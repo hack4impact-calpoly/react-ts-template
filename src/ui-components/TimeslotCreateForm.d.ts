@@ -16,15 +16,11 @@ export declare type TimeslotCreateFormInputValues = {
     startTime?: string;
     endTime?: string;
     unavailableDates?: string[];
-    volunteerBookings?: string[];
-    riderBookings?: string[];
 };
 export declare type TimeslotCreateFormValidationValues = {
     startTime?: ValidationFunction<string>;
     endTime?: ValidationFunction<string>;
     unavailableDates?: ValidationFunction<string>;
-    volunteerBookings?: ValidationFunction<string>;
-    riderBookings?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TimeslotCreateFormOverridesProps = {
@@ -32,8 +28,6 @@ export declare type TimeslotCreateFormOverridesProps = {
     startTime?: PrimitiveOverrideProps<TextFieldProps>;
     endTime?: PrimitiveOverrideProps<TextFieldProps>;
     unavailableDates?: PrimitiveOverrideProps<TextFieldProps>;
-    volunteerBookings?: PrimitiveOverrideProps<TextFieldProps>;
-    riderBookings?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type TimeslotCreateFormProps = React.PropsWithChildren<{
     overrides?: TimeslotCreateFormOverridesProps | undefined | null;
