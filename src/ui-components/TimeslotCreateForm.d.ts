@@ -5,8 +5,8 @@
  **************************************************************************/
 
 import * as React from "react";
+import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
-import { GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -15,22 +15,19 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type TimeslotCreateFormInputValues = {
     startTime?: string;
     endTime?: string;
-    eventId?: string;
-    available?: boolean;
+    unavailableDates?: string[];
 };
 export declare type TimeslotCreateFormValidationValues = {
     startTime?: ValidationFunction<string>;
     endTime?: ValidationFunction<string>;
-    eventId?: ValidationFunction<string>;
-    available?: ValidationFunction<boolean>;
+    unavailableDates?: ValidationFunction<string>;
 };
-export declare type FormProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
+export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TimeslotCreateFormOverridesProps = {
-    TimeslotCreateFormGrid?: FormProps<GridProps>;
-    startTime?: FormProps<TextFieldProps>;
-    endTime?: FormProps<TextFieldProps>;
-    eventId?: FormProps<TextFieldProps>;
-    available?: FormProps<SwitchFieldProps>;
+    TimeslotCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    startTime?: PrimitiveOverrideProps<TextFieldProps>;
+    endTime?: PrimitiveOverrideProps<TextFieldProps>;
+    unavailableDates?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type TimeslotCreateFormProps = React.PropsWithChildren<{
     overrides?: TimeslotCreateFormOverridesProps | undefined | null;
@@ -39,7 +36,6 @@ export declare type TimeslotCreateFormProps = React.PropsWithChildren<{
     onSubmit?: (fields: TimeslotCreateFormInputValues) => TimeslotCreateFormInputValues;
     onSuccess?: (fields: TimeslotCreateFormInputValues) => void;
     onError?: (fields: TimeslotCreateFormInputValues, errorMessage: string) => void;
-    onCancel?: () => void;
     onChange?: (fields: TimeslotCreateFormInputValues) => TimeslotCreateFormInputValues;
     onValidate?: TimeslotCreateFormValidationValues;
 } & React.CSSProperties>;

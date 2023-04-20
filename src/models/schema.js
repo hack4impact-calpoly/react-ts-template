@@ -13,30 +13,56 @@ export const schema = {
                 "startTime": {
                     "name": "startTime",
                     "isArray": false,
-                    "type": "AWSDate",
+                    "type": "AWSTime",
                     "isRequired": false,
                     "attributes": []
                 },
                 "endTime": {
                     "name": "endTime",
                     "isArray": false,
+                    "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "unavailableDates": {
+                    "name": "unavailableDates",
+                    "isArray": true,
                     "type": "AWSDate",
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
-                "eventId": {
-                    "name": "eventId",
-                    "isArray": false,
-                    "type": "ID",
+                "volunteerBookings": {
+                    "name": "volunteerBookings",
+                    "isArray": true,
+                    "type": {
+                        "model": "Booking"
+                    },
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "timeslotID"
+                        ]
+                    }
                 },
-                "available": {
-                    "name": "available",
-                    "isArray": false,
-                    "type": "Boolean",
+                "riderBookings": {
+                    "name": "riderBookings",
+                    "isArray": true,
+                    "type": {
+                        "model": "Booking"
+                    },
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "timeslotID"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -80,8 +106,8 @@ export const schema = {
                 }
             ]
         },
-        "Event": {
-            "name": "Event",
+        "Booking": {
+            "name": "Booking",
             "fields": {
                 "id": {
                     "name": "id",
@@ -104,26 +130,25 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "volunteers": {
-                    "name": "volunteers",
-                    "isArray": true,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "rider": {
-                    "name": "rider",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "description": {
                     "name": "description",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
+                    "attributes": []
+                },
+                "timeslotID": {
+                    "name": "timeslotID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createdAt": {
@@ -144,11 +169,29 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Events",
+            "pluralName": "Bookings",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byTimeslot",
+                        "fields": [
+                            "timeslotID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userID"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -206,6 +249,22 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "bookings": {
+                    "name": "bookings",
+                    "isArray": true,
+                    "type": {
+                        "model": "Booking"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "userID"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -251,6 +310,6 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "codegenVersion": "3.3.2",
-    "version": "19037663dead1b378b6b26bf6ea383d0"
+    "codegenVersion": "3.4.1",
+    "version": "824e4e9880749aeeb66ba127ed2c001a"
 };

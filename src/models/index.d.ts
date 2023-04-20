@@ -1,6 +1,6 @@
 import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
 
 
@@ -14,8 +14,9 @@ type EagerTimeslot = {
   readonly id: string;
   readonly startTime?: string | null;
   readonly endTime?: string | null;
-  readonly eventId?: string | null;
-  readonly available?: boolean | null;
+  readonly unavailableDates?: (string | null)[] | null;
+  readonly volunteerBookings?: (Booking | null)[] | null;
+  readonly riderBookings?: (Booking | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -28,8 +29,9 @@ type LazyTimeslot = {
   readonly id: string;
   readonly startTime?: string | null;
   readonly endTime?: string | null;
-  readonly eventId?: string | null;
-  readonly available?: boolean | null;
+  readonly unavailableDates?: (string | null)[] | null;
+  readonly volunteerBookings: AsyncCollection<Booking>;
+  readonly riderBookings: AsyncCollection<Booking>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -40,40 +42,40 @@ export declare const Timeslot: (new (init: ModelInit<Timeslot>) => Timeslot) & {
   copyOf(source: Timeslot, mutator: (draft: MutableModel<Timeslot>) => MutableModel<Timeslot> | void): Timeslot;
 }
 
-type EagerEvent = {
+type EagerBooking = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Event, 'id'>;
+    identifier: ManagedIdentifier<Booking, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly title?: string | null;
   readonly date?: string | null;
-  readonly volunteers?: (string | null)[] | null;
-  readonly rider?: string | null;
   readonly description?: string | null;
+  readonly timeslotID: string;
+  readonly userID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-type LazyEvent = {
+type LazyBooking = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Event, 'id'>;
+    identifier: ManagedIdentifier<Booking, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly title?: string | null;
   readonly date?: string | null;
-  readonly volunteers?: (string | null)[] | null;
-  readonly rider?: string | null;
   readonly description?: string | null;
+  readonly timeslotID: string;
+  readonly userID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-export declare type Event = LazyLoading extends LazyLoadingDisabled ? EagerEvent : LazyEvent
+export declare type Booking = LazyLoading extends LazyLoadingDisabled ? EagerBooking : LazyBooking
 
-export declare const Event: (new (init: ModelInit<Event>) => Event) & {
-  copyOf(source: Event, mutator: (draft: MutableModel<Event>) => MutableModel<Event> | void): Event;
+export declare const Booking: (new (init: ModelInit<Booking>) => Booking) & {
+  copyOf(source: Booking, mutator: (draft: MutableModel<Booking>) => MutableModel<Booking> | void): Booking;
 }
 
 type EagerUser = {
@@ -86,6 +88,7 @@ type EagerUser = {
   readonly firstName?: string | null;
   readonly lastName?: string | null;
   readonly userType?: string | null;
+  readonly bookings?: (Booking | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -100,6 +103,7 @@ type LazyUser = {
   readonly firstName?: string | null;
   readonly lastName?: string | null;
   readonly userType?: string | null;
+  readonly bookings: AsyncCollection<Booking>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

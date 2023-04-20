@@ -1,7 +1,10 @@
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
-import logoPic from "../images/PETlogo.jpg";
-import eyeSlash from "../images/eyeSlash.svg";
+import { useNavigate } from "react-router-dom";
+import { Auth } from "aws-amplify";
+import logoPic from "../../images/PETlogo.jpg";
+import eyeSlash from "../../images/eyeSlash.svg";
+import eye from "../../images/eye.svg";
 import {
   Wrapper,
   Box,
@@ -13,7 +16,7 @@ import {
   Question,
   TextLink,
   ErrorMessage,
-} from "./styledComponents";
+} from "../styledComponents";
 
 const Logo = styled.img`
   display: flex;
@@ -22,13 +25,12 @@ const Logo = styled.img`
   width: 150px;
 `;
 
-function addAccount() {
-  alert("You clicked login");
-}
-
 export default function Login() {
+  // const [user, setUser] = useState("");
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   // Initialize a boolean state
   const [passwordShown, setPasswordShown] = useState(false);
   // Password toggle handler
@@ -37,24 +39,44 @@ export default function Login() {
     // inverse the boolean state of passwordShown
     setPasswordShown(!passwordShown);
   };
-  const [validEmail, setValidEmail] = React.useState(false);
-  const handleOnChangeEmail = (email1: string) => {
-    const re =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (re.test(email1)) {
-      setValidEmail(false);
-    } else {
-      setValidEmail(true);
+
+  async function signIn() {
+    try {
+      console.log(email);
+      const { user } = await Auth.signIn({
+        username: email,
+        password,
+      });
+      console.log("Success!");
+      console.log(user);
+      // Navigates to Home page with weekly calendar
+      navigate("/");
+    } catch (errore) {
+      console.log("error signing in", errore);
+      if (errore instanceof Error) {
+        setError(errore.message);
+      } else {
+        setError(String(errore));
+      }
     }
+  }
+
+  const handleSubmit = () => {
+    setError("");
+
+    if (!email || !password) {
+      setError("All Fields Required");
+      return;
+    }
+
+    signIn();
   };
 
   return (
     <Wrapper>
       <Box>
         <Logo src={logoPic} alt="PET logo" />
-        {validEmail && (
-          <ErrorMessage>Invalid email. Please try again.</ErrorMessage>
-        )}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <Label>Email</Label>
         <Input
           placeholder=""
@@ -70,14 +92,16 @@ export default function Login() {
               e.currentTarget.value.length
             );
           }}
-          onBlur={() => {
-            handleOnChangeEmail(email);
-          }}
         />
+
         <Label>Password</Label>
         <PasswordContainer>
           <EyeSlash onClick={togglePassword}>
-            <img src={eyeSlash} alt="didn't work" />
+            {passwordShown ? (
+              <img src={eye} alt="did work" />
+            ) : (
+              <img src={eyeSlash} alt="didn't work" />
+            )}
           </EyeSlash>
           <Input
             type={passwordShown ? "text" : "password"}
@@ -103,7 +127,7 @@ export default function Login() {
           />
         </PasswordContainer>
         <TextLink to="/forgot-password">Forgot password?</TextLink>
-        <Button onClick={addAccount}>Log In</Button>
+        <Button onClick={handleSubmit}>Log In</Button>
         <Question>
           Don&apos;t have an account?&nbsp;
           <TextLink to="/create-account">Create Account</TextLink>

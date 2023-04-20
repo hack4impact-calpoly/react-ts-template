@@ -6,54 +6,226 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { fetchByPath, validateField } from "./utils";
-import { Timeslot } from "../models";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import {
+  Badge,
   Button,
+  Divider,
   Flex,
   Grid,
-  SwitchField,
+  Icon,
+  ScrollView,
+  Text,
   TextField,
+  useTheme,
 } from "@aws-amplify/ui-react";
+import { getOverrideProps } from "@aws-amplify/ui-react/internal";
+import { Timeslot } from "../models";
+import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
+function ArrayField({
+  items = [],
+  onChange,
+  label,
+  inputFieldRef,
+  children,
+  hasError,
+  setFieldValue,
+  currentFieldValue,
+  defaultFieldValue,
+  lengthLimit,
+  getBadgeText,
+  errorMessage,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
+  const [isEditing, setIsEditing] = React.useState();
+  React.useEffect(() => {
+    if (isEditing) {
+      inputFieldRef?.current?.focus();
+    }
+  }, [isEditing]);
+  const removeItem = async (removeIndex) => {
+    const newItems = items.filter((value, index) => index !== removeIndex);
+    await onChange(newItems);
+    setSelectedBadgeIndex(undefined);
+  };
+  const addItem = async () => {
+    if (
+      currentFieldValue !== undefined &&
+      currentFieldValue !== null &&
+      currentFieldValue !== "" &&
+      !hasError
+    ) {
+      const newItems = [...items];
+      if (selectedBadgeIndex !== undefined) {
+        newItems[selectedBadgeIndex] = currentFieldValue;
+        setSelectedBadgeIndex(undefined);
+      } else {
+        newItems.push(currentFieldValue);
+      }
+      await onChange(newItems);
+      setIsEditing(false);
+    }
+  };
+  const arraySection = (
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button
+            size="small"
+            variation="link"
+            isDisabled={hasError}
+            onClick={addItem}
+          >
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
+    </React.Fragment>
+  );
+}
 export default function TimeslotCreateForm(props) {
   const {
     clearOnSuccess = true,
     onSuccess,
     onError,
     onSubmit,
-    onCancel,
     onValidate,
     onChange,
     overrides,
     ...rest
   } = props;
   const initialValues = {
-    startTime: undefined,
-    endTime: undefined,
-    eventId: undefined,
-    available: false,
+    startTime: "",
+    endTime: "",
+    unavailableDates: [],
   };
   const [startTime, setStartTime] = React.useState(initialValues.startTime);
   const [endTime, setEndTime] = React.useState(initialValues.endTime);
-  const [eventId, setEventId] = React.useState(initialValues.eventId);
-  const [available, setAvailable] = React.useState(initialValues.available);
+  const [unavailableDates, setUnavailableDates] = React.useState(
+    initialValues.unavailableDates
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setStartTime(initialValues.startTime);
     setEndTime(initialValues.endTime);
-    setEventId(initialValues.eventId);
-    setAvailable(initialValues.available);
+    setUnavailableDates(initialValues.unavailableDates);
+    setCurrentUnavailableDatesValue("");
     setErrors({});
   };
+  const [currentUnavailableDatesValue, setCurrentUnavailableDatesValue] =
+    React.useState("");
+  const unavailableDatesRef = React.createRef();
   const validations = {
     startTime: [],
     endTime: [],
-    eventId: [],
-    available: [],
+    unavailableDates: [],
   };
-  const runValidationTasks = async (fieldName, value) => {
+  const runValidationTasks = async (
+    fieldName,
+    currentValue,
+    getDisplayValue
+  ) => {
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -73,8 +245,7 @@ export default function TimeslotCreateForm(props) {
         let modelFields = {
           startTime,
           endTime,
-          eventId,
-          available,
+          unavailableDates,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -99,6 +270,11 @@ export default function TimeslotCreateForm(props) {
           modelFields = onSubmit(modelFields);
         }
         try {
+          Object.entries(modelFields).forEach(([key, value]) => {
+            if (typeof value === "string" && value.trim() === "") {
+              modelFields[key] = undefined;
+            }
+          });
           await DataStore.save(new Timeslot(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
@@ -112,22 +288,22 @@ export default function TimeslotCreateForm(props) {
           }
         }
       }}
-      {...rest}
       {...getOverrideProps(overrides, "TimeslotCreateForm")}
+      {...rest}
     >
       <TextField
         label="Start time"
         isRequired={false}
         isReadOnly={false}
-        type="date"
+        type="time"
+        value={startTime}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               startTime: value,
               endTime,
-              eventId,
-              available,
+              unavailableDates,
             };
             const result = onChange(modelFields);
             value = result?.startTime ?? value;
@@ -146,15 +322,15 @@ export default function TimeslotCreateForm(props) {
         label="End time"
         isRequired={false}
         isReadOnly={false}
-        type="date"
+        type="time"
+        value={endTime}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               startTime,
               endTime: value,
-              eventId,
-              available,
+              unavailableDates,
             };
             const result = onChange(modelFields);
             value = result?.endTime ?? value;
@@ -169,59 +345,53 @@ export default function TimeslotCreateForm(props) {
         hasError={errors.endTime?.hasError}
         {...getOverrideProps(overrides, "endTime")}
       ></TextField>
-      <TextField
-        label="Event id"
-        isRequired={false}
-        isReadOnly={false}
-        onChange={(e) => {
-          let { value } = e.target;
+      <ArrayField
+        onChange={async (items) => {
+          let values = items;
           if (onChange) {
             const modelFields = {
               startTime,
               endTime,
-              eventId: value,
-              available,
+              unavailableDates: values,
             };
             const result = onChange(modelFields);
-            value = result?.eventId ?? value;
+            values = result?.unavailableDates ?? values;
           }
-          if (errors.eventId?.hasError) {
-            runValidationTasks("eventId", value);
-          }
-          setEventId(value);
+          setUnavailableDates(values);
+          setCurrentUnavailableDatesValue("");
         }}
-        onBlur={() => runValidationTasks("eventId", eventId)}
-        errorMessage={errors.eventId?.errorMessage}
-        hasError={errors.eventId?.hasError}
-        {...getOverrideProps(overrides, "eventId")}
-      ></TextField>
-      <SwitchField
-        label="Available"
-        defaultChecked={false}
-        isDisabled={false}
-        isChecked={available}
-        onChange={(e) => {
-          let value = e.target.checked;
-          if (onChange) {
-            const modelFields = {
-              startTime,
-              endTime,
-              eventId,
-              available: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.available ?? value;
+        currentFieldValue={currentUnavailableDatesValue}
+        label={"Unavailable dates"}
+        items={unavailableDates}
+        hasError={errors?.unavailableDates?.hasError}
+        errorMessage={errors?.unavailableDates?.errorMessage}
+        setFieldValue={setCurrentUnavailableDatesValue}
+        inputFieldRef={unavailableDatesRef}
+        defaultFieldValue={""}
+      >
+        <TextField
+          label="Unavailable dates"
+          isRequired={false}
+          isReadOnly={false}
+          type="date"
+          value={currentUnavailableDatesValue}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.unavailableDates?.hasError) {
+              runValidationTasks("unavailableDates", value);
+            }
+            setCurrentUnavailableDatesValue(value);
+          }}
+          onBlur={() =>
+            runValidationTasks("unavailableDates", currentUnavailableDatesValue)
           }
-          if (errors.available?.hasError) {
-            runValidationTasks("available", value);
-          }
-          setAvailable(value);
-        }}
-        onBlur={() => runValidationTasks("available", available)}
-        errorMessage={errors.available?.errorMessage}
-        hasError={errors.available?.hasError}
-        {...getOverrideProps(overrides, "available")}
-      ></SwitchField>
+          errorMessage={errors.unavailableDates?.errorMessage}
+          hasError={errors.unavailableDates?.hasError}
+          ref={unavailableDatesRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "unavailableDates")}
+        ></TextField>
+      </ArrayField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
@@ -229,21 +399,16 @@ export default function TimeslotCreateForm(props) {
         <Button
           children="Clear"
           type="reset"
-          onClick={resetStateValues}
+          onClick={(event) => {
+            event.preventDefault();
+            resetStateValues();
+          }}
           {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
           {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
         >
-          <Button
-            children="Cancel"
-            type="button"
-            onClick={() => {
-              onCancel && onCancel();
-            }}
-            {...getOverrideProps(overrides, "CancelButton")}
-          ></Button>
           <Button
             children="Submit"
             type="submit"
