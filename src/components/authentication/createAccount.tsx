@@ -98,6 +98,8 @@ export default function CreateAccount() {
           enabled: true,
         },
       });
+
+      // add user to Datastore
       await DataStore.save(
         new User({
           userName: email,
@@ -120,7 +122,7 @@ export default function CreateAccount() {
       }
     }
   }
-
+  console.log(DataStore.query(User));
   const handleSubmit = () => {
     setError("");
 
