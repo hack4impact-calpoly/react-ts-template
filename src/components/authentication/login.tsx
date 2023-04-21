@@ -5,6 +5,7 @@ import { Auth } from "aws-amplify";
 import logoPic from "../../images/PETlogo.jpg";
 import eyeSlash from "../../images/eyeSlash.svg";
 import eye from "../../images/eye.svg";
+// import UserContext from "../../userContext";
 import {
   Wrapper,
   Box,
@@ -25,14 +26,20 @@ const Logo = styled.img`
   width: 150px;
 `;
 
-export default function Login() {
+type EmailProps = {
+  email: string;
+  setEmailProp: (val: string) => void;
+};
+
+export default function Login({ email, setEmailProp }: EmailProps) {
   // const [user, setUser] = useState("");
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   // Initialize a boolean state
   const [passwordShown, setPasswordShown] = useState(false);
+  // const [userName] = useContext(email);
   // Password toggle handler
   const togglePassword = () => {
     // When the handler is invoked
@@ -83,7 +90,7 @@ export default function Login() {
           type="email"
           value={email} // add newEmail as the input's value
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setEmail(e.target.value);
+            setEmailProp(e.target.value);
           }}
           onClick={(e) => {
             e.currentTarget.scrollLeft = e.currentTarget.scrollWidth;
