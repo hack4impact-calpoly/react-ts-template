@@ -19,14 +19,14 @@ import { User } from "./types";
 //   bookings: [1],
 // };
 const defaultFields = {
-  //   currentUser: {
-  //     id: String,
-  //     userName: String,
-  //     firstName: String,
-  //     lastName: String,
-  //     userType: String,
-  //     bookings: [Number],
-  //   },
+  // currentUser: {
+  //   id: String,
+  //   userName: String,
+  //   firstName: String,
+  //   lastName: String,
+  //   userType: String,
+  //   bookings: [Number],
+  // },
   currentUser: {} as User,
   setUser: (() => {}) as (user: User) => void,
 };
