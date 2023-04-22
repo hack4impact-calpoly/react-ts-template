@@ -38,7 +38,6 @@ function App() {
       const ts = await DataStore.query(Timeslot);
       setTs(ts);
       console.log(ts);
-      console.log(new Date("July 4 1776 14:30"));
     };
 
     pullData();

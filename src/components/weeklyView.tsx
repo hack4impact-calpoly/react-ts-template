@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { DataStore } from "@aws-amplify/datastore";
 import styled from "styled-components";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-// fake props
-import { bookings } from "./booking";
+import interactionPlugin from "@fullcalendar/interaction";
+import { LazyTimeslot, Timeslot } from "../models";
+import Popup from "./popup/timeslotPopup";
 
 const CalDiv = styled.div`
   font-family: "Rubik", sans-serif;
@@ -54,11 +56,23 @@ export interface WeeklyViewProps {
 
 export default function WeeklyView() {
   // eslint-disable-next-line
-  const [calTimeslots, setCalTimeslots] = useState(bookings);
+  const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
+  const [showPopup, setShowPopup] = useState(false);
 
-  const updatedSlots = calTimeslots.map((timeslot) => ({
-    start: timeslot.startTime,
-    end: timeslot.endTime,
+  useEffect(() => {
+    const pullData = async () => {
+      const ts = await DataStore.query(Timeslot);
+      console.log(ts);
+      setTs(ts);
+    };
+
+    pullData();
+  }, []);
+
+  const slots = timeslots.map((timeslot) => ({
+    startTime: timeslot.startTime,
+    daysOfWeek: ["1", "2", "3", "4", "5"],
+    endTime: timeslot.endTime,
     backgroundColor: "#90BFCC",
     textColor: "black",
   }));
@@ -66,9 +80,10 @@ export default function WeeklyView() {
   return (
     <CalDiv>
       <FullCalendar
-        plugins={[timeGridPlugin]}
+        plugins={[timeGridPlugin, interactionPlugin]}
         initialView="timeGridWeek"
-        events={updatedSlots}
+        events={slots}
+        eventClick={() => setShowPopup(true)}
         allDaySlot={false}
         slotMinTime="8:00:00"
         slotMaxTime="18:00:00"
@@ -76,7 +91,9 @@ export default function WeeklyView() {
         displayEventEnd
         displayEventTime
         dayHeaderFormat={{ weekday: "short", day: "numeric" }}
+        selectable
       />
+      {showPopup && <Popup />}
     </CalDiv>
   );
 }
