@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Amplify } from "aws-amplify";
@@ -18,6 +18,7 @@ import MobileTimeslots from "./components/mobile/mobileTimeslots";
 import TimeslotSuccess from "./components/popup/timeslotSuccess";
 import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
 import UserContext from "./userContext";
+import { User } from "./types";
 
 Amplify.configure(awsconfig);
 
@@ -25,23 +26,31 @@ function App() {
   const [email, setEmailProp] = useState<string>();
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
-  interface UserData {
-    id: number;
-    userName: string;
-    firstName: string;
-    lastName: string;
-    userType: string;
-    bookings: [number];
-  }
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  const exuser: UserData = {
-    id: 1,
-    userName: email!,
-    firstName: "",
-    lastName: "",
-    userType: "",
-    bookings: [1],
-  };
+  // interface UserData {
+  //   id: number;
+  //   userName: string;
+  //   firstName: string;
+  //   lastName: string;
+  //   userType: string;
+  //   bookings: [number];
+  // }
+  // // eslint-disable-next-line react/jsx-no-constructed-context-values
+  // const exuser: UserData = {
+  //   id: 1,
+  //   userName: email!,
+  //   firstName: "",
+  //   lastName: "",
+  //   userType: "",
+  //   bookings: [1],
+  // };
+
+  // currentUser.firstName = "ian";
+  // currentUser.bookings = [1];
+  // currentUser.id = "123";
+  // currentUser.userName = "igloo";
+  // currentUser.userType = "admin";
+  // currentUser.lastName = "loo";
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.outerWidth <= 500);
@@ -61,9 +70,14 @@ function App() {
 
     pullData();
   }, []);
-
+  const [currentUser, setUser] = useState({} as User);
+  const userContextFields = useMemo(
+    () => ({ currentUser, setUser }),
+    [currentUser]
+  );
+  console.log(`from the context stuff ${currentUser.userName}`);
   return (
-    <UserContext.Provider value={exuser}>
+    <UserContext.Provider value={userContextFields}>
       <BrowserRouter>
         <Routes>
           {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
@@ -72,10 +86,7 @@ function App() {
             element={isMobile ? <CalendarMobile /> : <Calendar />}
           />
 
-          <Route
-            path="/login"
-            element={<Login setEmailProp={setEmailProp} email={email!} />}
-          />
+          <Route path="/login" element={<Login />} />
 
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/enter-code" element={<EnterCode />} />

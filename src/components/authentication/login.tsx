@@ -1,11 +1,12 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import logoPic from "../../images/PETlogo.jpg";
 import eyeSlash from "../../images/eyeSlash.svg";
 import eye from "../../images/eye.svg";
-// import UserContext from "../../userContext";
+import UserContext from "../../userContext";
+
 import {
   Wrapper,
   Box,
@@ -18,6 +19,7 @@ import {
   TextLink,
   ErrorMessage,
 } from "../styledComponents";
+import { User } from "../../types";
 
 const Logo = styled.img`
   display: flex;
@@ -26,17 +28,12 @@ const Logo = styled.img`
   width: 150px;
 `;
 
-type EmailProps = {
-  email: string;
-  setEmailProp: (val: string) => void;
-};
-
-export default function Login({ email, setEmailProp }: EmailProps) {
-  // const [user, setUser] = useState("");
+export default function Login() {
   const navigate = useNavigate();
-  // const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setUser } = useContext(UserContext);
   // Initialize a boolean state
   const [passwordShown, setPasswordShown] = useState(false);
   // const [userName] = useContext(email);
@@ -57,6 +54,8 @@ export default function Login({ email, setEmailProp }: EmailProps) {
       console.log("Success!");
       console.log(user);
       // Navigates to Home page with weekly calendar
+      setUser({ userName: `${email}` } as User);
+
       navigate("/");
     } catch (errore) {
       console.log("error signing in", errore);
@@ -90,7 +89,7 @@ export default function Login({ email, setEmailProp }: EmailProps) {
           type="email"
           value={email} // add newEmail as the input's value
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setEmailProp(e.target.value);
+            setEmail(e.target.value);
           }}
           onClick={(e) => {
             e.currentTarget.scrollLeft = e.currentTarget.scrollWidth;
