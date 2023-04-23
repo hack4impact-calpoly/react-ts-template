@@ -26,30 +26,6 @@ function App() {
   const [email, setEmailProp] = useState<string>();
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
-  // interface UserData {
-  //   id: number;
-  //   userName: string;
-  //   firstName: string;
-  //   lastName: string;
-  //   userType: string;
-  //   bookings: [number];
-  // }
-  // // eslint-disable-next-line react/jsx-no-constructed-context-values
-  // const exuser: UserData = {
-  //   id: 1,
-  //   userName: email!,
-  //   firstName: "",
-  //   lastName: "",
-  //   userType: "",
-  //   bookings: [1],
-  // };
-
-  // currentUser.firstName = "ian";
-  // currentUser.bookings = [1];
-  // currentUser.id = "123";
-  // currentUser.userName = "igloo";
-  // currentUser.userType = "admin";
-  // currentUser.lastName = "loo";
 
   useEffect(() => {
     const handleResize = () => {
@@ -70,11 +46,13 @@ function App() {
 
     pullData();
   }, []);
+  // setting up context
   const [currentUser, setUser] = useState({} as User);
   const userContextFields = useMemo(
     () => ({ currentUser, setUser }),
     [currentUser]
   );
+  // console statement to test if userName was set in login component
   console.log(`from the context stuff ${currentUser.userName}`);
   return (
     <UserContext.Provider value={userContextFields}>

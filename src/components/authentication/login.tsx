@@ -47,14 +47,17 @@ export default function Login() {
   async function signIn() {
     try {
       console.log(email);
+
       const { user } = await Auth.signIn({
         username: email,
         password,
       });
+      // setting the userName for the userContext
+      setUser({ userName: `${email}` } as User);
       console.log("Success!");
       console.log(user);
       // Navigates to Home page with weekly calendar
-      setUser({ userName: `${email}` } as User);
+      // setUser({ userName: `${email}` } as User);
 
       navigate("/");
     } catch (errore) {
