@@ -201,7 +201,7 @@ const PopupDiv = styled(Modal)`
 `;
 const PopupBox = styled.div`
   width: 70rem;
-  height: 871px;
+  height: auto;
   background: #ffffff;
   border: none;
 `;
