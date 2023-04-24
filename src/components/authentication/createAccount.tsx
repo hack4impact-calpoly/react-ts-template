@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
+import { DataStore } from "@aws-amplify/datastore";
 import styled from "styled-components";
-import eyeSlash from "../images/eyeSlash.svg";
-import backArrow from "../images/backArrow.png";
+import { User } from "../../models";
+import eyeSlash from "../../images/eyeSlash.svg";
+import eye from "../../images/eye.svg";
+import backArrow from "../../images/backArrow.png";
 import {
   Box,
   BackArrow,
@@ -17,7 +20,7 @@ import {
   TextLink,
   ErrorMessage,
   Wrapper,
-} from "./styledComponents";
+} from "../styledComponents";
 
 const Select = styled.select`
   box-sizing: border-box;
@@ -69,7 +72,13 @@ export default function CreateAccount() {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false);
+  // Password toggle handler
+  const togglePassword = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown(!passwordShown);
+  };
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -89,6 +98,16 @@ export default function CreateAccount() {
           enabled: true,
         },
       });
+
+      // add user to Datastore
+      await DataStore.save(
+        new User({
+          userName: email,
+          firstName,
+          lastName,
+          userType: role,
+        })
+      );
       // eslint-disable-next-line no-console
       console.log(user);
       localStorage.setItem("username", email);
@@ -103,7 +122,7 @@ export default function CreateAccount() {
       }
     }
   }
-
+  console.log(DataStore.query(User));
   const handleSubmit = () => {
     setError("");
 
@@ -200,12 +219,16 @@ export default function CreateAccount() {
         <Label>Password</Label>
         <PasswordContainer>
           <Input
-            type={showPassword ? "text" : "password"}
+            type={passwordShown ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <EyeSlash onClick={() => setShowPassword(!showPassword)}>
-            <img src={eyeSlash} alt="eyeSlash" />
+          <EyeSlash onClick={togglePassword}>
+            {passwordShown ? (
+              <img src={eye} alt="did work" />
+            ) : (
+              <img src={eyeSlash} alt="didn't work" />
+            )}
           </EyeSlash>
         </PasswordContainer>
         <Button onClick={handleSubmit}>Sign Up</Button>

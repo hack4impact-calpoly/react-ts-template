@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Modal } from "@mui/material";
 import "@fontsource/rubik";
 import "@fontsource/roboto";
 
@@ -50,7 +51,10 @@ const Header = styled.text`
     line-height: 28px;
   }
 `;
-
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 const CenteredHeader = styled.text`
   cursor: text;
   margin: 1.5rem 0rem;
@@ -136,23 +140,16 @@ const Label = styled.text`
 `;
 
 const PasswordContainer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
   width: 100%;
-  position: relative;
 `;
 
 const EyeSlash = styled.image`
   cursor: pointer;
   position: absolute;
-  right: 2px;
-  top: 7px;
-  bottom: 3px;
-  margin: 0;
-  padding: 0 10px;
-  @media (max-width: 500px) {
-    width: 5px;
-    right: 25px;
-    top: 2px;
-  }
+  align-self: center;
+  padding-right: 5px;
 `;
 
 const Question = styled.text`
@@ -193,6 +190,29 @@ const ErrorMessage = styled.text`
   font-size: 16px;
   margin-top: 10px;
   margin-bottom: 10px;
+<<<<<<< HEAD
+=======
+`;
+
+const PopupDiv = styled(Modal)`
+  padding-left: 14px;
+  padding-right: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const PopupBox = styled.div`
+  width: 70rem;
+  height: 871px;
+  background: #ffffff;
+  border: none;
+`;
+const X = styled.img`
+  width: 2rem;
+  height: 2rem;
+  padding: 2rem;
+  cursor: pointer;
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
 `;
 
 export {
@@ -211,4 +231,8 @@ export {
   Question,
   TextLink,
   ErrorMessage,
+  Row,
+  PopupDiv,
+  PopupBox,
+  X,
 };

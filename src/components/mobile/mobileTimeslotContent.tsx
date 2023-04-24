@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import "@fontsource/roboto";
 import { useState } from "react";
-import Horse from "../images/horseRider.svg";
-import Dude from "../images/dude.png";
-import Bookmark from "../images/bookmark.png";
-import OnSlide from "../images/onslider.png";
-import OffSlide from "../images/offslider.png";
+import Horse from "../../images/horseRider.svg";
+import Dude from "../../images/person.svg";
+import Bookmark from "../../images/bookmark.svg";
+import OnSlide from "../../images/OnSlider.png";
+import OffSlide from "../../images/OffSlider.png";
 
 const RiderInfo = styled.div`
   display: flex;
@@ -16,21 +16,18 @@ const RiderInfo = styled.div`
   line-height: 19px;
   color: black;
   background: white;
-  margin-bottom: 10%;
+  margin-bottom: 25px;
   margin-left: 2%;
 `;
 
 const LogoRider = styled.img`
-  width: 10%;
-  position: flex;
+  width: 30px;
 `;
 const LogoDude = styled.img`
-  width: 7%;
-  position: flex;
+  width: 30px;
 `;
 const LogoBookmark = styled.img`
-  width: 8%;
-  position: flex;
+  width: 30px;
 `;
 
 // height 380px so that it stays that height (right now height changes based on rendering of components)
@@ -61,13 +58,13 @@ const WrapperMobile = styled.div`
 const BoxMobileContent = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 3%;
-  margin-left: 4%;
+  margin: 4%;
+  width: 310px;
 `;
 const RiderContent = styled.text`
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
-  margin-left: 6%;
+  margin-left: 10px;
   font-size: 16px;
   font-weight: 700;
 `;
@@ -88,9 +85,7 @@ const OnOffSlide = styled.img`
   margin-left: 75%;
   margin-top: 20%;
 `;
-const RiderContentDiv = styled.div`
-  display: inline-block;
-`;
+
 type UserType = {
   user: string;
   bookings: number;
@@ -154,9 +149,7 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
             }}
           >
             <LogoRider src={Horse} />{" "}
-            <RiderContentDiv>
-              <RiderContent> Riders: Jane Doe, John Smith</RiderContent>
-            </RiderContentDiv>
+            <RiderContent> Riders: Jane Doe, John Smith</RiderContent>
           </RiderInfo>
 
           <RiderInfo
@@ -168,9 +161,7 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
             }}
           >
             <LogoDude src={Dude} />{" "}
-            <RiderContentDiv>
-              <RiderContent>Volunteers: Jane Doe, John Smith</RiderContent>
-            </RiderContentDiv>
+            <RiderContent>Volunteers: Jane Doe, John Smith</RiderContent>
           </RiderInfo>
           {booked === false ? (
             <RiderInfo style={{ display: user === "admin" ? "none" : "block" }}>

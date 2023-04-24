@@ -8,21 +8,21 @@ export const schema = {
           isArray: false,
           type: "ID",
           isRequired: true,
-          attributes: []
+          attributes: [],
         },
         startTime: {
           name: "startTime",
           isArray: false,
-          type: "AWSDate",
+          type: "AWSTime",
           isRequired: false,
-          attributes: []
+          attributes: [],
         },
         endTime: {
           name: "endTime",
           isArray: false,
-          type: "AWSDate",
+          type: "AWSTime",
           isRequired: false,
-          attributes: []
+          attributes: [],
         },
         unavailableDates: {
           name: "unavailableDates",
@@ -30,23 +30,35 @@ export const schema = {
           type: "AWSDate",
           isRequired: false,
           attributes: [],
-          isArrayNullable: true
+          isArrayNullable: true,
         },
         volunteerBookings: {
           name: "volunteerBookings",
           isArray: true,
-          type: "ID",
+          type: {
+            model: "Booking",
+          },
           isRequired: false,
           attributes: [],
-          isArrayNullable: true
+          isArrayNullable: true,
+          association: {
+            connectionType: "HAS_MANY",
+            associatedWith: ["timeslotID"],
+          },
         },
         riderBookings: {
           name: "riderBookings",
           isArray: true,
-          type: "ID",
+          type: {
+            model: "Booking",
+          },
           isRequired: false,
           attributes: [],
-          isArrayNullable: true
+          isArrayNullable: true,
+          association: {
+            connectionType: "HAS_MANY",
+            associatedWith: ["timeslotID"],
+          },
         },
         createdAt: {
           name: "createdAt",
@@ -54,7 +66,7 @@ export const schema = {
           type: "AWSDateTime",
           isRequired: false,
           attributes: [],
-          isReadOnly: true
+          isReadOnly: true,
         },
         updatedAt: {
           name: "updatedAt",
@@ -62,15 +74,15 @@ export const schema = {
           type: "AWSDateTime",
           isRequired: false,
           attributes: [],
-          isReadOnly: true
-        }
+          isReadOnly: true,
+        },
       },
       syncable: true,
       pluralName: "Timeslots",
       attributes: [
         {
           type: "model",
-          properties: {}
+          properties: {},
         },
         {
           type: "auth",
@@ -78,58 +90,57 @@ export const schema = {
             rules: [
               {
                 allow: "public",
-                operations: ["create", "update", "delete", "read"]
-              }
-            ]
-          }
-        }
-      ]
+                operations: ["create", "update", "delete", "read"],
+              },
+            ],
+          },
+        },
+      ],
     },
-    Event: {
-      name: "Event",
+    Booking: {
+      name: "Booking",
       fields: {
         id: {
           name: "id",
           isArray: false,
           type: "ID",
           isRequired: true,
-          attributes: []
+          attributes: [],
         },
         title: {
           name: "title",
           isArray: false,
           type: "String",
           isRequired: false,
-          attributes: []
+          attributes: [],
         },
         date: {
           name: "date",
           isArray: false,
           type: "AWSDate",
           isRequired: false,
-          attributes: []
+          attributes: [],
         },
         description: {
           name: "description",
           isArray: false,
           type: "String",
           isRequired: false,
-          attributes: []
-        },
-        timeslotId: {
-          name: "timeslotId",
-          isArray: true,
-          type: "ID",
-          isRequired: false,
           attributes: [],
-          isArrayNullable: true
         },
-        userId: {
-          name: "userId",
+        timeslotID: {
+          name: "timeslotID",
           isArray: false,
           type: "ID",
-          isRequired: false,
-          attributes: []
+          isRequired: true,
+          attributes: [],
+        },
+        userID: {
+          name: "userID",
+          isArray: false,
+          type: "ID",
+          isRequired: true,
+          attributes: [],
         },
         createdAt: {
           name: "createdAt",
@@ -137,7 +148,7 @@ export const schema = {
           type: "AWSDateTime",
           isRequired: false,
           attributes: [],
-          isReadOnly: true
+          isReadOnly: true,
         },
         updatedAt: {
           name: "updatedAt",
@@ -145,15 +156,29 @@ export const schema = {
           type: "AWSDateTime",
           isRequired: false,
           attributes: [],
-          isReadOnly: true
-        }
+          isReadOnly: true,
+        },
       },
       syncable: true,
-      pluralName: "Events",
+      pluralName: "Bookings",
       attributes: [
         {
           type: "model",
-          properties: {}
+          properties: {},
+        },
+        {
+          type: "key",
+          properties: {
+            name: "byTimeslot",
+            fields: ["timeslotID"],
+          },
+        },
+        {
+          type: "key",
+          properties: {
+            name: "byUser",
+            fields: ["userID"],
+          },
         },
         {
           type: "auth",
@@ -161,12 +186,12 @@ export const schema = {
             rules: [
               {
                 allow: "public",
-                operations: ["create", "update", "delete", "read"]
-              }
-            ]
-          }
-        }
-      ]
+                operations: ["create", "update", "delete", "read"],
+              },
+            ],
+          },
+        },
+      ],
     },
     User: {
       name: "User",
@@ -176,35 +201,49 @@ export const schema = {
           isArray: false,
           type: "ID",
           isRequired: true,
-          attributes: []
+          attributes: [],
         },
         userName: {
           name: "userName",
           isArray: false,
           type: "String",
           isRequired: false,
-          attributes: []
+          attributes: [],
         },
         firstName: {
           name: "firstName",
           isArray: false,
           type: "String",
           isRequired: false,
-          attributes: []
+          attributes: [],
         },
         lastName: {
           name: "lastName",
           isArray: false,
           type: "String",
           isRequired: false,
-          attributes: []
+          attributes: [],
         },
         userType: {
           name: "userType",
           isArray: false,
           type: "String",
           isRequired: false,
-          attributes: []
+          attributes: [],
+        },
+        bookings: {
+          name: "bookings",
+          isArray: true,
+          type: {
+            model: "Booking",
+          },
+          isRequired: false,
+          attributes: [],
+          isArrayNullable: true,
+          association: {
+            connectionType: "HAS_MANY",
+            associatedWith: ["userID"],
+          },
         },
         createdAt: {
           name: "createdAt",
@@ -212,7 +251,7 @@ export const schema = {
           type: "AWSDateTime",
           isRequired: false,
           attributes: [],
-          isReadOnly: true
+          isReadOnly: true,
         },
         updatedAt: {
           name: "updatedAt",
@@ -220,15 +259,15 @@ export const schema = {
           type: "AWSDateTime",
           isRequired: false,
           attributes: [],
-          isReadOnly: true
-        }
+          isReadOnly: true,
+        },
       },
       syncable: true,
       pluralName: "Users",
       attributes: [
         {
           type: "model",
-          properties: {}
+          properties: {},
         },
         {
           type: "auth",
@@ -236,16 +275,16 @@ export const schema = {
             rules: [
               {
                 allow: "public",
-                operations: ["create", "update", "delete", "read"]
-              }
-            ]
-          }
-        }
-      ]
-    }
+                operations: ["create", "update", "delete", "read"],
+              },
+            ],
+          },
+        },
+      ],
+    },
   },
   enums: {},
   nonModels: {},
-  codegenVersion: "3.3.6",
-  version: "afd6ff7a8e9ae66d2b26bb904fa93be0"
+  codegenVersion: "3.4.0",
+  version: "824e4e9880749aeeb66ba127ed2c001a",
 };

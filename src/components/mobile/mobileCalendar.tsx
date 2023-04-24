@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import MobileTimeslots from "./mobileTimeslots";
 import MobileWeeklyView from "./mobileWeeklyView";
-import { Dropdown, Option } from "./Dropdown";
+import { Dropdown, Option } from "./dropdown";
 
 const CurrentDate = styled.text`
   font-family: "Rubik";

@@ -183,7 +183,11 @@ function ArrayField({
 export default function TimeslotUpdateForm(props) {
   const {
     id: idProp,
+<<<<<<< HEAD
     timeslot,
+=======
+    timeslot: timeslotModelProp,
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
     onSuccess,
     onError,
     onSubmit,
@@ -196,20 +200,26 @@ export default function TimeslotUpdateForm(props) {
     startTime: "",
     endTime: "",
     unavailableDates: [],
+<<<<<<< HEAD
     volunteerBookings: [],
     riderBookings: [],
+=======
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
   };
   const [startTime, setStartTime] = React.useState(initialValues.startTime);
   const [endTime, setEndTime] = React.useState(initialValues.endTime);
   const [unavailableDates, setUnavailableDates] = React.useState(
     initialValues.unavailableDates
   );
+<<<<<<< HEAD
   const [volunteerBookings, setVolunteerBookings] = React.useState(
     initialValues.volunteerBookings
   );
   const [riderBookings, setRiderBookings] = React.useState(
     initialValues.riderBookings
   );
+=======
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = timeslotRecord
@@ -219,38 +229,55 @@ export default function TimeslotUpdateForm(props) {
     setEndTime(cleanValues.endTime);
     setUnavailableDates(cleanValues.unavailableDates ?? []);
     setCurrentUnavailableDatesValue("");
+<<<<<<< HEAD
     setVolunteerBookings(cleanValues.volunteerBookings ?? []);
     setCurrentVolunteerBookingsValue("");
     setRiderBookings(cleanValues.riderBookings ?? []);
     setCurrentRiderBookingsValue("");
+=======
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
     setErrors({});
   };
-  const [timeslotRecord, setTimeslotRecord] = React.useState(timeslot);
+  const [timeslotRecord, setTimeslotRecord] = React.useState(timeslotModelProp);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
         ? await DataStore.query(Timeslot, idProp)
+<<<<<<< HEAD
         : timeslot;
       setTimeslotRecord(record);
     };
     queryData();
   }, [idProp, timeslot]);
+=======
+        : timeslotModelProp;
+      setTimeslotRecord(record);
+    };
+    queryData();
+  }, [idProp, timeslotModelProp]);
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
   React.useEffect(resetStateValues, [timeslotRecord]);
   const [currentUnavailableDatesValue, setCurrentUnavailableDatesValue] =
     React.useState("");
   const unavailableDatesRef = React.createRef();
+<<<<<<< HEAD
   const [currentVolunteerBookingsValue, setCurrentVolunteerBookingsValue] =
     React.useState("");
   const volunteerBookingsRef = React.createRef();
   const [currentRiderBookingsValue, setCurrentRiderBookingsValue] =
     React.useState("");
   const riderBookingsRef = React.createRef();
+=======
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
   const validations = {
     startTime: [],
     endTime: [],
     unavailableDates: [],
+<<<<<<< HEAD
     volunteerBookings: [],
     riderBookings: [],
+=======
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
   };
   const runValidationTasks = async (
     fieldName,
@@ -281,8 +308,11 @@ export default function TimeslotUpdateForm(props) {
           startTime,
           endTime,
           unavailableDates,
+<<<<<<< HEAD
           volunteerBookings,
           riderBookings,
+=======
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -333,7 +363,11 @@ export default function TimeslotUpdateForm(props) {
         label="Start time"
         isRequired={false}
         isReadOnly={false}
+<<<<<<< HEAD
         type="date"
+=======
+        type="time"
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
         value={startTime}
         onChange={(e) => {
           let { value } = e.target;
@@ -342,8 +376,11 @@ export default function TimeslotUpdateForm(props) {
               startTime: value,
               endTime,
               unavailableDates,
+<<<<<<< HEAD
               volunteerBookings,
               riderBookings,
+=======
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
             };
             const result = onChange(modelFields);
             value = result?.startTime ?? value;
@@ -362,7 +399,11 @@ export default function TimeslotUpdateForm(props) {
         label="End time"
         isRequired={false}
         isReadOnly={false}
+<<<<<<< HEAD
         type="date"
+=======
+        type="time"
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
         value={endTime}
         onChange={(e) => {
           let { value } = e.target;
@@ -371,8 +412,11 @@ export default function TimeslotUpdateForm(props) {
               startTime,
               endTime: value,
               unavailableDates,
+<<<<<<< HEAD
               volunteerBookings,
               riderBookings,
+=======
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
             };
             const result = onChange(modelFields);
             value = result?.endTime ?? value;
@@ -395,8 +439,11 @@ export default function TimeslotUpdateForm(props) {
               startTime,
               endTime,
               unavailableDates: values,
+<<<<<<< HEAD
               volunteerBookings,
               riderBookings,
+=======
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
             };
             const result = onChange(modelFields);
             values = result?.unavailableDates ?? values;
@@ -428,6 +475,7 @@ export default function TimeslotUpdateForm(props) {
           }}
           onBlur={() =>
             runValidationTasks("unavailableDates", currentUnavailableDatesValue)
+<<<<<<< HEAD
           }
           errorMessage={errors.unavailableDates?.errorMessage}
           hasError={errors.unavailableDates?.hasError}
@@ -533,6 +581,14 @@ export default function TimeslotUpdateForm(props) {
           ref={riderBookingsRef}
           labelHidden={true}
           {...getOverrideProps(overrides, "riderBookings")}
+=======
+          }
+          errorMessage={errors.unavailableDates?.errorMessage}
+          hasError={errors.unavailableDates?.hasError}
+          ref={unavailableDatesRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "unavailableDates")}
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
         ></TextField>
       </ArrayField>
       <Flex
@@ -546,7 +602,11 @@ export default function TimeslotUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
+<<<<<<< HEAD
           isDisabled={!(idProp || timeslot)}
+=======
+          isDisabled={!(idProp || timeslotModelProp)}
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -558,7 +618,11 @@ export default function TimeslotUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
+<<<<<<< HEAD
               !(idProp || timeslot) ||
+=======
+              !(idProp || timeslotModelProp) ||
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

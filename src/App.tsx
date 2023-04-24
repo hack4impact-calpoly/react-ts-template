@@ -2,16 +2,21 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Amplify } from "aws-amplify";
+import { DataStore } from "@aws-amplify/datastore";
+import { LazyTimeslot, Timeslot } from "./models";
 import awsconfig from "./aws-exports";
-import Success from "./components/success";
-import ResetPassword from "./components/resetPassword";
-import CreateAccount from "./components/createAccount";
-import EnterCode from "./components/enterCode";
-import Login from "./components/login";
-import ForgotPassword from "./components/forgotPassword";
+import Success from "./components/authentication/success";
+import ResetPassword from "./components/authentication/resetPassword";
+import CreateAccount from "./components/authentication/createAccount";
+import EnterCode from "./components/authentication/enterCode";
+import Login from "./components/authentication/login";
+import ForgotPassword from "./components/authentication/forgotPassword";
+import Timeslots from "./components/popup/timeslots";
 import Calendar from "./components/calendar";
-import CalendarMobile from "./components/mobileCalendar";
-import MobileTimeslots from "./components/mobileTimeslots";
+import CalendarMobile from "./components/mobile/mobileCalendar";
+import MobileTimeslots from "./components/mobile/mobileTimeslots";
+import TimeslotSuccess from "./components/popup/timeslotSuccess";
+import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
 
 Amplify.configure(awsconfig);
 
@@ -25,6 +30,7 @@ function App() {
   const [day, setDayProp] = useState<string>();
   const [month, setMonthProp] = useState<string>();
   const [weekday, setWeekdayProp] = useState<string>();
+  const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.outerWidth <= 500);
@@ -34,6 +40,18 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   // added additional attributes to the calendarmobile component for props
+
+  useEffect(() => {
+    const pullData = async () => {
+      const ts = await DataStore.query(Timeslot);
+      setTs(ts);
+      console.log(ts);
+      console.log(new Date("July 4 1776 14:30"));
+    };
+
+    pullData();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -70,8 +88,17 @@ function App() {
         />
         <Route path="/success/:id" element={<Success />} />
         <Route
+          path="/timeslots"
+          element={<Timeslots userType="rider" models={timeslots} />}
+        />
+        <Route
           path="/mobile-timeslots"
-          element={<MobileTimeslots userType="volunteer" />}
+          element={<MobileTimeslots userType="rider" />}
+        />
+        <Route path="/timeslot-success" element={<TimeslotSuccess />} />
+        <Route
+          path="/timeslot-confirmation"
+          element={<TimeSlotConfirmation userType="rider" status="book" />}
         />
       </Routes>
     </BrowserRouter>
