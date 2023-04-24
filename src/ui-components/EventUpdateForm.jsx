@@ -34,9 +34,22 @@ function ArrayField({
   defaultFieldValue,
   lengthLimit,
   getBadgeText,
+<<<<<<< HEAD
+  errorMessage,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
+=======
 }) {
   const labelElement = <Text>{label}</Text>;
   const { tokens } = useTheme();
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
   const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
   const [isEditing, setIsEditing] = React.useState();
   React.useEffect(() => {
@@ -68,6 +81,56 @@ function ArrayField({
     }
   };
   const arraySection = (
+<<<<<<< HEAD
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+=======
     <React.Fragment>
       {!!items?.length && (
         <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
@@ -166,6 +229,61 @@ function ArrayField({
         </Flex>
       )}
       {arraySection}
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button
+            size="small"
+            variation="link"
+            isDisabled={hasError}
+            onClick={addItem}
+          >
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
     </React.Fragment>
   );
 }
@@ -232,9 +350,16 @@ export default function EventUpdateForm(props) {
     currentValue,
     getDisplayValue
   ) => {
+<<<<<<< HEAD
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
+=======
     const value = getDisplayValue
       ? getDisplayValue(currentValue)
       : currentValue;
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -408,7 +533,12 @@ export default function EventUpdateForm(props) {
         currentFieldValue={currentTimeslotIdValue}
         label={"Timeslot id"}
         items={timeslotId}
+<<<<<<< HEAD
+        hasError={errors?.timeslotId?.hasError}
+        errorMessage={errors?.timeslotId?.errorMessage}
+=======
         hasError={errors.timeslotId?.hasError}
+>>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
         setFieldValue={setCurrentTimeslotIdValue}
         inputFieldRef={timeslotIdRef}
         defaultFieldValue={""}
