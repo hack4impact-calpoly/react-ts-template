@@ -23,6 +23,13 @@ Amplify.configure(awsconfig);
 function App() {
   const [email, setEmailProp] = useState<string>();
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  // maybe i use this prop to pass into calendar mobile so that
+  // mobile weekly view page will change it onclick which in turn
+  // will change the current date
+
+  const [day, setDayProp] = useState<string>();
+  const [month, setMonthProp] = useState<string>();
+  const [weekday, setWeekdayProp] = useState<string>();
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
   useEffect(() => {
     const handleResize = () => {
@@ -32,6 +39,7 @@ function App() {
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  // added additional attributes to the calendarmobile component for props
 
   useEffect(() => {
     const pullData = async () => {
@@ -50,7 +58,22 @@ function App() {
         {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
         <Route
           path="/"
-          element={isMobile ? <CalendarMobile /> : <Calendar />}
+          element={
+            isMobile ? (
+              <CalendarMobile
+                user=""
+                bookings={0}
+                day={day!}
+                setDayProp={setDayProp}
+                month={month!}
+                setMonthProp={setMonthProp}
+                weekday={weekday!}
+                setWeekdayProp={setWeekdayProp}
+              />
+            ) : (
+              <Calendar />
+            )
+          }
         />
         <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<CreateAccount />} />
@@ -70,7 +93,7 @@ function App() {
         />
         <Route
           path="/mobile-timeslots"
-          element={<MobileTimeslots userType="rider" models={timeslots} />}
+          element={<MobileTimeslots userType="rider" />}
         />
         <Route path="/timeslot-success" element={<TimeslotSuccess />} />
         <Route
