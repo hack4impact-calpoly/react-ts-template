@@ -21,7 +21,11 @@ const CancelBtn = styled.button`
   background-color: white;
   border: 4px solid #1b4c5a;
   color: #1b4c5a;
-  width: 25px;
+  font-family: "Rubik";
+  font-weight: 700;
+  font-size: 16pt;
+  width: 250px;
+  height: 60px;
 `;
 
 const SaveBtn = styled.button`
@@ -29,14 +33,19 @@ const SaveBtn = styled.button`
   left: 40%;
   background-color: #1b4c5a;
   color: white;
-  width: 25px;
+  border: 4px solid #1b4c5a;
+  font-family: "Rubik";
+  font-weight: 700;
+  font-size: 16pt;
+  width: 250px;
+  height: 60px;
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding-top: 130px;
-  padding-bottom: 1600px;
+  padding-top: 90px;
+  padding-bottom: 90px;
 `;
 
 const LeftColumn = styled.div`
@@ -46,12 +55,22 @@ const LeftColumn = styled.div`
   justify-content: flex-start;
   padding: 0 50px 0 50px;
   gap: 20px;
+  width: 400px;
 `;
 
 const RightColumn = styled.div`
   padding-right: 10px;
   width: 500px;
   flex: 1;
+`;
+
+const BtnContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 80%;
+  padding-top: 40px;
+  gap: 20px;
 `;
 
 const DateHeader = styled.p`
@@ -118,8 +137,10 @@ export default function Popup() {
             <RightColumn>
               <DateHeader>{formattedDate}</DateHeader>
               <Timeslots userType="rider" models={timeslots} />
-              <CancelBtn>Cancel</CancelBtn>
-              <SaveBtn>Save</SaveBtn>
+              <BtnContainer>
+                <CancelBtn>Cancel</CancelBtn>
+                <SaveBtn>Save</SaveBtn>
+              </BtnContainer>
             </RightColumn>
           </Wrapper>
         </PopupBox>
