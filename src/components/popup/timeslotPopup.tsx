@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { DataStore } from "@aws-amplify/datastore";
+import { DataStore } from "aws-amplify";
 import x from "../../images/X.svg";
 import { PopupDiv, PopupBox, X } from "../styledComponents";
 import Monthly from "../monthlyView";
@@ -83,6 +83,8 @@ const DateHeader = styled.p`
 
 export default function Popup() {
   const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/");
@@ -97,8 +99,6 @@ export default function Popup() {
   };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.outerWidth <= 500);
@@ -107,6 +107,7 @@ export default function Popup() {
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   useEffect(() => {
     const pullData = async () => {
       const ts = await DataStore.query(Timeslot);
