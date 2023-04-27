@@ -212,6 +212,30 @@ const X = styled.img`
   cursor: pointer;
 `;
 
+const CancelBtn = styled.button`
+  background-color: white;
+  border: 4px solid #1b4c5a;
+  color: #1b4c5a;
+  font-family: "Rubik";
+  font-weight: 700;
+  font-size: 16pt;
+  width: 250px;
+  height: 60px;
+  cursor: pointer;
+`;
+
+const SaveBtn = styled.button`
+  background-color: #1b4c5a;
+  color: white;
+  border: 4px solid #1b4c5a;
+  font-family: "Rubik";
+  font-weight: 700;
+  font-size: 16pt;
+  width: 250px;
+  height: 60px;
+  cursor: pointer;
+`;
+
 export {
   Wrapper,
   Box,
@@ -232,4 +256,6 @@ export {
   PopupDiv,
   PopupBox,
   X,
+  CancelBtn,
+  SaveBtn,
 };

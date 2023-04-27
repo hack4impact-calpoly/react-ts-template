@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { DataStore } from "aws-amplify";
 import x from "../../images/X.svg";
-import { PopupDiv, PopupBox, X } from "../styledComponents";
+import { PopupDiv, PopupBox, X, CancelBtn, SaveBtn } from "../styledComponents";
 import Monthly from "../monthlyView";
 import AptInfo from "../appointmentInfo";
 import Timeslots from "./timeslots";
@@ -15,36 +15,9 @@ const TempButton = styled.button`
   left: 40%;
 `;
 
-const CancelBtn = styled.button`
-  top: 10%;
-  left: 40%;
-  background-color: white;
-  border: 4px solid #1b4c5a;
-  color: #1b4c5a;
-  font-family: "Rubik";
-  font-weight: 700;
-  font-size: 16pt;
-  width: 250px;
-  height: 60px;
-`;
-
-const SaveBtn = styled.button`
-  top: 10%;
-  left: 40%;
-  background-color: #1b4c5a;
-  color: white;
-  border: 4px solid #1b4c5a;
-  font-family: "Rubik";
-  font-weight: 700;
-  font-size: 16pt;
-  width: 250px;
-  height: 60px;
-`;
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding-top: 90px;
   padding-bottom: 90px;
 `;
 
@@ -54,21 +27,22 @@ const LeftColumn = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   padding: 0 50px 0 50px;
-  gap: 20px;
+  // gap: 20px;
   width: 400px;
 `;
 
 const RightColumn = styled.div`
   padding-right: 10px;
   width: 500px;
-  flex: 1;
+  // flex: 1;
 `;
 
 const BtnContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  width: 80%;
+  align-items: center;
+  // justify-content: space-between;
+  // width: 80%;
   padding-top: 40px;
   gap: 20px;
 `;
@@ -81,8 +55,19 @@ const DateHeader = styled.p`
   padding-bottom: 10px;
 `;
 
+const AptHeader = styled.h1`
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 125%;
+  line-height: 200%;
+  background: white;
+  color: #1b4c5a;
+`;
+
 export default function Popup() {
   const [open, setOpen] = useState(false);
+  // eslint-disable-next-line
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
   const navigate = useNavigate();
@@ -133,6 +118,7 @@ export default function Popup() {
           <Wrapper>
             <LeftColumn>
               <Monthly />
+              <AptHeader>Appointment Info</AptHeader>
               <AptInfo />
             </LeftColumn>
             <RightColumn>
