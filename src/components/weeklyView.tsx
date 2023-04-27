@@ -52,9 +52,15 @@ export interface WeeklyViewProps {
   textColor: "black";
 }
 
-export default function WeeklyView() {
+export interface WeeklyProps {
+  startDate: Date;
+}
+
+export default function WeeklyView({ startDate }: WeeklyProps) {
   // eslint-disable-next-line
-  const [calTimeslots, setCalTimeslots] = useState(bookings);
+  const [selectedDate, setSelectedDate] = useState(startDate);
+  // const [calTimeslots, setCalTimeslots] = useState(bookings);
+  const [calTimeslots] = useState(bookings);
 
   const updatedSlots = calTimeslots.map((timeslot) => ({
     start: timeslot.startTime,
@@ -67,6 +73,7 @@ export default function WeeklyView() {
     <CalDiv>
       <FullCalendar
         plugins={[timeGridPlugin]}
+        initialDate={selectedDate}
         initialView="timeGridWeek"
         events={updatedSlots}
         allDaySlot={false}
@@ -76,6 +83,10 @@ export default function WeeklyView() {
         displayEventEnd
         displayEventTime
         dayHeaderFormat={{ weekday: "short", day: "numeric" }}
+        datesSet={(dateInfo) => {
+          console.log(dateInfo.start);
+          console.log(dateInfo.end);
+        }}
       />
     </CalDiv>
   );
