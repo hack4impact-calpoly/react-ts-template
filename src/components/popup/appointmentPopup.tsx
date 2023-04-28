@@ -4,15 +4,6 @@ import styled from "styled-components";
 import { Box, Wrapper } from "../styledComponents";
 import AppointmentInfo from "../appointmentInfo";
 
-const Header = styled.h1`
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 125%;
-  line-height: 200%;
-  background: white;
-  color: #1b4c5a;
-`;
 const ButtonPop = styled.button`
   background: #1b4c5a;
   border: solid 0.5px #6c6b6b;
@@ -60,7 +51,6 @@ export default function AppointmentPopup() {
         Click Me
       </ButtonPop>
       <SurroundingBox style={{ display: popupShown ? "block" : "none" }}>
-        <Header>Appointment Info</Header>
         <AppointmentInfo />
         <ConfirmButton type="button" to="/time-slot-confirmation">
           <ButtonText>Book</ButtonText>
