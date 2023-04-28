@@ -46,22 +46,48 @@ const CalDiv = styled.div`
 `;
 
 export interface WeeklyViewProps {
+  // eslint-disable-next-line react/no-unused-prop-types
   start: Date;
+  // eslint-disable-next-line react/no-unused-prop-types
   end: Date;
+  // eslint-disable-next-line react/no-unused-prop-types
   backgroundColor: "#90BFCC";
+  // eslint-disable-next-line react/no-unused-prop-types
   textColor: "black";
+  userRole: "volunteer" | "rider" | "admin";
 }
 
-export default function WeeklyView() {
+export default function WeeklyView({ userRole }: WeeklyViewProps) {
   // eslint-disable-next-line
   const [calTimeslots, setCalTimeslots] = useState(bookings);
 
-  const updatedSlots = calTimeslots.map((timeslot) => ({
-    start: timeslot.startTime,
-    end: timeslot.endTime,
-    backgroundColor: "#90BFCC",
-    textColor: "black",
-  }));
+  const updatedSlots = calTimeslots.map((timeslot: any) => {
+    let backgroundColor = "#90BFCC";
+
+    if (userRole === "rider") {
+      const hasRiderBooking = timeslot.riderBookings.length > 0;
+      if (hasRiderBooking) {
+        backgroundColor = "#E0EFF1";
+      }
+    } else if (userRole === "volunteer") {
+      const hasVolunteerBooking = timeslot.volunteerBookings.length > 0;
+      if (hasVolunteerBooking) {
+        backgroundColor = "#E0EFF1";
+      }
+    } else if (userRole === "admin") {
+      if (
+        timeslot.unavailableDates.includes(timeslot.startTime.toDateString())
+      ) {
+        backgroundColor = "#E0EFF1";
+      }
+    }
+    return {
+      start: timeslot.startTime,
+      end: timeslot.endTime,
+      backgroundColor,
+      textColor: "black",
+    };
+  });
 
   return (
     <CalDiv>

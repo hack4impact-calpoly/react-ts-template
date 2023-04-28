@@ -51,7 +51,13 @@ export default function Calendar() {
           <Toggle />
         </LeftColumn>
         <RightColumn>
-          <Weekly />
+          <Weekly
+            start={new Date("")}
+            end={new Date("")}
+            backgroundColor="#90BFCC"
+            textColor="black"
+            userRole="rider"
+          />
         </RightColumn>
       </Wrapper>
       <Popup />
