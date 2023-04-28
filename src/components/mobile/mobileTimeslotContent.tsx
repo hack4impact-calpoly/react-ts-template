@@ -36,7 +36,8 @@ const BoxMobile = styled.div`
   display: flex;
   font-family: "Rubik", sans-serif;
   background: white;
-  // width: 85%;
+  width: 80%;
+  margin-left: -12%;
 `;
 const HeaderMobile = styled.h1`
   color: #1b4c5a;
@@ -53,7 +54,6 @@ const WrapperMobile = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-bottom: 10px;
 `;
 const BoxMobileContent = styled.div`
   display: flex;
@@ -68,12 +68,6 @@ const RiderContent = styled.text`
   font-size: 16px;
   font-weight: 700;
 `;
-
-const TimeslotButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-`;
 const TimeslotButton = styled.button`
   color: #1b4c5a;
   border: none;
@@ -81,6 +75,7 @@ const TimeslotButton = styled.button`
   font-weight: 700;
   font-size: 14px;
   line-height: 16px;
+  margin-left: 45%;
   margin-bottom: 5%;
   cursor: pointer;
 `;
@@ -90,6 +85,7 @@ const OnOffSlide = styled.img`
   margin-left: 75%;
   margin-top: 20%;
 `;
+
 type UserType = {
   user: string;
   bookings: number;
@@ -139,7 +135,7 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
   // console.log("onOff", onOff);
   return (
     <WrapperMobile>
-      <BoxMobile>
+      <BoxMobile style={{ display: "block" }}>
         <BoxMobileContent>
           <HeaderMobile>Appointment Info</HeaderMobile>
           <RiderInfo
@@ -148,7 +144,7 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
                 (user === "admin" && onOff === true) ||
                 user === "rider" ||
                 user === "volunteer"
-                  ? "flex"
+                  ? "block"
                   : "none",
             }}
           >
@@ -161,19 +157,19 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
               display:
                 user === "rider" || (user === "admin" && onOff === false)
                   ? "none"
-                  : "flex",
+                  : "block",
             }}
           >
             <LogoDude src={Dude} />{" "}
             <RiderContent>Volunteers: Jane Doe, John Smith</RiderContent>
           </RiderInfo>
           {booked === false ? (
-            <RiderInfo style={{ display: user === "admin" ? "none" : "flex" }}>
+            <RiderInfo style={{ display: user === "admin" ? "none" : "block" }}>
               <LogoBookmark src={Bookmark} />{" "}
               <RiderContent>Status: Booked</RiderContent>
             </RiderInfo>
           ) : (
-            <RiderInfo style={{ display: user === "admin" ? "none" : "flex" }}>
+            <RiderInfo style={{ display: user === "admin" ? "none" : "block" }}>
               <LogoBookmark src={Bookmark} />{" "}
               <RiderContent>Status: Unbooked</RiderContent>
             </RiderInfo>
@@ -182,43 +178,39 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
               because I am only making the appt pop up. Will probably have to add more functionality
               when implementing the pop up in the calendar */}
           {booked === true ? (
-            <TimeslotButtonWrapper>
-              <TimeslotButton
-                style={{
-                  display:
-                    user === "admin" || (user === "rider" && bookings === 1)
-                      ? "none"
-                      : "flex",
-                }}
-                onClick={handleClick}
-              >
-                Book time slot
-              </TimeslotButton>
-            </TimeslotButtonWrapper>
+            <TimeslotButton
+              style={{
+                display:
+                  user === "admin" || (user === "rider" && bookings === 1)
+                    ? "none"
+                    : "block",
+              }}
+              onClick={handleClick}
+            >
+              Book time slot
+            </TimeslotButton>
           ) : (
-            <TimeslotButtonWrapper>
-              <TimeslotButton
-                style={{
-                  display:
-                    user === "admin" || (user === "rider" && bookings === 1)
-                      ? "none"
-                      : "flex",
-                }}
-                onClick={handleClick}
-              >
-                Cancel time slot
-              </TimeslotButton>
-            </TimeslotButtonWrapper>
+            <TimeslotButton
+              style={{
+                display:
+                  user === "admin" || (user === "rider" && bookings === 1)
+                    ? "none"
+                    : "block",
+              }}
+              onClick={handleClick}
+            >
+              Cancel time slot
+            </TimeslotButton>
           )}
           {onOff === true ? (
             <OnOffSlide
-              style={{ display: user === "admin" ? "flex" : "none" }}
+              style={{ display: user === "admin" ? "block" : "none" }}
               onClick={handleSlide}
               src={OnSlide}
             />
           ) : (
             <OnOffSlide
-              style={{ display: user === "admin" ? "flex" : "none" }}
+              style={{ display: user === "admin" ? "block" : "none" }}
               onClick={handleSlide}
               src={OffSlide}
             />
