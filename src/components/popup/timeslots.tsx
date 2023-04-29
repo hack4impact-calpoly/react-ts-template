@@ -1,30 +1,26 @@
 import React from "react";
 import styled from "styled-components";
-import { Box } from "../styledComponents";
+// import { Box } from "../styledComponents";
 import Timeslot from "./timeslot";
 import { LazyTimeslot } from "../../models";
 
 const Wrapper = styled.section`
   display: flex;
   align-items: left;
-  justify-content: center;
-  padding: 4%;
-  max-height: 600px;
+  width: 100%;
+  max-height: 400px;
   overflow-y: scroll;
 `;
 
-const Slots = styled(Box)`
+const Slots = styled.div`
   //justify content limits view of timeslots
   /* display: flex; */
   flex-direction: column;
-  align-items: center;
-  // For 100% screen height
-  /* width: max; */
-  //width: 70vw; /* For 100% screen width */
   border: none;
   box-shadow: none;
   width: 100%;
   height: 100%;
+  font-family: "Rubik", sans-serif;
 `;
 
 let timeslots = [
@@ -76,7 +72,7 @@ interface TimeslotsProps {
 }
 
 export default function Timeslots({ userType, models }: TimeslotsProps) {
-  console.log(models);
+  // console.log(models);
   if (models !== "nothing") {
     timeslots = [];
     models.forEach((model) => {
@@ -91,7 +87,7 @@ export default function Timeslots({ userType, models }: TimeslotsProps) {
         });
       }
     });
-    console.log(timeslots);
+    // console.log(timeslots);
   }
   function filterTimeSlots(
     isVolunteers: boolean,

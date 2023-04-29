@@ -203,7 +203,7 @@ const PopupDiv = styled(Modal)`
 `;
 const PopupBox = styled.div`
   width: 70rem;
-  height: 871px;
+  height: auto;
   background: #ffffff;
   border: none;
 `;
@@ -213,6 +213,30 @@ const X = styled.img`
   padding: 2rem;
   cursor: pointer;
 >>>>>>> 1d07f507fcfba0bcba35573e1a6d3627544d1610
+`;
+
+const CancelBtn = styled.button`
+  background-color: white;
+  border: 4px solid #1b4c5a;
+  color: #1b4c5a;
+  font-family: "Rubik";
+  font-weight: 700;
+  font-size: 16pt;
+  width: 250px;
+  height: 60px;
+  cursor: pointer;
+`;
+
+const SaveBtn = styled.button`
+  background-color: #1b4c5a;
+  color: white;
+  border: 4px solid #1b4c5a;
+  font-family: "Rubik";
+  font-weight: 700;
+  font-size: 16pt;
+  width: 250px;
+  height: 60px;
+  cursor: pointer;
 `;
 
 export {
@@ -235,4 +259,6 @@ export {
   PopupDiv,
   PopupBox,
   X,
+  CancelBtn,
+  SaveBtn,
 };

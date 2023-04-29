@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { Amplify } from "aws-amplify";
-import { DataStore } from "@aws-amplify/datastore";
+import { Amplify, DataStore } from "aws-amplify";
+// import { DataStore } from "@aws-amplify/datastore";
 import { LazyTimeslot, Timeslot } from "./models";
 import awsconfig from "./aws-exports";
 import Success from "./components/authentication/success";
@@ -82,7 +82,7 @@ function App() {
                   setWeekdayProp={setWeekdayProp}
                 />
               ) : (
-                <Calendar />
+                <Calendar userType="rider" />
               )
             }
           />
