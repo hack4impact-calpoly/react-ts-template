@@ -72,7 +72,7 @@ interface TimeslotsProps {
 }
 
 export default function Timeslots({ userType, models }: TimeslotsProps) {
-  console.log(models);
+  // console.log(models);
   if (models !== "nothing") {
     timeslots = [];
     models.forEach((model) => {
@@ -87,7 +87,7 @@ export default function Timeslots({ userType, models }: TimeslotsProps) {
         });
       }
     });
-    console.log(timeslots);
+    // console.log(timeslots);
   }
   function filterTimeSlots(
     isVolunteers: boolean,
