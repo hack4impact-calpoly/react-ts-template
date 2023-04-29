@@ -58,6 +58,7 @@ const WeekDates = styled.table`
     }
   }
 `;
+
 const Header1 = styled.text`
   display: none;
   @media (max-width: 500px) {
@@ -80,11 +81,20 @@ const Month = styled.text`
   }
 `;
 
+// setter props for setting the currently selected date to pass into mobile calendar + start date
 interface WeeklyViewMobileProps {
   startDate: Date;
+  setDayProp: (val: string) => void;
+  setMonthProp: (val: string) => void;
+  setWeekdayProp: (val: string) => void;
 }
 
-export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
+export default function WeeklyViewMobile({
+  startDate,
+  setDayProp,
+  setMonthProp,
+  setWeekdayProp,
+}: WeeklyViewMobileProps) {
   const [currentDate, setCurrentDate] = useState(startDate);
   const days: Date[] = [];
   for (let i = 0; i < 7; i++) {
@@ -103,6 +113,26 @@ export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
     const diff = day.getDate() - day.getDay() + (day.getDay() === -1 ? -7 : 0);
     return new Date(day.setDate(diff));
   }
+  // for getting todays day
+  const currentTime = new Date();
+  const currentDay = currentTime.getDay();
+  // selected date will start on todays date
+  const [selected, setSelected] = useState(currentDay);
+
+  // getting the currently selected month to set
+  const month = getStartOfWeek(currentDate).toLocaleDateString("en-us", {
+    month: "long",
+  });
+  setMonthProp(month);
+
+  // setting the currently selected day in number
+  setDayProp(days[selected].toLocaleDateString("en-us", { day: "numeric" }));
+  // setting the currently selected day of the week
+  setWeekdayProp(
+    days[selected].toLocaleDateString("en-us", {
+      weekday: "short",
+    })
+  );
 
   return (
     <Wrapper>
@@ -134,8 +164,19 @@ export default function WeeklyViewMobile({ startDate }: WeeklyViewMobileProps) {
             ))}
           </tr>
           <tr>
-            {days.map((day) => (
-              <th key={day.toDateString()}>
+            {days.map((day, i) => (
+              <th
+                // right now the styling is messing up the other days near the currently selected one but the functionality works
+                // eslint-disable-next-line react/no-array-index-key
+                key={i}
+                style={{
+                  borderRadius: i === selected ? "100%" : "initial",
+                  width: i === selected ? "22px" : "initial",
+                  height: i === selected ? "22px" : "initial",
+                  background: i === selected ? "#e0eff1" : "initial",
+                }}
+                onClick={() => setSelected(i)}
+              >
                 {day.toLocaleDateString("en-us", { day: "numeric" })}
               </th>
             ))}
