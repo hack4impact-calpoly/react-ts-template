@@ -99,7 +99,13 @@ function App() {
           <Route path="/success/:id" element={<Success />} />
           <Route
             path="/timeslots"
-            element={<Timeslots userType="rider" models={timeslots} />}
+            element={
+              <Timeslots
+                userType="rider"
+                models={timeslots}
+                date={new Date()}
+              />
+            }
           />
           <Route
             path="/mobile-timeslots"

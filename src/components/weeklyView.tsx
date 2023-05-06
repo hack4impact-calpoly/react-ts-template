@@ -57,7 +57,17 @@ export interface WeeklyViewProps {
 export default function WeeklyView() {
   // eslint-disable-next-line
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
-  const [showPopup, setShowPopup] = useState(false);
+  const [popup, setPopup] = useState(false);
+  const [popupDate, setPopupDate] = useState<Date>(new Date());
+
+  const handleEventClick = (eventClickInfo: any) => {
+    setPopupDate(eventClickInfo.event.start);
+    setPopup(true);
+  };
+
+  const handleChildData = () => {
+    setPopup(false);
+  };
 
   useEffect(() => {
     const pullData = async () => {
@@ -83,7 +93,6 @@ export default function WeeklyView() {
         plugins={[timeGridPlugin, interactionPlugin]}
         initialView="timeGridWeek"
         events={slots}
-        eventClick={() => setShowPopup(true)}
         allDaySlot={false}
         slotMinTime="8:00:00"
         slotMaxTime="18:00:00"
@@ -91,9 +100,9 @@ export default function WeeklyView() {
         displayEventEnd
         displayEventTime
         dayHeaderFormat={{ weekday: "short", day: "numeric" }}
-        selectable
+        eventClick={handleEventClick}
       />
-      {showPopup && <Popup />}
+      <Popup o={popup} onData={handleChildData} date={popupDate} />
     </CalDiv>
   );
 }

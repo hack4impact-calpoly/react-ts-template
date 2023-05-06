@@ -69,9 +69,11 @@ let timeslots = [
 interface TimeslotsProps {
   userType: "volunteer" | "rider";
   models: LazyTimeslot[] | "nothing";
+  date: Date;
 }
 
-export default function Timeslots({ userType, models }: TimeslotsProps) {
+export default function Timeslots({ userType, models, date }: TimeslotsProps) {
+  console.log(date);
   console.log(models);
   if (models !== "nothing") {
     timeslots = [];

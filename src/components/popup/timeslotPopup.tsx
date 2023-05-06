@@ -9,12 +9,6 @@ import AptInfo from "../appointmentInfo";
 import Timeslots from "./timeslots";
 import { LazyTimeslot, Timeslot } from "../../models";
 
-const TempButton = styled.button`
-  position: absolute;
-  top: 10%;
-  left: 40%;
-`;
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -65,18 +59,24 @@ const AptHeader = styled.h1`
   color: #1b4c5a;
 `;
 
-export default function Popup() {
-  const [open, setOpen] = useState(false);
+interface PopupProps {
+  o: boolean;
+  onData: () => void;
+  date: Date;
+}
+
+export default function Popup({ o, onData, date }: PopupProps) {
   // eslint-disable-next-line
+  const [open, setOpen] = useState<boolean>(o);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/");
     setOpen(false);
+    onData();
   };
 
-  const date = new Date();
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
     month: "long",
@@ -87,6 +87,7 @@ export default function Popup() {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.outerWidth <= 500);
+      console.log(isMobile);
     };
     window.addEventListener("resize", handleResize);
     handleResize();
@@ -98,15 +99,17 @@ export default function Popup() {
       const ts = await DataStore.query(Timeslot);
       setTs(ts);
       console.log(ts);
-      console.log(new Date("July 4 1776 14:30"));
     };
 
     pullData();
   }, []);
 
+  useEffect(() => {
+    setOpen(o);
+  }, [o]);
+
   return (
     <div>
-      <TempButton onClick={() => setOpen(true)}>Open popup</TempButton>
       <PopupDiv
         open={open}
         onClose={() => setOpen(false)}
@@ -123,7 +126,11 @@ export default function Popup() {
             </LeftColumn>
             <RightColumn>
               <DateHeader>{formattedDate}</DateHeader>
-              <Timeslots userType="rider" models={timeslots} />
+              <Timeslots
+                userType="rider"
+                models={timeslots}
+                date={new Date()}
+              />
               <BtnContainer>
                 <CancelBtn>Cancel</CancelBtn>
                 <SaveBtn>Save</SaveBtn>

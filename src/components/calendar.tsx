@@ -6,7 +6,6 @@ import Monthly from "./monthlyView";
 import Weekly from "./weeklyView";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
-import Popup from "./popup/timeslotPopup";
 
 const Logo = styled.img`
   position: absolute;
@@ -54,7 +53,6 @@ export default function Calendar() {
           <Weekly />
         </RightColumn>
       </Wrapper>
-      <Popup />
     </div>
   );
 }
