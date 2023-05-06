@@ -51,9 +51,12 @@ const ViewingDescription = styled.p`
 
 export default function AdminToggle() {
   // Initialize a boolean state
+  const isAdmin = false; // delete later
   const [showVolunteers, setShowVolunteers] = useState(false);
   const [showRiders, setShowRiders] = useState(false);
   const [showBoth, setShowBoth] = useState(true);
+  const [showAvailability, setShowAvailability] = useState(true);
+
   // Password toggle handler
   const toggleVolunteer = () => {
     // When the handler is invoked
@@ -76,28 +79,52 @@ export default function AdminToggle() {
     setShowRiders(false);
     setShowVolunteers(false);
   };
+  const toggleNonAdminView = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setShowAvailability(!showAvailability);
+  };
 
   return (
     <div>
       <ViewingText>Viewing:</ViewingText>
-      <Row>
-        <CheckBox onClick={toggleBoth}>
-          {showBoth ? <Check /> : <NotCheck />}
-        </CheckBox>
-        <ViewingDescription>Both</ViewingDescription>
-      </Row>
-      <Row>
-        <CheckBox onClick={toggleVolunteer}>
-          {showVolunteers ? <Check /> : <NotCheck />}
-        </CheckBox>
-        <ViewingDescription>Volunteer only</ViewingDescription>
-      </Row>
-      <Row>
-        <CheckBox onClick={toggleRider}>
-          {showRiders ? <Check /> : <NotCheck />}
-        </CheckBox>
-        <ViewingDescription>Rider only</ViewingDescription>
-      </Row>
+      {isAdmin ? (
+        <div>
+          <Row>
+            <CheckBox onClick={toggleBoth}>
+              {showBoth ? <Check /> : <NotCheck />}
+            </CheckBox>
+            <ViewingDescription>Both</ViewingDescription>
+          </Row>
+          <Row>
+            <CheckBox onClick={toggleVolunteer}>
+              {showVolunteers ? <Check /> : <NotCheck />}
+            </CheckBox>
+            <ViewingDescription>Volunteer only</ViewingDescription>
+          </Row>
+          <Row>
+            <CheckBox onClick={toggleRider}>
+              {showRiders ? <Check /> : <NotCheck />}
+            </CheckBox>
+            <ViewingDescription>Rider only</ViewingDescription>
+          </Row>
+        </div>
+      ) : (
+        <div>
+          <Row>
+            <CheckBox onClick={toggleNonAdminView}>
+              {showAvailability ? <Check /> : <NotCheck />}
+            </CheckBox>
+            <ViewingDescription>Availability</ViewingDescription>
+          </Row>
+          <Row>
+            <CheckBox onClick={toggleNonAdminView}>
+              {!showAvailability ? <Check /> : <NotCheck />}
+            </CheckBox>
+            <ViewingDescription>My Slots</ViewingDescription>
+          </Row>
+        </div>
+      )}
     </div>
   );
 }
