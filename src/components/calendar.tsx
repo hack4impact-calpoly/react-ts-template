@@ -1,7 +1,7 @@
 /* eslint-disable import/no-duplicates */
 import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
-// import { DataStore } from "@aws-amplify/datastore";
+import { DataStore } from "@aws-amplify/datastore";
 import MonthCalendar from "react-calendar";
 import WeekCalendar from "@fullcalendar/react";
 import FullCalendarRef from "@fullcalendar/react";
@@ -12,7 +12,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
-import { bookings } from "./booking";
+// import { bookings } from "./booking";
+import { LazyTimeslot, Timeslot } from "../models";
 // import FullCalendar from "@fullcalendar/react";
 
 const CalDiv = styled.div`
@@ -203,26 +204,27 @@ export interface WeeklyViewProps {
 }
 
 export default function Calendar({ userType }: WeeklyViewProps) {
-  const [date, setDate] = useState(new Date());
+  const [date, setDateProp] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
+  const [toggles, setToggle] = useState<string>("");
+  const [ts, setTs] = useState<LazyTimeslot[]>([]);
 
   console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
-
+  console.log(`userType${userType}`);
   useEffect(() => {
     const pullData = async () => {
-      // const models = await DataStore.query(Timeslot);
-      // console.log(models);
-      // console.log(new Date("July 4 1776 14:30"));
+      const models = await DataStore.query(Timeslot);
+      console.log(models);
+      setTs(models);
+      console.log(new Date("July 4 1776 14:30"));
     };
 
     pullData();
   }, []);
+  console.log(ts.length);
 
-  const [calTimeslots] = useState(bookings);
-  // eslint-disable-next-line
-  // const [calTimeslots, setCalTimeslots] = useState(bookings);
-  const updatedSlots = calTimeslots.map((timeslot: any) => {
+  let slots = ts.map((timeslot: any) => {
     let backgroundColor = "#90BFCC";
 
     if (userType === "rider") {
@@ -242,14 +244,31 @@ export default function Calendar({ userType }: WeeklyViewProps) {
         backgroundColor = "#E0EFF1";
       }
     }
+
     return {
-      start: timeslot.startTime,
-      end: timeslot.endTime,
+      startTime: timeslot.startTime,
+      daysOfWeek: ["1", "2", "3", "4", "5"],
+      endTime: timeslot.endTime,
       backgroundColor,
       textColor: "black",
     };
   });
+  // console.log(Number(String(slots[0].startTime).substring(0, 2)));
+  if (toggles === "volunteers") {
+    slots = slots.filter(
+      (timeslot) =>
+        Number(String(timeslot.startTime).substring(0, 2)) >= 9 &&
+        Number(String(timeslot.endTime).substring(0, 2)) <= 17
+    );
+  } else if (toggles === "riders") {
+    slots = slots.filter(
+      (timeslot) =>
+        Number(String(timeslot.startTime).substring(0, 2)) >= 10 &&
+        Number(String(timeslot.endTime).substring(0, 2)) <= 14
+    );
+  }
 
+  console.log(`toggle is ${toggles}`);
   return (
     <div>
       <Logo src={logo} />
@@ -266,16 +285,16 @@ export default function Calendar({ userType }: WeeklyViewProps) {
               view="month"
               calendarType="US"
               onClickDay={(day) => {
-                setDate(day);
+                setDateProp(day);
                 calRef.current?.getApi()?.gotoDate(day);
               }}
               onClickMonth={(day) => {
-                setDate(day);
+                setDateProp(day);
                 calRef.current?.getApi()?.gotoDate(day);
               }}
             />
           </CalendarContainer>
-          <Toggle />
+          <Toggle setToggleProp={setToggle} />
         </LeftColumn>
         <RightColumn>
           <CalDiv>
@@ -283,7 +302,7 @@ export default function Calendar({ userType }: WeeklyViewProps) {
               plugins={[timeGridPlugin]}
               initialView="timeGridWeek"
               initialDate={date}
-              events={updatedSlots}
+              events={slots} // changed this from updatedSlots to slots
               allDaySlot={false}
               slotMinTime="8:00:00"
               slotMaxTime="18:00:00"
@@ -295,14 +314,14 @@ export default function Calendar({ userType }: WeeklyViewProps) {
               datesSet={(dateInfo) => {
                 console.log("start of week: ", dateInfo.start);
                 // console.log(dateInfo.end);
-                setDate(dateInfo.start);
+                setDateProp(dateInfo.start);
                 console.log("date in weekCal: ", date);
               }}
             />
           </CalDiv>
         </RightColumn>
       </Wrapper>
-      <Popup />
+      <Popup toggleProp={toggles!} />
     </div>
   );
 }
