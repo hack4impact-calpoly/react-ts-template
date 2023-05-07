@@ -64,7 +64,7 @@ export default function AppointmentInfo({ toggleProp }: PopupProps) {
 
     pullData();
   }, []);
-  console.log(`book[0]: ${bookings[0].date}`);
+  // this was for experimentation
   bookings.forEach((booking) => {
     for (let i = 0; i < users.length; i++) {
       if (booking.userID === users[i].id) {

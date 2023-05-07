@@ -253,7 +253,6 @@ export default function Calendar({ userType }: WeeklyViewProps) {
       textColor: "black",
     };
   });
-  // console.log(Number(String(slots[0].startTime).substring(0, 2)));
   if (toggles === "volunteers") {
     slots = slots.filter(
       (timeslot) =>
