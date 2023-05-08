@@ -1,18 +1,18 @@
 /* eslint-disable import/no-duplicates */
 import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
-// import { DataStore } from "@aws-amplify/datastore";
+import { DataStore } from "@aws-amplify/datastore";
 import MonthCalendar from "react-calendar";
 import WeekCalendar from "@fullcalendar/react";
 import FullCalendarRef from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-// import { Timeslot } from "../models";
+import interactionPlugin from "@fullcalendar/interaction";
+import { LazyTimeslot, Timeslot } from "../models";
 // import Monthly from "./monthlyView";
 // import Weekly from "./weeklyView";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
-import { bookings } from "./booking";
 // import FullCalendar from "@fullcalendar/react";
 
 const CalDiv = styled.div`
@@ -205,24 +205,32 @@ export interface WeeklyViewProps {
 export default function Calendar({ userType }: WeeklyViewProps) {
   const [date, setDate] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
+  const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
+  const [popup, setPopup] = useState(false);
+  const [popupDate, setPopupDate] = useState<Date>(new Date());
 
-  console.log("setdate: ", date);
-  // const tileDisabled = (thedate: any) => thedate < new Date();
+  const handleEventClick = (eventClickInfo: any) => {
+    setPopupDate(eventClickInfo.event.start);
+    setPopup(true);
+  };
+
+  const handleChildData = () => {
+    setPopup(false);
+  };
 
   useEffect(() => {
     const pullData = async () => {
-      // const models = await DataStore.query(Timeslot);
-      // console.log(models);
-      // console.log(new Date("July 4 1776 14:30"));
+      const ts = await DataStore.query(Timeslot);
+      console.log(ts);
+      setTs(ts);
     };
 
     pullData();
   }, []);
 
-  const [calTimeslots] = useState(bookings);
   // eslint-disable-next-line
   // const [calTimeslots, setCalTimeslots] = useState(bookings);
-  const updatedSlots = calTimeslots.map((timeslot: any) => {
+  const updatedSlots = timeslots.map((timeslot: any) => {
     let backgroundColor = "#90BFCC";
 
     if (userType === "rider") {
@@ -243,8 +251,9 @@ export default function Calendar({ userType }: WeeklyViewProps) {
       }
     }
     return {
-      start: timeslot.startTime,
-      end: timeslot.endTime,
+      startTime: timeslot.startTime,
+      daysOfWeek: ["1", "2", "3", "4", "5"],
+      endTime: timeslot.endTime,
       backgroundColor,
       textColor: "black",
     };
@@ -280,7 +289,7 @@ export default function Calendar({ userType }: WeeklyViewProps) {
         <RightColumn>
           <CalDiv>
             <WeekCalendar
-              plugins={[timeGridPlugin]}
+              plugins={[timeGridPlugin, interactionPlugin]}
               initialView="timeGridWeek"
               initialDate={date}
               events={updatedSlots}
@@ -298,11 +307,12 @@ export default function Calendar({ userType }: WeeklyViewProps) {
                 setDate(dateInfo.start);
                 console.log("date in weekCal: ", date);
               }}
+              eventClick={handleEventClick}
             />
+            <Popup o={popup} onData={handleChildData} date={popupDate} />
           </CalDiv>
         </RightColumn>
       </Wrapper>
-      <Popup />
     </div>
   );
 }

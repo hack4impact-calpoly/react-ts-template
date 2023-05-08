@@ -34,16 +34,9 @@ function ArrayField({
   defaultFieldValue,
   lengthLimit,
   getBadgeText,
-  errorMessage,
 }) {
   const labelElement = <Text>{label}</Text>;
-  const {
-    tokens: {
-      components: {
-        fieldmessages: { error: errorStyles },
-      },
-    },
-  } = useTheme();
+  const { tokens } = useTheme();
   const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
   const [isEditing, setIsEditing] = React.useState();
   React.useEffect(() => {
@@ -146,11 +139,6 @@ function ArrayField({
           >
             Add item
           </Button>
-          {errorMessage && hasError && (
-            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
-              {errorMessage}
-            </Text>
-          )}
         </>
       ) : (
         <Flex justifyContent="flex-end">
@@ -169,6 +157,7 @@ function ArrayField({
           <Button
             size="small"
             variation="link"
+            color={tokens.colors.brand.primary[80]}
             isDisabled={hasError}
             onClick={addItem}
           >
@@ -183,7 +172,7 @@ function ArrayField({
 export default function TimeslotUpdateForm(props) {
   const {
     id: idProp,
-    timeslot: timeslotModelProp,
+    timeslot,
     onSuccess,
     onError,
     onSubmit,
@@ -213,16 +202,16 @@ export default function TimeslotUpdateForm(props) {
     setCurrentUnavailableDatesValue("");
     setErrors({});
   };
-  const [timeslotRecord, setTimeslotRecord] = React.useState(timeslotModelProp);
+  const [timeslotRecord, setTimeslotRecord] = React.useState(timeslot);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
         ? await DataStore.query(Timeslot, idProp)
-        : timeslotModelProp;
+        : timeslot;
       setTimeslotRecord(record);
     };
     queryData();
-  }, [idProp, timeslotModelProp]);
+  }, [idProp, timeslot]);
   React.useEffect(resetStateValues, [timeslotRecord]);
   const [currentUnavailableDatesValue, setCurrentUnavailableDatesValue] =
     React.useState("");
@@ -237,10 +226,9 @@ export default function TimeslotUpdateForm(props) {
     currentValue,
     getDisplayValue
   ) => {
-    const value =
-      currentValue && getDisplayValue
-        ? getDisplayValue(currentValue)
-        : currentValue;
+    const value = getDisplayValue
+      ? getDisplayValue(currentValue)
+      : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -379,8 +367,7 @@ export default function TimeslotUpdateForm(props) {
         currentFieldValue={currentUnavailableDatesValue}
         label={"Unavailable dates"}
         items={unavailableDates}
-        hasError={errors?.unavailableDates?.hasError}
-        errorMessage={errors?.unavailableDates?.errorMessage}
+        hasError={errors.unavailableDates?.hasError}
         setFieldValue={setCurrentUnavailableDatesValue}
         inputFieldRef={unavailableDatesRef}
         defaultFieldValue={""}
@@ -419,7 +406,7 @@ export default function TimeslotUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || timeslotModelProp)}
+          isDisabled={!(idProp || timeslot)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -431,7 +418,7 @@ export default function TimeslotUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || timeslotModelProp) ||
+              !(idProp || timeslot) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}
