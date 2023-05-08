@@ -89,7 +89,7 @@ export default function Timeslots({ userType, models, date }: TimeslotsProps) {
         });
       }
     });
-    console.log(timeslots);
+    // console.log(timeslots);
   }
   function filterTimeSlots(
     isVolunteers: boolean,

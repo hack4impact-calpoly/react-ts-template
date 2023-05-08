@@ -81,7 +81,7 @@ function App() {
                   setWeekdayProp={setWeekdayProp}
                 />
               ) : (
-                <Calendar />
+                <Calendar userType="rider" />
               )
             }
           />
