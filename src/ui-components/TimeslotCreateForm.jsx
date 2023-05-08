@@ -34,9 +34,16 @@ function ArrayField({
   defaultFieldValue,
   lengthLimit,
   getBadgeText,
+  errorMessage,
 }) {
   const labelElement = <Text>{label}</Text>;
-  const { tokens } = useTheme();
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
   const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
   const [isEditing, setIsEditing] = React.useState();
   React.useEffect(() => {
@@ -139,6 +146,11 @@ function ArrayField({
           >
             Add item
           </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
         </>
       ) : (
         <Flex justifyContent="flex-end">
@@ -157,7 +169,6 @@ function ArrayField({
           <Button
             size="small"
             variation="link"
-            color={tokens.colors.brand.primary[80]}
             isDisabled={hasError}
             onClick={addItem}
           >
@@ -211,9 +222,10 @@ export default function TimeslotCreateForm(props) {
     currentValue,
     getDisplayValue
   ) => {
-    const value = getDisplayValue
-      ? getDisplayValue(currentValue)
-      : currentValue;
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -351,7 +363,8 @@ export default function TimeslotCreateForm(props) {
         currentFieldValue={currentUnavailableDatesValue}
         label={"Unavailable dates"}
         items={unavailableDates}
-        hasError={errors.unavailableDates?.hasError}
+        hasError={errors?.unavailableDates?.hasError}
+        errorMessage={errors?.unavailableDates?.errorMessage}
         setFieldValue={setCurrentUnavailableDatesValue}
         inputFieldRef={unavailableDatesRef}
         defaultFieldValue={""}
