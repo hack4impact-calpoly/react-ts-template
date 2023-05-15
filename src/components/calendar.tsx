@@ -6,14 +6,14 @@ import MonthCalendar from "react-calendar";
 import WeekCalendar from "@fullcalendar/react";
 import FullCalendarRef from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-// import { Timeslot } from "../models";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import interactionPlugin from "@fullcalendar/interaction";
+import { LazyTimeslot, Timeslot } from "../models";
 // import Monthly from "./monthlyView";
 // import Weekly from "./weeklyView";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
-// import { bookings } from "./booking";
-import { LazyTimeslot, Timeslot } from "../models";
 // import FullCalendar from "@fullcalendar/react";
 
 const CalDiv = styled.div`
@@ -208,6 +208,8 @@ export default function Calendar({ userType }: WeeklyViewProps) {
   const calRef = useRef<FullCalendarRef>(null);
   const [toggles, setToggle] = useState<string>("");
   const [ts, setTs] = useState<LazyTimeslot[]>([]);
+  const [popup, setPopup] = useState(false);
+  const [popupDate, setPopupDate] = useState<Date>(new Date());
 
   console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
@@ -217,11 +219,19 @@ export default function Calendar({ userType }: WeeklyViewProps) {
       const models = await DataStore.query(Timeslot);
       console.log(models);
       setTs(models);
-      console.log(new Date("July 4 1776 14:30"));
     };
-
     pullData();
   }, []);
+
+  const handleEventClick = (eventClickInfo: any) => {
+    setPopupDate(eventClickInfo.event.start);
+    setPopup(true);
+  };
+
+  const handleChildData = () => {
+    setPopup(false);
+  };
+
   console.log(ts.length);
 
   let slots = ts.map((timeslot: any) => {
@@ -298,7 +308,7 @@ export default function Calendar({ userType }: WeeklyViewProps) {
         <RightColumn>
           <CalDiv>
             <WeekCalendar
-              plugins={[timeGridPlugin]}
+              plugins={[timeGridPlugin, interactionPlugin]}
               initialView="timeGridWeek"
               initialDate={date}
               events={slots} // changed this from updatedSlots to slots
@@ -316,11 +326,18 @@ export default function Calendar({ userType }: WeeklyViewProps) {
                 setDateProp(dateInfo.start);
                 console.log("date in weekCal: ", date);
               }}
+              eventClick={handleEventClick}
+            />
+            <Popup
+              o={popup}
+              onData={handleChildData}
+              date={popupDate}
+              toggleProp={toggles!}
             />
           </CalDiv>
         </RightColumn>
       </Wrapper>
-      <Popup toggleProp={toggles!} />
+      {/* <Popup  /> */}
     </div>
   );
 }

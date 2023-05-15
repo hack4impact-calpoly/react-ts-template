@@ -49,7 +49,6 @@ function App() {
       const ts = await DataStore.query(Timeslot);
       setTs(ts);
       console.log(ts);
-      console.log(new Date("July 4 1776 14:30"));
     };
 
     pullData();
@@ -100,7 +99,13 @@ function App() {
           <Route path="/success/:id" element={<Success />} />
           <Route
             path="/timeslots"
-            element={<Timeslots userType="rider" models={timeslots} />}
+            element={
+              <Timeslots
+                userType="rider"
+                models={timeslots}
+                date={new Date()}
+              />
+            }
           />
           <Route
             path="/mobile-timeslots"
