@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { Amplify, DataStore } from "aws-amplify";
+import { Amplify, DataStore, Auth } from "aws-amplify";
 // import { DataStore } from "@aws-amplify/datastore";
 import { LazyTimeslot, Timeslot } from "./models";
 import awsconfig from "./aws-exports";
@@ -19,6 +19,7 @@ import TimeslotSuccess from "./components/popup/timeslotSuccess";
 import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
 import UserContext from "./userContext";
 import { User } from "./types";
+import { User as UserModel } from "./models";
 
 Amplify.configure(awsconfig);
 
@@ -33,6 +34,8 @@ function App() {
   const [month, setMonthProp] = useState<string>();
   const [weekday, setWeekdayProp] = useState<string>();
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
+  const [userInfo, setUserInfo] = useState<UserModel | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -50,6 +53,23 @@ function App() {
       setTs(ts);
       console.log(ts);
     };
+    const fetchUserInfo = async () => {
+      try {
+        setUserId(await Auth.currentUserInfo());
+        if (userId !== null) {
+          const info = await DataStore.query(UserModel, userId);
+          if (info) {
+            setUserInfo(info);
+          } else {
+            console.log("User data not found");
+          }
+        }
+      } catch (error) {
+        console.log("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
 
     pullData();
   }, []);
@@ -100,11 +120,13 @@ function App() {
           <Route
             path="/timeslots"
             element={
-              <Timeslots
-                userType="rider"
-                models={timeslots}
-                date={new Date()}
-              />
+              userInfo && userInfo.userType && (
+                <Timeslots
+                  userType={userInfo.userType}
+                  models={timeslots}
+                  date={new Date()}
+                />
+              )
             }
           />
           <Route

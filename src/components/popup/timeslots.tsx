@@ -67,7 +67,7 @@ let timeslots = [
 ];
 
 interface TimeslotsProps {
-  userType: "volunteer" | "rider";
+  userType: string;
   models: LazyTimeslot[] | "nothing";
   date: Date;
 }
