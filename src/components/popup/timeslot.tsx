@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import Checked from "../../images/Checked.png";
 import Unchecked from "../../images/Unchecked.png";
-import On from "../../images/OnSlider.png";
-import Off from "../../images/OffSlider.png";
+import On from "../../images/onslider.png";
+import Off from "../../images/offslider.png";
+import UserContext from "../../userContext";
 
 const ButtonToggle = styled.button`
   cursor: pointer;
@@ -52,17 +53,17 @@ const TimeslotText = styled.p`
 `;
 
 interface TimeslotProps {
-  userType: "volunteer" | "rider" | "admin";
   startTime: Date;
   endTime: Date;
 }
 
-export default function Timeslot({
-  userType,
-  startTime,
-  endTime,
-}: TimeslotProps) {
+export default function Timeslot({ startTime, endTime }: TimeslotProps) {
+  // THIS NEEDS USER CONTEXT
   const [isChecked, setIsChecked] = useState(false);
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType } = realUser;
 
   const toggleChecked = () => {
     setIsChecked(!isChecked);
@@ -80,7 +81,7 @@ export default function Timeslot({
         {`${formatTime(startTime)} to ${formatTime(endTime)}`}
       </TimeslotText>
       {/* </TimeBox> */}
-      {userType === "volunteer" ? (
+      {userType === "Volunteer" ? (
         <ButtonToggle onClick={toggleChecked}>
           {isChecked ? (
             <CheckedImg src={Checked} alt="Checked Img" />

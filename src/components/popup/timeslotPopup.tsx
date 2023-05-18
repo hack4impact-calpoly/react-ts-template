@@ -126,11 +126,7 @@ export default function Popup({ o, onData, date }: PopupProps) {
             </LeftColumn>
             <RightColumn>
               <DateHeader>{formattedDate}</DateHeader>
-              <Timeslots
-                userType="rider"
-                models={timeslots}
-                date={new Date()}
-              />
+              <Timeslots models={timeslots} date={new Date()} />
               <BtnContainer>
                 <CancelBtn>Cancel</CancelBtn>
                 <SaveBtn>Save</SaveBtn>

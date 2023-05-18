@@ -1,5 +1,6 @@
-import React from "react";
+import { useContext } from "react";
 import styled from "styled-components";
+import UserContext from "../../userContext";
 // import { Box } from "../styledComponents";
 import Timeslot from "./timeslot";
 import { LazyTimeslot } from "../../models";
@@ -67,12 +68,15 @@ let timeslots = [
 ];
 
 interface TimeslotsProps {
-  userType: "volunteer" | "rider";
   models: LazyTimeslot[] | "nothing";
   date: Date;
 }
 
-export default function Timeslots({ userType, models, date }: TimeslotsProps) {
+export default function Timeslots({ models, date }: TimeslotsProps) {
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType } = realUser;
   console.log(date);
   console.log(models);
   if (models !== "nothing") {
@@ -109,11 +113,10 @@ export default function Timeslots({ userType, models, date }: TimeslotsProps) {
     <Wrapper>
       <Slots>
         {timeslots
-          .filter((ts) => filterTimeSlots(userType === "volunteer", ts))
+          .filter((ts) => filterTimeSlots(userType === "Volunteer", ts))
           .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))
           .map((timeslot) => (
             <Timeslot
-              userType={userType}
               startTime={timeslot.startTime}
               endTime={timeslot.endTime}
             />
