@@ -10,11 +10,10 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { LazyTimeslot, Timeslot } from "../models";
 // import Monthly from "./monthlyView";
-// import Weekly from "./weeklyView";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
-// import FullCalendar from "@fullcalendar/react";
+import { Booking, User } from "../models";
 
 const CalDiv = styled.div`
   font-family: "Rubik", sans-serif;
@@ -210,6 +209,30 @@ export default function Calendar({ userType }: WeeklyViewProps) {
   const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const [popup, setPopup] = useState(false);
   const [popupDate, setPopupDate] = useState<Date>(new Date());
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const pullData = async () => {
+      const bookingModels = await DataStore.query(Booking);
+      setBookings(bookingModels);
+      // console.log(bookingModels);
+    };
+
+    pullData();
+  }, []);
+  useEffect(() => {
+    const pullData = async () => {
+      const userModel = await DataStore.query(User);
+      // replace with actual current user
+      setCurrentUser(
+        userModel.find((user) => user.id === "volunteer-1") || null
+      );
+      console.log("Current User:", currentUser);
+    };
+
+    pullData();
+  }, []);
 
   console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
@@ -261,6 +284,7 @@ export default function Calendar({ userType }: WeeklyViewProps) {
       endTime: timeslot.endTime,
       backgroundColor,
       textColor: "black",
+      id: timeslot.id,
     };
   });
   if (toggles === "volunteers") {
@@ -275,6 +299,30 @@ export default function Calendar({ userType }: WeeklyViewProps) {
         Number(String(timeslot.startTime).substring(0, 2)) >= 10 &&
         Number(String(timeslot.endTime).substring(0, 2)) <= 14
     );
+  } else if (toggles === "slots") {
+    slots = slots.filter((timeslot) =>
+      bookings.some(
+        (booking) =>
+          booking.userID === currentUser?.id &&
+          booking.timeslotID === timeslot.id
+      )
+    );
+  } else if (toggles === "availibility") {
+    if (userType === "rider") {
+      slots = slots.filter(
+        (timeslot) =>
+          Number(String(timeslot.startTime).substring(0, 2)) >= 10 &&
+          Number(String(timeslot.endTime).substring(0, 2)) <= 14
+      );
+    }
+
+    if (userType === "volunteer") {
+      slots = slots.filter(
+        (timeslot) =>
+          Number(String(timeslot.startTime).substring(0, 2)) >= 9 &&
+          Number(String(timeslot.endTime).substring(0, 2)) <= 17
+      );
+    }
   }
 
   console.log(`toggle is ${toggles}`);

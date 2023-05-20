@@ -54,7 +54,7 @@ type ToggleProps = {
 
 export default function AdminToggle({ setToggleProp }: ToggleProps) {
   // Initialize a boolean state
-  const isAdmin = true; // delete later
+  const isAdmin = false; // delete later
   const [showVolunteers, setShowVolunteers] = useState(false);
   const [showRiders, setShowRiders] = useState(false);
   const [showBoth, setShowBoth] = useState(true);
