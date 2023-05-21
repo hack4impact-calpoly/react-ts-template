@@ -8,6 +8,7 @@ import FullCalendarRef from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import interactionPlugin from "@fullcalendar/interaction";
+import { Link } from "react-router-dom";
 import { LazyTimeslot, Timeslot } from "../models";
 // import Monthly from "./monthlyView";
 // import Weekly from "./weeklyView";
@@ -15,7 +16,7 @@ import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
 // import FullCalendar from "@fullcalendar/react";
-// import signout from "../images/SignOutButton.png";
+import signout from "../images/SignOut.png";
 // import LogoutPopup from "./popup/logoutPopup";
 
 const CalDiv = styled.div`
@@ -79,6 +80,24 @@ const LeftColumn = styled.div`
 const RightColumn = styled.div`
   padding-right: 50px;
   width: 100%;
+`;
+
+const SignOutLogo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledButton = styled(Link)`
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  transform: scale(1.2);
+`;
+
+const StyledImage = styled.img`
+  width: 100%;
+  padding-top: 30%;
+  padding-left: 40%;
 `;
 
 const CalendarContainer = styled.div`
@@ -282,7 +301,12 @@ export default function Calendar({ userType }: WeeklyViewProps) {
   console.log(`toggle is ${toggles}`);
   return (
     <div>
-      <Logo src={logo} />
+      <SignOutLogo>
+        <StyledButton to="/logoutPopup">
+          <StyledImage src={signout} alt="Sign Out" />
+        </StyledButton>
+        <Logo src={logo} />
+      </SignOutLogo>
       <Wrapper>
         <LeftColumn>
           <CalendarContainer>
