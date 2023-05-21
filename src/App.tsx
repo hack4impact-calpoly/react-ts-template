@@ -17,6 +17,7 @@ import CalendarMobile from "./components/mobile/mobileCalendar";
 import MobileTimeslots from "./components/mobile/mobileTimeslots";
 import TimeslotSuccess from "./components/popup/timeslotSuccess";
 import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
+import LogoutPopup from "./components/popup/logoutPopup";
 import UserContext from "./userContext";
 import { User } from "./types";
 
@@ -116,6 +117,7 @@ function App() {
             path="/timeslot-confirmation"
             element={<TimeSlotConfirmation userType="rider" status="book" />}
           />
+          <Route path="/logoutPopup" element={<LogoutPopup />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
