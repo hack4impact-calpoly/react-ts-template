@@ -15,6 +15,8 @@ import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
 // import FullCalendar from "@fullcalendar/react";
+// import signout from "../images/SignOutButton.png";
+// import LogoutPopup from "./popup/logoutPopup";
 
 const CalDiv = styled.div`
   font-family: "Rubik", sans-serif;
