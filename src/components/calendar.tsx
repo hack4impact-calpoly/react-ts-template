@@ -14,7 +14,7 @@ import { LazyTimeslot, Timeslot } from "../models";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
-import { Booking, User } from "../models";
+import { Booking } from "../models";
 
 const CalDiv = styled.div`
   font-family: "Rubik", sans-serif;
@@ -200,7 +200,7 @@ const CalendarContainer = styled.div`
 `;
 
 export default function Calendar() {
-  const [date, setDate] = useState(new Date());
+  const [date, setDateProp] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
   const [toggles, setToggle] = useState<string>("");
   const [ts, setTs] = useState<LazyTimeslot[]>([]);
@@ -209,7 +209,32 @@ export default function Calendar() {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
-  const { userType } = realUser;
+  const { userType, id: currentUserId } = realUser;
+  const [bookings, setBookings] = useState<Booking[]>([]);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const bookingModels = await DataStore.query(Booking);
+        setBookings(bookingModels);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+    fetchBookings();
+  }, []);
+
+  console.log("setdate: ", date);
+  // const tileDisabled = (thedate: any) => thedate < new Date();
+  console.log(`userType${userType}`);
+  useEffect(() => {
+    const pullData = async () => {
+      const models = await DataStore.query(Timeslot);
+      console.log(models);
+      setTs(models);
+    };
+    pullData();
+  }, []);
 
   const handleEventClick = (eventClickInfo: any) => {
     setPopupDate(eventClickInfo.event.start);
@@ -268,8 +293,7 @@ export default function Calendar() {
     slots = slots.filter((timeslot) =>
       bookings.some(
         (booking) =>
-          booking.userID === currentUser?.id &&
-          booking.timeslotID === timeslot.id
+          booking.userID === currentUserId && booking.timeslotID === timeslot.id
       )
     );
   } else if (toggles === "availibility") {
@@ -335,7 +359,7 @@ export default function Calendar() {
               dayHeaderFormat={{ weekday: "short", day: "numeric" }}
               datesSet={(dateInfo) => {
                 console.log("start of week: ", dateInfo.start);
-                // console.log(dateInfo.end);
+                console.log(dateInfo.end);
                 setDateProp(dateInfo.start);
                 console.log("date in weekCal: ", date);
               }}
