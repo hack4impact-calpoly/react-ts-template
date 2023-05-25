@@ -1,6 +1,6 @@
 /* eslint-disable import/no-duplicates */
 import styled from "styled-components";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { DataStore } from "@aws-amplify/datastore";
 import MonthCalendar from "react-calendar";
 import WeekCalendar from "@fullcalendar/react";
@@ -8,6 +8,7 @@ import FullCalendarRef from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import interactionPlugin from "@fullcalendar/interaction";
+import UserContext from "../userContext";
 import { LazyTimeslot, Timeslot } from "../models";
 // import Monthly from "./monthlyView";
 import logo from "../images/PETlogo2.svg";
@@ -198,53 +199,17 @@ const CalendarContainer = styled.div`
   }
 `;
 
-export interface WeeklyViewProps {
-  userType: "volunteer" | "rider" | "admin";
-}
-
-export default function Calendar({ userType }: WeeklyViewProps) {
-  const [date, setDateProp] = useState(new Date());
+export default function Calendar() {
+  const [date, setDate] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
   const [toggles, setToggle] = useState<string>("");
   const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const [popup, setPopup] = useState(false);
   const [popupDate, setPopupDate] = useState<Date>(new Date());
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const pullData = async () => {
-      const bookingModels = await DataStore.query(Booking);
-      setBookings(bookingModels);
-      // console.log(bookingModels);
-    };
-
-    pullData();
-  }, []);
-  useEffect(() => {
-    const pullData = async () => {
-      const userModel = await DataStore.query(User);
-      // replace with actual current user
-      setCurrentUser(
-        userModel.find((user) => user.id === "volunteer-1") || null
-      );
-      console.log("Current User:", currentUser);
-    };
-
-    pullData();
-  }, []);
-
-  console.log("setdate: ", date);
-  // const tileDisabled = (thedate: any) => thedate < new Date();
-  console.log(`userType${userType}`);
-  useEffect(() => {
-    const pullData = async () => {
-      const models = await DataStore.query(Timeslot);
-      console.log(models);
-      setTs(models);
-    };
-    pullData();
-  }, []);
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType } = realUser;
 
   const handleEventClick = (eventClickInfo: any) => {
     setPopupDate(eventClickInfo.event.start);
@@ -260,17 +225,17 @@ export default function Calendar({ userType }: WeeklyViewProps) {
   let slots = ts.map((timeslot: any) => {
     let backgroundColor = "#90BFCC";
 
-    if (userType === "rider") {
+    if (userType === "Rider") {
       const hasRiderBooking = timeslot.riderBookings.length > 0;
       if (hasRiderBooking) {
         backgroundColor = "#E0EFF1";
       }
-    } else if (userType === "volunteer") {
+    } else if (userType === "Volunteer") {
       const hasVolunteerBooking = timeslot.volunteerBookings.length > 0;
       if (hasVolunteerBooking) {
         backgroundColor = "#E0EFF1";
       }
-    } else if (userType === "admin") {
+    } else if (userType === "Admin") {
       if (
         timeslot.unavailableDates.includes(timeslot.startTime.toDateString())
       ) {

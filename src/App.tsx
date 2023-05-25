@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Amplify, DataStore } from "aws-amplify";
 // import { DataStore } from "@aws-amplify/datastore";
-import { LazyTimeslot, Timeslot } from "./models";
+import { LazyTimeslot, Timeslot, User } from "./models";
 import awsconfig from "./aws-exports";
 import Success from "./components/authentication/success";
 import ResetPassword from "./components/authentication/resetPassword";
@@ -18,7 +18,7 @@ import MobileTimeslots from "./components/mobile/mobileTimeslots";
 import TimeslotSuccess from "./components/popup/timeslotSuccess";
 import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
 import UserContext from "./userContext";
-import { User } from "./types";
+// import { Users } from "./types";
 
 Amplify.configure(awsconfig);
 
@@ -54,13 +54,23 @@ function App() {
     pullData();
   }, []);
   // setting up context
-  const [currentUser, setUser] = useState({} as User);
+  const [currentUser, setUser] = useState({} as User[]);
   const userContextFields = useMemo(
     () => ({ currentUser, setUser }),
     [currentUser]
   );
+
+  if (currentUser.length > 0) {
+    console.log(
+      `current users name is: ${currentUser[0].firstName}${currentUser[0].lastName}`
+    );
+  }
+
   // console statement to test if userName was set in login component
-  console.log(`from the context stuff ${currentUser.userName}`);
+  // console.log(`from the context stuff ${currentUser.userName}`);
+  // console.log(
+  //   `from the usercontext first name of user is ${currentUser[0].firstName}`
+  // );
   return (
     <UserContext.Provider value={userContextFields}>
       <BrowserRouter>
@@ -71,8 +81,7 @@ function App() {
             element={
               isMobile ? (
                 <CalendarMobile
-                  user=""
-                  bookings={0}
+                  bookingsFake={0}
                   day={day!}
                   setDayProp={setDayProp}
                   month={month!}
@@ -81,7 +90,7 @@ function App() {
                   setWeekdayProp={setWeekdayProp}
                 />
               ) : (
-                <Calendar userType="rider" />
+                <Calendar />
               )
             }
           />
@@ -99,22 +108,13 @@ function App() {
           <Route path="/success/:id" element={<Success />} />
           <Route
             path="/timeslots"
-            element={
-              <Timeslots
-                userType="rider"
-                models={timeslots}
-                date={new Date()}
-              />
-            }
+            element={<Timeslots models={timeslots} date={new Date()} />}
           />
-          <Route
-            path="/mobile-timeslots"
-            element={<MobileTimeslots userType="rider" />}
-          />
+          <Route path="/mobile-timeslots" element={<MobileTimeslots />} />
           <Route path="/timeslot-success" element={<TimeslotSuccess />} />
           <Route
             path="/timeslot-confirmation"
-            element={<TimeSlotConfirmation userType="rider" status="book" />}
+            element={<TimeSlotConfirmation status="book" />}
           />
         </Routes>
       </BrowserRouter>

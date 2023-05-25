@@ -1,5 +1,6 @@
-import React from "react";
+import { useContext } from "react";
 import styled from "styled-components";
+import UserContext from "../../userContext";
 import warning from "../../images/warning.svg";
 
 import {
@@ -12,7 +13,6 @@ import {
 } from "../styledComponents";
 
 export type TimeSlotProps = {
-  userType: String;
   status: String;
 };
 const Warning = styled.img`
@@ -39,13 +39,14 @@ const CancelButton = styled(Button)`
   margin-right: 1rem;
 `;
 
-export default function TimeSlotConfirmation({
-  userType,
-  status = "",
-}: TimeSlotProps) {
+export default function TimeSlotConfirmation({ status = "" }: TimeSlotProps) {
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType } = realUser;
   return (
     <Wrapper>
-      {userType === "admin" && (
+      {userType === "Admin" && (
         <SurroundingBox>
           <Warning src={warning} />
           <Header>Save changes?</Header>
@@ -59,7 +60,7 @@ export default function TimeSlotConfirmation({
           </Row>
         </SurroundingBox>
       )}
-      {userType !== "admin" && status === "cancel" && (
+      {userType !== "Admin" && status === "cancel" && (
         <SurroundingBox>
           <Warning src={warning} />
           <Header>Confirm cancellation?</Header>
@@ -73,7 +74,7 @@ export default function TimeSlotConfirmation({
           </Row>
         </SurroundingBox>
       )}
-      {userType !== "admin" && status === "book" && (
+      {userType !== "Admin" && status === "book" && (
         <SurroundingBox>
           <Warning src={warning} />
           <Header>Confirm booking?</Header>
