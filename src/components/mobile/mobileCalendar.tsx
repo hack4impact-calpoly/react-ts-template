@@ -41,7 +41,7 @@ export default function CalendarMobile({
 }: UserType) {
   // these values are hardcoded for conditional rendering of showing different slots
   // eslint-disable-next-line no-param-reassign
-  user = "volunteer"; // hardcoded for now
+  user = "admin"; // hardcoded for now
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   bookings = 1;
 
