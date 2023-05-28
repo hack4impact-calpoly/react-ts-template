@@ -1,5 +1,6 @@
-import React from "react";
+import { useContext } from "react";
 import styled from "styled-components";
+import UserContext from "../../userContext";
 // import { Box } from "../styledComponents";
 import Timeslot from "./timeslot";
 import { LazyTimeslot } from "../../models";
@@ -23,60 +24,27 @@ const Slots = styled.div`
   font-family: "Rubik", sans-serif;
 `;
 
-let timeslots = [
-  {
-    startTime: new Date(2023, 2, 7, 9, 0),
-    endTime: new Date(2023, 2, 7, 10, 30),
-    checked: false,
-  },
-  {
-    startTime: new Date(2023, 2, 7, 9, 30),
-    endTime: new Date(2023, 2, 7, 10, 0),
-    checked: false,
-  },
-  {
-    startTime: new Date(2023, 2, 7, 10, 0),
-    endTime: new Date(2023, 2, 7, 10, 30),
-    checked: false,
-  },
-  {
-    startTime: new Date(2023, 2, 7, 10, 35),
-    endTime: new Date(2023, 2, 7, 11, 5),
-    checked: false,
-  },
-  {
-    startTime: new Date(2023, 2, 7, 13, 0),
-    endTime: new Date(2023, 2, 7, 14, 0),
-    checked: false,
-  },
-  {
-    startTime: new Date(2023, 2, 7, 14, 0),
-    endTime: new Date(2023, 2, 7, 15, 0),
-    checked: false,
-  },
-  {
-    startTime: new Date(2023, 2, 7, 15, 0),
-    endTime: new Date(2023, 2, 7, 16, 0),
-    checked: false,
-  },
-  {
-    startTime: new Date(2023, 2, 7, 16, 0),
-    endTime: new Date(2023, 2, 7, 17, 0),
-    checked: false,
-  },
-];
+interface TsData {
+  startTime: Date;
+  endTime: Date;
+  checked: false;
+  id: string;
+}
 
 interface TimeslotsProps {
-  userType: "volunteer" | "rider";
   models: LazyTimeslot[] | "nothing";
   date: Date;
 }
 
-export default function Timeslots({ userType, models, date }: TimeslotsProps) {
+export default function Timeslots({ models, date }: TimeslotsProps) {
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType } = realUser;
   console.log(date);
   console.log(models);
+  const timeslots: TsData[] = [];
   if (models !== "nothing") {
-    timeslots = [];
     models.forEach((model) => {
       if (
         typeof model.startTime === "string" &&
@@ -86,6 +54,7 @@ export default function Timeslots({ userType, models, date }: TimeslotsProps) {
           startTime: new Date(`July 4 1776 ${model.startTime}`),
           endTime: new Date(`July 4 1776 ${model.endTime}`),
           checked: false,
+          id: model.id,
         });
       }
     });
@@ -109,13 +78,14 @@ export default function Timeslots({ userType, models, date }: TimeslotsProps) {
     <Wrapper>
       <Slots>
         {timeslots
-          .filter((ts) => filterTimeSlots(userType === "volunteer", ts))
+          .filter((ts) => filterTimeSlots(userType === "Volunteer", ts))
           .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))
-          .map((timeslot) => (
-            <Timeslot
-              userType={userType}
+          .map((timeslot, i) => (
+            <Timeslot // eslint-disable-next-line react/no-array-index-key
+              key={i}
               startTime={timeslot.startTime}
               endTime={timeslot.endTime}
+              tsId={timeslot.id}
             />
           ))}
       </Slots>

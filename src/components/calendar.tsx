@@ -1,6 +1,6 @@
 /* eslint-disable import/no-duplicates */
 import styled from "styled-components";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { DataStore } from "@aws-amplify/datastore";
 import MonthCalendar from "react-calendar";
 import WeekCalendar from "@fullcalendar/react";
@@ -8,13 +8,13 @@ import FullCalendarRef from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import interactionPlugin from "@fullcalendar/interaction";
+import UserContext from "../userContext";
 import { LazyTimeslot, Timeslot } from "../models";
 // import Monthly from "./monthlyView";
-// import Weekly from "./weeklyView";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
-// import FullCalendar from "@fullcalendar/react";
+import { Booking } from "../models";
 
 const CalDiv = styled.div`
   font-family: "Rubik", sans-serif;
@@ -202,17 +202,30 @@ const CalendarContainer = styled.div`
   }
 `;
 
-export interface WeeklyViewProps {
-  userType: "volunteer" | "rider" | "admin";
-}
-
-export default function Calendar({ userType }: WeeklyViewProps) {
+export default function Calendar() {
   const [date, setDateProp] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
   const [toggles, setToggle] = useState<string>("");
   const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const [popup, setPopup] = useState(false);
   const [popupDate, setPopupDate] = useState<Date>(new Date());
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType, id: currentUserId } = realUser;
+  const [bookings, setBookings] = useState<Booking[]>([]);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const bookingModels = await DataStore.query(Booking);
+        setBookings(bookingModels);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+    fetchBookings();
+  }, []);
 
   console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
@@ -240,17 +253,17 @@ export default function Calendar({ userType }: WeeklyViewProps) {
   let slots = ts.map((timeslot: any) => {
     let backgroundColor = "#90BFCC";
 
-    if (userType === "rider") {
+    if (userType === "Rider") {
       const hasRiderBooking = timeslot.riderBookings.length > 0;
       if (hasRiderBooking) {
         backgroundColor = "#E0EFF1";
       }
-    } else if (userType === "volunteer") {
+    } else if (userType === "Volunteer") {
       const hasVolunteerBooking = timeslot.volunteerBookings.length > 0;
       if (hasVolunteerBooking) {
         backgroundColor = "#E0EFF1";
       }
-    } else if (userType === "admin") {
+    } else if (userType === "Admin") {
       if (
         timeslot.unavailableDates.includes(timeslot.startTime.toDateString())
       ) {
@@ -264,6 +277,7 @@ export default function Calendar({ userType }: WeeklyViewProps) {
       endTime: timeslot.endTime,
       backgroundColor,
       textColor: "black",
+      id: timeslot.id,
     };
   });
   if (toggles === "volunteers") {
@@ -278,6 +292,29 @@ export default function Calendar({ userType }: WeeklyViewProps) {
         Number(String(timeslot.startTime).substring(0, 2)) >= 10 &&
         Number(String(timeslot.endTime).substring(0, 2)) <= 14
     );
+  } else if (toggles === "slots") {
+    slots = slots.filter((timeslot) =>
+      bookings.some(
+        (booking) =>
+          booking.userID === currentUserId && booking.timeslotID === timeslot.id
+      )
+    );
+  } else if (toggles === "availibility") {
+    if (userType === "rider") {
+      slots = slots.filter(
+        (timeslot) =>
+          Number(String(timeslot.startTime).substring(0, 2)) >= 10 &&
+          Number(String(timeslot.endTime).substring(0, 2)) <= 14
+      );
+    }
+
+    if (userType === "volunteer") {
+      slots = slots.filter(
+        (timeslot) =>
+          Number(String(timeslot.startTime).substring(0, 2)) >= 9 &&
+          Number(String(timeslot.endTime).substring(0, 2)) <= 17
+      );
+    }
   }
 
   console.log(`toggle is ${toggles}`);
@@ -325,7 +362,7 @@ export default function Calendar({ userType }: WeeklyViewProps) {
               dayHeaderFormat={{ weekday: "short", day: "numeric" }}
               datesSet={(dateInfo) => {
                 console.log("start of week: ", dateInfo.start);
-                // console.log(dateInfo.end);
+                console.log(dateInfo.end);
                 setDateProp(dateInfo.start);
                 console.log("date in weekCal: ", date);
               }}
