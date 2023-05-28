@@ -56,6 +56,7 @@ export default function Login() {
       setUser({ userName: `${email}` } as User);
       console.log("Success!");
       console.log(user);
+
       // Navigates to Home page with weekly calendar
       // setUser({ userName: `${email}` } as User);
 

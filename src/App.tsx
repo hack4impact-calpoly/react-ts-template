@@ -1,15 +1,10 @@
+/* eslint-disable react/button-has-type */
 import React, { useState, useEffect, useMemo } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import { Amplify, DataStore, Auth } from "aws-amplify";
 import { LazyTimeslot, Timeslot, User as UserModel } from "./models";
 import awsconfig from "./aws-exports";
-import Success from "./components/authentication/success";
-import ResetPassword from "./components/authentication/resetPassword";
-import CreateAccount from "./components/authentication/createAccount";
-import EnterCode from "./components/authentication/enterCode";
-import Login from "./components/authentication/login";
-import ForgotPassword from "./components/authentication/forgotPassword";
 import Timeslots from "./components/popup/timeslots";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobile/mobileCalendar";
@@ -18,6 +13,12 @@ import TimeslotSuccess from "./components/popup/timeslotSuccess";
 import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
 import UserContext from "./userContext";
 import { User } from "./types";
+import ForgotPassword from "./components/authentication/forgotPassword";
+import ResetPassword from "./components/resetPassword";
+import Login from "./components/authentication/login";
+import CreateAccount from "./components/authentication/createAccount";
+import EnterCode from "./components/authentication/enterCode";
+import Success from "./components/authentication/success";
 
 Amplify.configure(awsconfig);
 
@@ -92,33 +93,62 @@ function App() {
     <UserContext.Provider value={userContextFields}>
       <BrowserRouter>
         <Routes>
-          {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
-          <Route
-            path="/"
-            element={
-              isMobile ? (
-                <CalendarMobile
-                  user=""
-                  bookings={0}
-                  day={day!}
-                  setDayProp={setDayProp}
-                  month={month!}
-                  setMonthProp={setMonthProp}
-                  weekday={weekday!}
-                  setWeekdayProp={setWeekdayProp}
-                />
-              ) : (
+          {/* Starting Protected Routes */}
+          {/* If not logged in when trying to access below route, redirect to login */}
+          {currentUser.userName ? (
+            <Route
+              path="/"
+              element={
+                isMobile ? (
+                  <CalendarMobile
+                    user=""
+                    bookings={0}
+                    day={day!}
+                    setDayProp={setDayProp}
+                    month={month!}
+                    setMonthProp={setMonthProp}
+                    weekday={weekday!}
+                    setWeekdayProp={setWeekdayProp}
+                  />
+                ) : (
+                  <Calendar userType="rider" userId="" />
+                )
+              }
+            />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+          {currentUser.userName ? (
+            <Route
+              path="/timeslot-confirmation"
+              element={
                 userInfo &&
                 userInfo.userType &&
                 userId && (
-                  <Calendar userType={userInfo.userType} userId={userId} />
+                  <TimeSlotConfirmation
+                    userType={userInfo.userType}
+                    userID={userId}
+                    date={new Date()}
+                  />
                 )
-              )
-            }
-          />
+              }
+            />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+          {currentUser.userName ? (
+            <Route path="/timeslot-success" element={<TimeslotSuccess />} />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+
+          {/* Starting Public Routes */}
+          {/* Can access regardless of login status */}
+
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/enter-code" element={<EnterCode />} />
+          <Route path="/success/:id" element={<Success />} />
           <Route
             path="/forgot-password"
             element={<ForgotPassword setEmailProp={setEmailProp} />}
@@ -127,7 +157,6 @@ function App() {
             path="/reset-password"
             element={<ResetPassword email={email!} />}
           />
-          <Route path="/success/:id" element={<Success />} />
           <Route
             path="/timeslots"
             element={
@@ -150,21 +179,7 @@ function App() {
               )
             }
           />
-          <Route path="/timeslot-success" element={<TimeslotSuccess />} />
-          <Route
-            path="/timeslot-confirmation"
-            element={
-              userInfo &&
-              userInfo.userType &&
-              userId && (
-                <TimeSlotConfirmation
-                  userType={userInfo.userType}
-                  userID={userId}
-                  date={new Date()}
-                />
-              )
-            }
-          />
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
