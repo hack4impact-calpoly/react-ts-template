@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useState, useEffect } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Auth, DataStore } from "aws-amplify";
@@ -40,7 +40,7 @@ export default function Login() {
   // const [users, setUserModels] = useState<User[]>([]);
   // Initialize a boolean state
   const [passwordShown, setPasswordShown] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User[]>([]);
+  // const [currentUser, setCurrentUser] = useState<User[]>([]);
   // const [userName] = useContext(email);
   // Password toggle handler
   const togglePassword = () => {
@@ -51,23 +51,16 @@ export default function Login() {
 
   async function signIn() {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { user } = await Auth.signIn({
         username: email,
         password,
       });
 
-      // const posts = await DataStore.query(User, (c) => c.userName.eq(email));
-      // setCurrentUser(posts as User[]);
-      // console.log(posts);
-
-      // setting the userName for the userContext
-      console.log(user);
-      // setVerifiedEmail(email);
-      setUser(currentUser);
-      // setUser({ userName: `${email}` } as User);
+      const posts = await DataStore.query(User, (c) => c.userName.eq(email));
+      console.log(posts);
+      setUser(posts as User[]);
       console.log("Success!");
-      // Navigates to Home page with weekly calendar
-      // setUser({ userName: `${email}` } as User);
 
       navigate("/");
     } catch (errore) {
@@ -79,22 +72,6 @@ export default function Login() {
       }
     }
   }
-  // console.log(currentUser as User[]);
-
-  // console.log(currentUser);
-  // console.log(Auth.currentUserInfo());
-  useEffect(() => {
-    const pullData = async () => {
-      const posts = await DataStore.query(User, (c) => c.userName.eq(email));
-      // console.log(posts);
-      setCurrentUser(posts as User[]);
-      // console.log(currentUser);
-    };
-    pullData();
-  });
-  // if (currentUser.length > 0) {
-  //   console.log(currentUser[0].firstName);
-  // }
 
   const handleSubmit = () => {
     setError("");
@@ -106,6 +83,7 @@ export default function Login() {
 
     signIn();
   };
+
   return (
     <Wrapper>
       <Box>

@@ -14,6 +14,10 @@ import { LazyTimeslot, Timeslot } from "../models";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
+// import FullCalendar from "@fullcalendar/react";
+import signout from "../images/SignOut.png";
+import LogoutPopup from "./popup/logoutPopup";
+// import LogoutPopup from "./popup/logoutPopup";
 import { Booking } from "../models";
 
 const CalDiv = styled.div`
@@ -67,7 +71,7 @@ const Logo = styled.img`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding-top: 130px;
+  padding-top: 60px;
 `;
 const LeftColumn = styled.div`
   display: flex;
@@ -80,6 +84,27 @@ const LeftColumn = styled.div`
 const RightColumn = styled.div`
   padding-right: 50px;
   width: 100%;
+`;
+
+const SignOutLogo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledButton = styled.button`
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  transform: scale(1.2);
+  padding-top: 20px;
+  background: none;
+  border: none;
+`;
+
+const StyledImage = styled.img`
+  width: 100%;
+  padding-top: 30%;
+  padding-left: 40%;
 `;
 
 const CalendarContainer = styled.div`
@@ -208,6 +233,7 @@ export default function Calendar() {
   const [toggles, setToggle] = useState<string>("");
   const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const [popup, setPopup] = useState(false);
+  const [logoutPopup, setLogoutPopup] = useState(false);
   const [popupDate, setPopupDate] = useState<Date>(new Date());
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
@@ -244,8 +270,12 @@ export default function Calendar() {
     setPopup(true);
   };
 
-  const handleChildData = () => {
+  const handlePopupClose = () => {
     setPopup(false);
+  };
+
+  const handleLogoutClose = () => {
+    setLogoutPopup(false);
   };
 
   console.log(ts.length);
@@ -320,7 +350,17 @@ export default function Calendar() {
   console.log(`toggle is ${toggles}`);
   return (
     <div>
-      <Logo src={logo} />
+      <SignOutLogo>
+        <StyledButton
+          onClick={() => {
+            setLogoutPopup(true);
+          }}
+        >
+          <StyledImage src={signout} alt="Sign Out" />
+        </StyledButton>
+        <Logo src={logo} />
+        <LogoutPopup openProp={logoutPopup} onClose={handleLogoutClose} />
+      </SignOutLogo>
       <Wrapper>
         <LeftColumn>
           <CalendarContainer>
@@ -370,14 +410,13 @@ export default function Calendar() {
             />
             <Popup
               o={popup}
-              onData={handleChildData}
+              onClose={handlePopupClose}
               date={popupDate}
               toggleProp={toggles!}
             />
           </CalDiv>
         </RightColumn>
       </Wrapper>
-      {/* <Popup  /> */}
     </div>
   );
 }

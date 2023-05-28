@@ -10,6 +10,7 @@ import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobile/mobileCalendar";
 import TimeslotSuccess from "./components/popup/timeslotSuccess";
 import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
+// import LogoutPopup from "./components/popup/logoutPopup";
 import UserContext from "./userContext";
 import ForgotPassword from "./components/authentication/forgotPassword";
 import ResetPassword from "./components/resetPassword";
