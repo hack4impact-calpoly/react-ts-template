@@ -76,8 +76,9 @@ export default function Timeslots({ userType, models, date }: TimeslotsProps) {
         {timeslots
           .filter((ts) => filterTimeSlots(userType === "Volunteer", ts))
           .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))
-          .map((timeslot) => (
-            <Timeslot
+          .map((timeslot, i) => (
+            <Timeslot // eslint-disable-next-line react/no-array-index-key
+              key={i}
               userType={userType}
               startTime={timeslot.startTime}
               endTime={timeslot.endTime}
