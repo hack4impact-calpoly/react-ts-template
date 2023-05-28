@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import UserContext from "../../userContext";
 import MobileTimeslot from "./mobileTimeslot";
 
 // added height and margin-top and changed overflowy to overflow-y
@@ -12,10 +14,6 @@ const Slots = styled.section`
   width: 100%;
   height: 400px;
 `;
-
-interface TimeslotsProps {
-  userType: string;
-}
 
 const timeslots = [
   {
@@ -52,21 +50,29 @@ const timeslots = [
   },
 ];
 
-export default function MobileTimeslots({ userType }: TimeslotsProps) {
+export default function MobileTimeslots() {
   let filteredTimeslots: { startTime: Date; endTime: Date }[] = [];
-  if (userType === "volunteer") {
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType } = realUser;
+  if (realUser !== null) {
+    console.log("mobile timeslots component just needs userType");
+    console.log(userType);
+  }
+  if (userType === "Volunteer") {
     // Filter timeslots between 9 AM and 5 PM for volunteers
     filteredTimeslots = timeslots.filter(
       (timeslot) =>
         timeslot.startTime.getHours() >= 9 && timeslot.endTime.getHours() <= 17
     );
-  } else if (userType === "rider") {
+  } else if (userType === "Rider") {
     // Filter timeslots between 10 AM and 2 PM for riders
     filteredTimeslots = timeslots.filter(
       (timeslot) =>
         timeslot.startTime.getHours() >= 10 && timeslot.endTime.getHours() <= 14
     );
-  } else if (userType === "admin") {
+  } else if (userType === "Admin") {
     // show's all time slots for admin
     filteredTimeslots = timeslots;
   }
@@ -77,7 +83,6 @@ export default function MobileTimeslots({ userType }: TimeslotsProps) {
         <MobileTimeslot
           startTime={timeslot.startTime}
           endTime={timeslot.endTime}
-          user={userType}
         />
       ))}
     </Slots>

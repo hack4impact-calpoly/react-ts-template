@@ -8,11 +8,9 @@ import awsconfig from "./aws-exports";
 import Timeslots from "./components/popup/timeslots";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobile/mobileCalendar";
-import MobileTimeslots from "./components/mobile/mobileTimeslots";
 import TimeslotSuccess from "./components/popup/timeslotSuccess";
 import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
 import UserContext from "./userContext";
-import { User } from "./types";
 import ForgotPassword from "./components/authentication/forgotPassword";
 import ResetPassword from "./components/resetPassword";
 import Login from "./components/authentication/login";
@@ -82,27 +80,36 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   // setting up context
-  const [currentUser, setUser] = useState({} as User);
+  const [currentUser, setUser] = useState({} as UserModel[]);
   const userContextFields = useMemo(
     () => ({ currentUser, setUser }),
     [currentUser]
   );
+
+  if (currentUser.length > 0) {
+    console.log(
+      `current users name is: ${currentUser[0].firstName}${currentUser[0].lastName}`
+    );
+  }
+
   // console statement to test if userName was set in login component
-  console.log(`from the context stuff ${currentUser.userName}`);
+  // console.log(`from the context stuff ${currentUser.userName}`);
+  // console.log(
+  //   `from the usercontext first name of user is ${currentUser[0].firstName}`
+  // );
   return (
     <UserContext.Provider value={userContextFields}>
       <BrowserRouter>
         <Routes>
           {/* Starting Protected Routes */}
           {/* If not logged in when trying to access below route, redirect to login */}
-          {currentUser.userName ? (
+          {currentUser ? (
             <Route
               path="/"
               element={
                 isMobile ? (
                   <CalendarMobile
-                    user=""
-                    bookings={0}
+                    bookingsFake={0}
                     day={day!}
                     setDayProp={setDayProp}
                     month={month!}
@@ -111,32 +118,28 @@ function App() {
                     setWeekdayProp={setWeekdayProp}
                   />
                 ) : (
-                  <Calendar userType="rider" userId="" />
+                  <Calendar />
                 )
               }
             />
           ) : (
             <Route path="/login" element={<Login />} />
           )}
-          {currentUser.userName ? (
+          {currentUser ? (
             <Route
               path="/timeslot-confirmation"
               element={
                 userInfo &&
                 userInfo.userType &&
                 userId && (
-                  <TimeSlotConfirmation
-                    userType={userInfo.userType}
-                    userID={userId}
-                    date={new Date()}
-                  />
+                  <TimeSlotConfirmation status="book" date={new Date()} />
                 )
               }
             />
           ) : (
             <Route path="/login" element={<Login />} />
           )}
-          {currentUser.userName ? (
+          {currentUser ? (
             <Route path="/timeslot-success" element={<TimeslotSuccess />} />
           ) : (
             <Route path="/login" element={<Login />} />
@@ -159,25 +162,7 @@ function App() {
           />
           <Route
             path="/timeslots"
-            element={
-              userInfo &&
-              userInfo.userType && (
-                <Timeslots
-                  userType={userInfo.userType}
-                  models={timeslots}
-                  date={new Date()}
-                />
-              )
-            }
-          />
-          <Route
-            path="/mobile-timeslots"
-            element={
-              userInfo &&
-              userInfo.userType && (
-                <MobileTimeslots userType={userInfo.userType} />
-              )
-            }
+            element={<Timeslots models={timeslots} date={new Date()} />}
           />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

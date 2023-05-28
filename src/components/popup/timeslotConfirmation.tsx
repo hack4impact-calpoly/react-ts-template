@@ -1,7 +1,8 @@
-import React from "react";
+import { useContext } from "react";
 import styled from "styled-components";
-import { DataStore } from "aws-amplify";
 import { useNavigate } from "react-router-dom";
+import { DataStore } from "aws-amplify";
+import UserContext from "../../userContext";
 import { checkedLst, uncheckedLst } from "./timeslot";
 import { Timeslot, User, Booking } from "../../models";
 import warning from "../../images/warning.svg";
@@ -16,10 +17,10 @@ import {
 } from "../styledComponents";
 
 export type TimeSlotProps = {
-  userType: String;
-  userID: string;
+  status: String;
   date: Date;
 };
+
 const Warning = styled.img`
   position: relative;
   width: 80px;
@@ -44,6 +45,15 @@ const CancelButton = styled(Button)`
   margin-right: 1rem;
 `;
 
+// export default function TimeSlotConfirmation({ status = "" }: TimeSlotProps) {
+//   const currentUserFR = useContext(UserContext);
+//   const { currentUser } = currentUserFR;
+//   const [realUser] = currentUser;
+//   const { userType } = realUser;
+//   return (
+//     <Wrapper>
+//       {userType === "Admin" && (
+//         <SurroundingBox>
 async function addUnavailability(ids: string[], unavailableDate: Date) {
   try {
     ids.forEach(async (id) => {
@@ -152,10 +162,13 @@ async function addRVBooking(
   }
 }
 
-// async function deleteRVBooking(
-//   TimeslotIDs: string[], // which time they want to cancel
-//   userID: string
-// ) {
+async function deleteRVBooking(
+  TimeslotIDs: string[], // which time they want to cancel
+  userID: string
+) {
+  console.log(TimeslotIDs);
+  console.log(userID);
+}
 //   /*
 //   go through entire booking table, find the booking id that matches
 //   the timeslotid, and the date
@@ -177,10 +190,13 @@ async function addRVBooking(
 // }
 
 export default function TimeSlotConfirmation({
-  userType,
-  userID,
+  status = "",
   date,
 }: TimeSlotProps) {
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType, id } = realUser;
   const navigate = useNavigate();
 
   const handleConfirmationAdmin = () => {
@@ -190,7 +206,7 @@ export default function TimeSlotConfirmation({
   };
 
   const handleConfirmationRV = () => {
-    addRVBooking(checkedLst, userID, date);
+    addRVBooking(checkedLst, id, date);
     navigate("/timeslot-success");
   };
 
@@ -198,10 +214,10 @@ export default function TimeSlotConfirmation({
     navigate("/");
   };
 
-  // const handleBookingCancel = () => {
-  //   deleteRVBooking(uncheckedLst, userID);
-  //   navigate("/timeslot-success");
-  // };
+  const handleBookingCancel = () => {
+    deleteRVBooking(uncheckedLst, id);
+    navigate("/timeslot-success");
+  };
 
   return (
     <Wrapper>
@@ -221,7 +237,7 @@ export default function TimeSlotConfirmation({
           </Row>
         </SurroundingBoxPopup>
       )}
-      {/* {userType !== "admin" && uncheckedLst.length !== 0 && (
+      {userType !== "Admin" && status === "cancel" && (
         <SurroundingBoxPopup>
           <Warning src={warning} />
           <Header>Confirm cancellation?</Header>
@@ -234,7 +250,7 @@ export default function TimeSlotConfirmation({
             <ConfirmButton onClick={handleBookingCancel}>Confirm</ConfirmButton>
           </Row>
         </SurroundingBoxPopup>
-      )} */}
+      )}
       {userType !== "admin" && checkedLst.length !== 0 && (
         <SurroundingBoxPopup>
           <Warning src={warning} />

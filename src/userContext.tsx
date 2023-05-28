@@ -1,9 +1,10 @@
 import { createContext } from "react";
-import { User } from "./types";
+// import { Users } from "./types";
+import { User } from "./models";
 
 const defaultFields = {
-  currentUser: {} as User,
-  setUser: (() => {}) as (user: User) => void,
+  currentUser: {} as User[],
+  setUser: (() => {}) as (user: User[]) => void,
 };
 
 const UserContext = createContext(defaultFields);
