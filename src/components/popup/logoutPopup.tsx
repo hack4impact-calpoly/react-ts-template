@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import warning from "../../images/warning.svg";
 import {
@@ -45,25 +45,25 @@ const CancelButton = styled(Button)`
 
 interface PopupProps {
   openProp: boolean;
-  onData: () => void;
+  onClose: () => void;
 }
 
-export default function LogoutPopup({ openProp, onData }: PopupProps) {
+export default function LogoutPopup({ openProp, onClose }: PopupProps) {
   const [open, setOpen] = useState<boolean>(openProp);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     setOpen(openProp);
   }, [openProp]);
 
-  const handleClick = () => {
-    navigate("/");
-    setOpen(false);
-    onData();
-  };
+  // const handleClick = () => {
+  //   navigate("/");
+  //   setOpen(false);
+  //   // onData();
+  // };
 
   return (
-    <PopupDiv open={open} onClose={() => setOpen(false)}>
+    <PopupDiv open={open} onClose={onClose}>
       <SurroundingBox>
         <Warning src={warning} />
         <Header>Signing Out?</Header>
@@ -72,7 +72,7 @@ export default function LogoutPopup({ openProp, onData }: PopupProps) {
           back to the sign in page.
         </Description>
         <Row>
-          <CancelButton onClick={handleClick}>Cancel</CancelButton>
+          <CancelButton onClick={onClose}>Cancel</CancelButton>
           <ConfirmButton>Logout</ConfirmButton>
         </Row>
       </SurroundingBox>

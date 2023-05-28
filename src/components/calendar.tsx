@@ -255,8 +255,12 @@ export default function Calendar({ userType, userId }: WeeklyViewProps) {
     setPopup(true);
   };
 
-  const handleChildData = () => {
+  const handlePopupClose = () => {
     setPopup(false);
+  };
+
+  const handleLogoutClose = () => {
+    setLogoutPopup(false);
   };
 
   console.log(ts.length);
@@ -316,7 +320,7 @@ export default function Calendar({ userType, userId }: WeeklyViewProps) {
           <StyledImage src={signout} alt="Sign Out" />
         </StyledButton>
         <Logo src={logo} />
-        <LogoutPopup openProp={logoutPopup} onData={handleChildData} />
+        <LogoutPopup openProp={logoutPopup} onClose={handleLogoutClose} />
       </SignOutLogo>
       <Wrapper>
         <LeftColumn>
@@ -367,7 +371,7 @@ export default function Calendar({ userType, userId }: WeeklyViewProps) {
             />
             <Popup
               o={popup}
-              onData={handleChildData}
+              onClose={handlePopupClose}
               date={popupDate}
               toggleProp={toggles!}
               userType={userType}

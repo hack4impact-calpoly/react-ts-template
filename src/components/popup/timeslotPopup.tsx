@@ -62,7 +62,7 @@ const AptHeader = styled.h1`
 
 interface PopupProps {
   o: boolean;
-  onData: () => void;
+  onClose: () => void;
   date: Date;
   toggleProp: string;
   userType: string;
@@ -71,7 +71,7 @@ interface PopupProps {
 
 export default function Popup({
   o,
-  onData,
+  onClose,
   date,
   toggleProp,
   userType,
@@ -82,11 +82,6 @@ export default function Popup({
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/");
-    setOpen(false);
-    onData();
-  };
 
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
@@ -134,12 +129,12 @@ export default function Popup({
     <div>
       <PopupDiv
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={onClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <PopupBox>
-          <X src={x} onClick={handleClick} />
+          <X src={x} onClick={onClose} />
           <Wrapper>
             <LeftColumn>
               <Monthly />
@@ -154,7 +149,7 @@ export default function Popup({
                 date={new Date()}
               />
               <BtnContainer>
-                <CancelBtn onClick={() => setOpen(false)}>Cancel</CancelBtn>
+                <CancelBtn onClick={onClose}>Cancel</CancelBtn>
                 <SaveBtn onClick={handleConfirmation}>Save</SaveBtn>
               </BtnContainer>
             </RightColumn>
