@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Auth } from "aws-amplify";
+import { User } from "../../models";
 import warning from "../../images/warning.svg";
 import {
   // Wrapper,
@@ -13,6 +14,7 @@ import {
   PopupDiv,
   // PopupBox,
 } from "../styledComponents";
+import UserContext from "../../userContext";
 
 const Warning = styled.img`
   position: relative;
@@ -51,6 +53,7 @@ interface PopupProps {
 
 export default function LogoutPopup({ openProp, onClose }: PopupProps) {
   const [open, setOpen] = useState<boolean>(openProp);
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,8 +63,10 @@ export default function LogoutPopup({ openProp, onClose }: PopupProps) {
   const handleLogout = async () => {
     try {
       await Auth.signOut();
+      setUser({} as User[]);
       navigate("/login");
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log("error signing out: ", error);
     }
   };

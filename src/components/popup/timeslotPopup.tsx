@@ -65,18 +65,9 @@ interface PopupProps {
   onClose: () => void;
   date: Date;
   toggleProp: string;
-  userType: string;
-  userId: string;
 }
 
-export default function Popup({
-  o,
-  onClose,
-  date,
-  toggleProp,
-  userType,
-  userId,
-}: PopupProps) {
+export default function Popup({ o, onClose, date, toggleProp }: PopupProps) {
   // eslint-disable-next-line
   const [open, setOpen] = useState<boolean>(o);
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -113,9 +104,7 @@ export default function Popup({
   const handleConfirmation = async () => {
     navigate("/timeslot-confirmation", {
       state: {
-        userType,
         timeslotID: checkedLst,
-        userID: userId,
         date,
       },
     });
@@ -143,11 +132,7 @@ export default function Popup({
             </LeftColumn>
             <RightColumn>
               <DateHeader>{formattedDate}</DateHeader>
-              <Timeslots
-                userType="rider"
-                models={timeslots}
-                date={new Date()}
-              />
+              <Timeslots models={timeslots} date={new Date()} />
               <BtnContainer>
                 <CancelBtn onClick={onClose}>Cancel</CancelBtn>
                 <SaveBtn onClick={handleConfirmation}>Save</SaveBtn>
