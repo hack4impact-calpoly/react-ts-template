@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { Amplify, DataStore } from "aws-amplify";
-// import { DataStore } from "@aws-amplify/datastore";
-import { LazyTimeslot, Timeslot, User } from "./models";
+import { Amplify, DataStore, Auth } from "aws-amplify";
+import { LazyTimeslot, Timeslot, User as UserModel } from "./models";
 import awsconfig from "./aws-exports";
 import Success from "./components/authentication/success";
 import ResetPassword from "./components/authentication/resetPassword";
@@ -33,28 +32,56 @@ function App() {
   const [month, setMonthProp] = useState<string>();
   const [weekday, setWeekdayProp] = useState<string>();
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
+  const [userInfo, setUserInfo] = useState<UserModel | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  // added additional attributes to the calendarmobile component for props
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.outerWidth <= 500);
     };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  // added additional attributes to the calendarmobile component for props
-
-  useEffect(() => {
     const pullData = async () => {
       const ts = await DataStore.query(Timeslot);
       setTs(ts);
       console.log(ts);
     };
+    const fetchUserInfo = async () => {
+      try {
+        setUserId(await Auth.currentUserInfo());
+        console.log("userid: ", userId);
+        if (userId !== null) {
+          const info = await DataStore.query(UserModel, userId);
+          if (info) {
+            setUserInfo(info);
+            console.log(userInfo);
+          } else {
+            console.log("User data not found");
+          }
+        }
+        if (userId == null) {
+          setUserId("5bfff0a7-42aa-48f7-bccb-0fa60dd0b6d3");
+          const info = await DataStore.query(UserModel, userId);
+          if (info) {
+            setUserInfo(info[0]);
+            console.log(userInfo);
+          } else {
+            console.log("User data not found");
+          }
+        }
+      } catch (error) {
+        console.log("Error fetching user info:", error);
+      }
+    };
 
+    fetchUserInfo();
+    window.addEventListener("resize", handleResize);
+    handleResize();
     pullData();
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
   // setting up context
-  const [currentUser, setUser] = useState({} as User[]);
+  const [currentUser, setUser] = useState({} as UserModel[]);
   const userContextFields = useMemo(
     () => ({ currentUser, setUser }),
     [currentUser]
@@ -114,7 +141,7 @@ function App() {
           <Route path="/timeslot-success" element={<TimeslotSuccess />} />
           <Route
             path="/timeslot-confirmation"
-            element={<TimeSlotConfirmation status="book" />}
+            element={<TimeSlotConfirmation status="book" date={new Date()} />}
           />
         </Routes>
       </BrowserRouter>

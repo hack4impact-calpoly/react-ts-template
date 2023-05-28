@@ -33,7 +33,7 @@ const Box = styled.section`
   }
 `;
 
-const Header = styled.text`
+const Header = styled.p`
   display: flex;
   cursor: text;
   margin: 1.5rem 0rem;

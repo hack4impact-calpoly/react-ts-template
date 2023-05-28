@@ -8,6 +8,7 @@ import Monthly from "../monthlyView";
 import AptInfo from "../appointmentInfo";
 import Timeslots from "./timeslots";
 import { LazyTimeslot, Timeslot } from "../../models";
+import { checkedLst } from "./timeslot";
 
 const Wrapper = styled.div`
   display: flex;
@@ -105,6 +106,15 @@ export default function Popup({ o, onData, date, toggleProp }: PopupProps) {
     pullData();
   }, []);
 
+  const handleConfirmation = async () => {
+    navigate("/timeslot-confirmation", {
+      state: {
+        timeslotID: checkedLst,
+        date,
+      },
+    });
+  };
+
   useEffect(() => {
     setOpen(o);
   }, [o]);
@@ -129,8 +139,8 @@ export default function Popup({ o, onData, date, toggleProp }: PopupProps) {
               <DateHeader>{formattedDate}</DateHeader>
               <Timeslots models={timeslots} date={new Date()} />
               <BtnContainer>
-                <CancelBtn>Cancel</CancelBtn>
-                <SaveBtn>Save</SaveBtn>
+                <CancelBtn onClick={() => setOpen(false)}>Cancel</CancelBtn>
+                <SaveBtn onClick={handleConfirmation}>Save</SaveBtn>
               </BtnContainer>
             </RightColumn>
           </Wrapper>

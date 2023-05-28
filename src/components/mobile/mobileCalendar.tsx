@@ -6,7 +6,7 @@ import MobileTimeslots from "./mobileTimeslots";
 import MobileWeeklyView from "./mobileWeeklyView";
 import { Dropdown, Option } from "./dropdown";
 
-const CurrentDate = styled.text`
+const CurrentDate = styled.p`
   font-family: "Rubik";
   font-style: normal;
   font-weight: 500;
