@@ -1,6 +1,6 @@
 /* eslint-disable import/no-duplicates */
 import styled from "styled-components";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { DataStore } from "@aws-amplify/datastore";
 import MonthCalendar from "react-calendar";
 import WeekCalendar from "@fullcalendar/react";
@@ -8,6 +8,7 @@ import FullCalendarRef from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import interactionPlugin from "@fullcalendar/interaction";
+import UserContext from "../userContext";
 import { LazyTimeslot, Timeslot } from "../models";
 // import Monthly from "./monthlyView";
 // import Weekly from "./weeklyView";
@@ -199,18 +200,17 @@ const CalendarContainer = styled.div`
   }
 `;
 
-export interface WeeklyViewProps {
-  userType: string;
-  userId: string;
-}
-
-export default function Calendar({ userType, userId }: WeeklyViewProps) {
+export default function Calendar() {
   const [date, setDateProp] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
   const [toggles, setToggle] = useState<string>("");
   const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const [popup, setPopup] = useState(false);
   const [popupDate, setPopupDate] = useState<Date>(new Date());
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType } = realUser;
 
   console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
@@ -238,17 +238,17 @@ export default function Calendar({ userType, userId }: WeeklyViewProps) {
   let slots = ts.map((timeslot: any) => {
     let backgroundColor = "#90BFCC";
 
-    if (userType === "rider") {
+    if (userType === "Rider") {
       const hasRiderBooking = timeslot.riderBookings.length > 0;
       if (hasRiderBooking) {
         backgroundColor = "#E0EFF1";
       }
-    } else if (userType === "volunteer") {
+    } else if (userType === "Volunteer") {
       const hasVolunteerBooking = timeslot.volunteerBookings.length > 0;
       if (hasVolunteerBooking) {
         backgroundColor = "#E0EFF1";
       }
-    } else if (userType === "admin") {
+    } else if (userType === "Admin") {
       if (
         timeslot.unavailableDates.includes(timeslot.startTime.toDateString())
       ) {
@@ -334,8 +334,6 @@ export default function Calendar({ userType, userId }: WeeklyViewProps) {
               onData={handleChildData}
               date={popupDate}
               toggleProp={toggles!}
-              userType={userType}
-              userId={userId}
             />
           </CalDiv>
         </RightColumn>

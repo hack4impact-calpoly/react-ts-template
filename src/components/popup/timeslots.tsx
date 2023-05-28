@@ -1,5 +1,6 @@
-import React from "react";
+import { useContext } from "react";
 import styled from "styled-components";
+import UserContext from "../../userContext";
 // import { Box } from "../styledComponents";
 import Timeslot from "./timeslot";
 import { LazyTimeslot } from "../../models";
@@ -31,12 +32,15 @@ interface TsData {
 }
 
 interface TimeslotsProps {
-  userType: string;
   models: LazyTimeslot[] | "nothing";
   date: Date;
 }
 
-export default function Timeslots({ userType, models, date }: TimeslotsProps) {
+export default function Timeslots({ models, date }: TimeslotsProps) {
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType } = realUser;
   console.log(date);
   console.log(models);
   const timeslots: TsData[] = [];
@@ -79,7 +83,6 @@ export default function Timeslots({ userType, models, date }: TimeslotsProps) {
           .map((timeslot, i) => (
             <Timeslot // eslint-disable-next-line react/no-array-index-key
               key={i}
-              userType={userType}
               startTime={timeslot.startTime}
               endTime={timeslot.endTime}
               tsId={timeslot.id}
