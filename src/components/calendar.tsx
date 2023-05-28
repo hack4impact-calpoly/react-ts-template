@@ -225,10 +225,11 @@ const CalendarContainer = styled.div`
 `;
 
 export interface WeeklyViewProps {
-  userType: "volunteer" | "rider" | "admin";
+  userType: string;
+  userId: string;
 }
 
-export default function Calendar({ userType }: WeeklyViewProps) {
+export default function Calendar({ userType, userId }: WeeklyViewProps) {
   const [date, setDateProp] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
   const [toggles, setToggle] = useState<string>("");
@@ -369,6 +370,8 @@ export default function Calendar({ userType }: WeeklyViewProps) {
               onData={handleChildData}
               date={popupDate}
               toggleProp={toggles!}
+              userType={userType}
+              userId={userId}
             />
           </CalDiv>
         </RightColumn>
