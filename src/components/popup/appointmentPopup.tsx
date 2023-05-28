@@ -31,7 +31,7 @@ const ConfirmButton = styled(Link)`
   margin-top: 5%;
   margin-left: 70%;
 `;
-const ButtonText = styled.text`
+const ButtonText = styled.p`
   font-weight: bold;
 `;
 
