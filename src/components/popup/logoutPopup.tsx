@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import warning from "../../images/warning.svg";
 import {
-  Wrapper,
+  // Wrapper,
   Box,
   Description,
   Header,
   Button,
   Row,
+  PopupDiv,
+  // PopupBox,
 } from "../styledComponents";
 
 const Warning = styled.img`
@@ -40,9 +43,27 @@ const CancelButton = styled(Button)`
   margin-right: 1rem;
 `;
 
-export default function LogoutPopup() {
+interface PopupProps {
+  openProp: boolean;
+  onData: () => void;
+}
+
+export default function LogoutPopup({ openProp, onData }: PopupProps) {
+  const [open, setOpen] = useState<boolean>(openProp);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setOpen(openProp);
+  }, [openProp]);
+
+  const handleClick = () => {
+    navigate("/");
+    setOpen(false);
+    onData();
+  };
+
   return (
-    <Wrapper>
+    <PopupDiv open={open} onClose={() => setOpen(false)}>
       <SurroundingBox>
         <Warning src={warning} />
         <Header>Signing Out?</Header>
@@ -51,10 +72,10 @@ export default function LogoutPopup() {
           back to the sign in page.
         </Description>
         <Row>
-          <CancelButton>Cancel</CancelButton>
+          <CancelButton onClick={handleClick}>Cancel</CancelButton>
           <ConfirmButton>Logout</ConfirmButton>
         </Row>
       </SurroundingBox>
-    </Wrapper>
+    </PopupDiv>
   );
 }

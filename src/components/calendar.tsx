@@ -8,7 +8,7 @@ import FullCalendarRef from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import interactionPlugin from "@fullcalendar/interaction";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { LazyTimeslot, Timeslot } from "../models";
 // import Monthly from "./monthlyView";
 // import Weekly from "./weeklyView";
@@ -17,6 +17,7 @@ import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
 // import FullCalendar from "@fullcalendar/react";
 import signout from "../images/SignOut.png";
+import LogoutPopup from "./popup/logoutPopup";
 // import LogoutPopup from "./popup/logoutPopup";
 
 const CalDiv = styled.div`
@@ -67,7 +68,7 @@ const Logo = styled.img`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding-top: 130px;
+  padding-top: 60px;
 `;
 const LeftColumn = styled.div`
   display: flex;
@@ -87,11 +88,14 @@ const SignOutLogo = styled.div`
   align-items: center;
 `;
 
-const StyledButton = styled(Link)`
+const StyledButton = styled.button`
   display: inline-block;
   width: 100px;
   height: 100px;
   transform: scale(1.2);
+  padding-top: 20px;
+  background: none;
+  border: none;
 `;
 
 const StyledImage = styled.img`
@@ -230,6 +234,7 @@ export default function Calendar({ userType }: WeeklyViewProps) {
   const [toggles, setToggle] = useState<string>("");
   const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const [popup, setPopup] = useState(false);
+  const [logoutPopup, setLogoutPopup] = useState(false);
   const [popupDate, setPopupDate] = useState<Date>(new Date());
 
   console.log("setdate: ", date);
@@ -302,10 +307,15 @@ export default function Calendar({ userType }: WeeklyViewProps) {
   return (
     <div>
       <SignOutLogo>
-        <StyledButton to="/logoutPopup">
+        <StyledButton
+          onClick={() => {
+            setLogoutPopup(true);
+          }}
+        >
           <StyledImage src={signout} alt="Sign Out" />
         </StyledButton>
         <Logo src={logo} />
+        <LogoutPopup openProp={logoutPopup} onData={handleChildData} />
       </SignOutLogo>
       <Wrapper>
         <LeftColumn>
@@ -363,7 +373,6 @@ export default function Calendar({ userType }: WeeklyViewProps) {
           </CalDiv>
         </RightColumn>
       </Wrapper>
-      {/* <Popup  /> */}
     </div>
   );
 }
