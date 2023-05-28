@@ -1,24 +1,23 @@
+/* eslint-disable react/button-has-type */
 import React, { useState, useEffect, useMemo } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
-import { Amplify, DataStore, Auth } from "aws-amplify";
+import { Amplify, DataStore } from "aws-amplify";
 import { LazyTimeslot, Timeslot, User as UserModel } from "./models";
 import awsconfig from "./aws-exports";
-import Success from "./components/authentication/success";
-import ResetPassword from "./components/authentication/resetPassword";
-import CreateAccount from "./components/authentication/createAccount";
-import EnterCode from "./components/authentication/enterCode";
-import Login from "./components/authentication/login";
-import ForgotPassword from "./components/authentication/forgotPassword";
 import Timeslots from "./components/popup/timeslots";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobile/mobileCalendar";
-import MobileTimeslots from "./components/mobile/mobileTimeslots";
 import TimeslotSuccess from "./components/popup/timeslotSuccess";
 import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
 // import LogoutPopup from "./components/popup/logoutPopup";
 import UserContext from "./userContext";
-// import { Users } from "./types";
+import ForgotPassword from "./components/authentication/forgotPassword";
+import ResetPassword from "./components/resetPassword";
+import Login from "./components/authentication/login";
+import CreateAccount from "./components/authentication/createAccount";
+import EnterCode from "./components/authentication/enterCode";
+import Success from "./components/authentication/success";
 
 Amplify.configure(awsconfig);
 
@@ -33,8 +32,6 @@ function App() {
   const [month, setMonthProp] = useState<string>();
   const [weekday, setWeekdayProp] = useState<string>();
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
-  const [userInfo, setUserInfo] = useState<UserModel | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
 
   // added additional attributes to the calendarmobile component for props
 
@@ -47,35 +44,6 @@ function App() {
       setTs(ts);
       console.log(ts);
     };
-    const fetchUserInfo = async () => {
-      try {
-        setUserId(await Auth.currentUserInfo());
-        console.log("userid: ", userId);
-        if (userId !== null) {
-          const info = await DataStore.query(UserModel, userId);
-          if (info) {
-            setUserInfo(info);
-            console.log(userInfo);
-          } else {
-            console.log("User data not found");
-          }
-        }
-        if (userId == null) {
-          setUserId("5bfff0a7-42aa-48f7-bccb-0fa60dd0b6d3");
-          const info = await DataStore.query(UserModel, userId);
-          if (info) {
-            setUserInfo(info[0]);
-            console.log(userInfo);
-          } else {
-            console.log("User data not found");
-          }
-        }
-      } catch (error) {
-        console.log("Error fetching user info:", error);
-      }
-    };
-
-    fetchUserInfo();
     window.addEventListener("resize", handleResize);
     handleResize();
     pullData();
@@ -103,28 +71,51 @@ function App() {
     <UserContext.Provider value={userContextFields}>
       <BrowserRouter>
         <Routes>
-          {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
-          <Route
-            path="/"
-            element={
-              isMobile ? (
-                <CalendarMobile
-                  bookingsFake={0}
-                  day={day!}
-                  setDayProp={setDayProp}
-                  month={month!}
-                  setMonthProp={setMonthProp}
-                  weekday={weekday!}
-                  setWeekdayProp={setWeekdayProp}
-                />
-              ) : (
-                <Calendar />
-              )
-            }
-          />
+          {/* Starting Protected Routes */}
+          {/* If not logged in when trying to access below route, redirect to login */}
+          {currentUser.length > 0 ? (
+            <Route
+              path="/"
+              element={
+                isMobile ? (
+                  <CalendarMobile
+                    bookingsFake={0}
+                    day={day!}
+                    setDayProp={setDayProp}
+                    month={month!}
+                    setMonthProp={setMonthProp}
+                    weekday={weekday!}
+                    setWeekdayProp={setWeekdayProp}
+                  />
+                ) : (
+                  <Calendar />
+                )
+              }
+            />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+          {currentUser ? (
+            <Route
+              path="/timeslot-confirmation"
+              element={<TimeSlotConfirmation status="book" date={new Date()} />}
+            />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+          {currentUser.length > 0 ? (
+            <Route path="/timeslot-success" element={<TimeslotSuccess />} />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+
+          {/* Starting Public Routes */}
+          {/* Can access regardless of login status */}
+
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/enter-code" element={<EnterCode />} />
+          <Route path="/success/:id" element={<Success />} />
           <Route
             path="/forgot-password"
             element={<ForgotPassword setEmailProp={setEmailProp} />}
@@ -133,18 +124,11 @@ function App() {
             path="/reset-password"
             element={<ResetPassword email={email!} />}
           />
-          <Route path="/success/:id" element={<Success />} />
           <Route
             path="/timeslots"
             element={<Timeslots models={timeslots} date={new Date()} />}
           />
-          <Route path="/mobile-timeslots" element={<MobileTimeslots />} />
-          <Route path="/timeslot-success" element={<TimeslotSuccess />} />
-          <Route
-            path="/timeslot-confirmation"
-            element={<TimeSlotConfirmation status="book" date={new Date()} />}
-          />
-          {/* <Route path="/logoutPopup" element={<LogoutPopup />} /> */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

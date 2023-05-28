@@ -58,6 +58,9 @@ const CalDiv = styled.div`
   .fc-today-button {
     display: none;
   }
+  .fc-event {
+    cursor: pointer;
+  }
 `;
 
 const Logo = styled.img`
