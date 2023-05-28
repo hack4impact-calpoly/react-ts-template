@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Auth } from "aws-amplify";
 import warning from "../../images/warning.svg";
 import {
   // Wrapper,
@@ -50,17 +51,20 @@ interface PopupProps {
 
 export default function LogoutPopup({ openProp, onClose }: PopupProps) {
   const [open, setOpen] = useState<boolean>(openProp);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setOpen(openProp);
   }, [openProp]);
 
-  // const handleClick = () => {
-  //   navigate("/");
-  //   setOpen(false);
-  //   // onData();
-  // };
+  const handleLogout = async () => {
+    try {
+      await Auth.signOut();
+      navigate("/login");
+    } catch (error) {
+      console.log("error signing out: ", error);
+    }
+  };
 
   return (
     <PopupDiv open={open} onClose={onClose}>
@@ -73,7 +77,7 @@ export default function LogoutPopup({ openProp, onClose }: PopupProps) {
         </Description>
         <Row>
           <CancelButton onClick={onClose}>Cancel</CancelButton>
-          <ConfirmButton>Logout</ConfirmButton>
+          <ConfirmButton onClick={handleLogout}>Logout</ConfirmButton>
         </Row>
       </SurroundingBox>
     </PopupDiv>
