@@ -8,6 +8,7 @@ import Monthly from "../monthlyView";
 import AptInfo from "../appointmentInfo";
 import Timeslots from "./timeslots";
 import { LazyTimeslot, Timeslot } from "../../models";
+import { checkedLst } from "./timeslot";
 
 const Wrapper = styled.div`
   display: flex;
@@ -63,9 +64,10 @@ interface PopupProps {
   o: boolean;
   onData: () => void;
   date: Date;
+  toggleProp: string;
 }
 
-export default function Popup({ o, onData, date }: PopupProps) {
+export default function Popup({ o, onData, date, toggleProp }: PopupProps) {
   // eslint-disable-next-line
   const [open, setOpen] = useState<boolean>(o);
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -104,6 +106,15 @@ export default function Popup({ o, onData, date }: PopupProps) {
     pullData();
   }, []);
 
+  const handleConfirmation = async () => {
+    navigate("/timeslot-confirmation", {
+      state: {
+        timeslotID: checkedLst,
+        date,
+      },
+    });
+  };
+
   useEffect(() => {
     setOpen(o);
   }, [o]);
@@ -122,14 +133,14 @@ export default function Popup({ o, onData, date }: PopupProps) {
             <LeftColumn>
               <Monthly />
               <AptHeader>Appointment Info</AptHeader>
-              <AptInfo />
+              <AptInfo toggleProp={toggleProp} />
             </LeftColumn>
             <RightColumn>
               <DateHeader>{formattedDate}</DateHeader>
               <Timeslots models={timeslots} date={new Date()} />
               <BtnContainer>
-                <CancelBtn>Cancel</CancelBtn>
-                <SaveBtn>Save</SaveBtn>
+                <CancelBtn onClick={() => setOpen(false)}>Cancel</CancelBtn>
+                <SaveBtn onClick={handleConfirmation}>Save</SaveBtn>
               </BtnContainer>
             </RightColumn>
           </Wrapper>
