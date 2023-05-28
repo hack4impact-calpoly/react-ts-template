@@ -11,11 +11,10 @@ import interactionPlugin from "@fullcalendar/interaction";
 import UserContext from "../userContext";
 import { LazyTimeslot, Timeslot } from "../models";
 // import Monthly from "./monthlyView";
-// import Weekly from "./weeklyView";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
-// import FullCalendar from "@fullcalendar/react";
+import { Booking } from "../models";
 
 const CalDiv = styled.div`
   font-family: "Rubik", sans-serif;
@@ -210,7 +209,20 @@ export default function Calendar() {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
-  const { userType } = realUser;
+  const { userType, id: currentUserId } = realUser;
+  const [bookings, setBookings] = useState<Booking[]>([]);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const bookingModels = await DataStore.query(Booking);
+        setBookings(bookingModels);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+    fetchBookings();
+  }, []);
 
   console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
@@ -262,6 +274,7 @@ export default function Calendar() {
       endTime: timeslot.endTime,
       backgroundColor,
       textColor: "black",
+      id: timeslot.id,
     };
   });
   if (toggles === "volunteers") {
@@ -276,6 +289,29 @@ export default function Calendar() {
         Number(String(timeslot.startTime).substring(0, 2)) >= 10 &&
         Number(String(timeslot.endTime).substring(0, 2)) <= 14
     );
+  } else if (toggles === "slots") {
+    slots = slots.filter((timeslot) =>
+      bookings.some(
+        (booking) =>
+          booking.userID === currentUserId && booking.timeslotID === timeslot.id
+      )
+    );
+  } else if (toggles === "availibility") {
+    if (userType === "rider") {
+      slots = slots.filter(
+        (timeslot) =>
+          Number(String(timeslot.startTime).substring(0, 2)) >= 10 &&
+          Number(String(timeslot.endTime).substring(0, 2)) <= 14
+      );
+    }
+
+    if (userType === "volunteer") {
+      slots = slots.filter(
+        (timeslot) =>
+          Number(String(timeslot.startTime).substring(0, 2)) >= 9 &&
+          Number(String(timeslot.endTime).substring(0, 2)) <= 17
+      );
+    }
   }
 
   console.log(`toggle is ${toggles}`);
@@ -323,7 +359,7 @@ export default function Calendar() {
               dayHeaderFormat={{ weekday: "short", day: "numeric" }}
               datesSet={(dateInfo) => {
                 console.log("start of week: ", dateInfo.start);
-                // console.log(dateInfo.end);
+                console.log(dateInfo.end);
                 setDateProp(dateInfo.start);
                 console.log("date in weekCal: ", date);
               }}
