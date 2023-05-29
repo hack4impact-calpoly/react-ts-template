@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { DataStore } from "aws-amplify";
 import x from "../../images/X.svg";
 import { PopupDiv, PopupBox, X, CancelBtn, SaveBtn } from "../styledComponents";
@@ -8,7 +7,7 @@ import Monthly from "../monthlyView";
 import AptInfo from "../appointmentInfo";
 import Timeslots from "./timeslots";
 import { LazyTimeslot, Timeslot } from "../../models";
-import { checkedLst } from "./timeslot";
+import TimeslotConfirmation from "./timeslotConfirmation";
 
 const Wrapper = styled.div`
   display: flex;
@@ -68,11 +67,10 @@ interface PopupProps {
 }
 
 export default function Popup({ o, onClose, date, toggleProp }: PopupProps) {
-  // eslint-disable-next-line
   const [open, setOpen] = useState<boolean>(o);
+  const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
-  const navigate = useNavigate();
 
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
@@ -101,13 +99,13 @@ export default function Popup({ o, onClose, date, toggleProp }: PopupProps) {
     pullData();
   }, []);
 
-  const handleConfirmation = async () => {
-    navigate("/timeslot-confirmation", {
-      state: {
-        timeslotID: checkedLst,
-        date,
-      },
-    });
+  const handleConfirmation = () => {
+    setOpen(false);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmClose = () => {
+    setConfirmOpen(false);
   };
 
   useEffect(() => {
@@ -140,6 +138,18 @@ export default function Popup({ o, onClose, date, toggleProp }: PopupProps) {
             </RightColumn>
           </Wrapper>
         </PopupBox>
+      </PopupDiv>
+      <PopupDiv
+        open={confirmOpen}
+        onClose={handleConfirmClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <TimeslotConfirmation
+          onClose={handleConfirmClose}
+          status="book"
+          date={date}
+        />
       </PopupDiv>
     </div>
   );

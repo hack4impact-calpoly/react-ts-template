@@ -62,7 +62,6 @@ export const checkedLst: string[] = [];
 export const uncheckedLst: string[] = [];
 
 export default function Timeslot({ startTime, endTime, tsId }: TimeslotProps) {
-  // THIS NEEDS USER CONTEXT
   const [isChecked, setIsChecked] = useState(false);
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;

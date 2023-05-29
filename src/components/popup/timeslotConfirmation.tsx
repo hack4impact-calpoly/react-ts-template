@@ -6,54 +6,36 @@ import UserContext from "../../userContext";
 import { checkedLst, uncheckedLst } from "./timeslot";
 import { Timeslot, User, Booking } from "../../models";
 import warning from "../../images/warning.svg";
-
+import x from "../../images/X.svg";
 import {
-  Wrapper,
-  Box,
+  PopupBox,
+  X,
+  CancelBtn,
+  SaveBtn,
   Description,
   Header,
-  Button,
   Row,
 } from "../styledComponents";
 
 export type TimeSlotProps = {
+  onClose: () => void;
   status: String;
   date: Date;
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 90px;
+`;
 
 const Warning = styled.img`
   position: relative;
   width: 80px;
 `;
 
-const SurroundingBoxPopup = styled(Box)`
-  display: flex;
-  align-items: center;
-`;
-
-const ConfirmButton = styled(Button)`
-  width: 11rem;
-  height: 3rem;
-  margin-left: 1rem;
-`;
-
-const CancelButton = styled(Button)`
-  width: 11rem;
-  height: 3rem;
-  background: white;
-  color: #1b4c5a;
-  margin-right: 1rem;
-`;
-
-// export default function TimeSlotConfirmation({ status = "" }: TimeSlotProps) {
-//   const currentUserFR = useContext(UserContext);
-//   const { currentUser } = currentUserFR;
-//   const [realUser] = currentUser;
-//   const { userType } = realUser;
-//   return (
-//     <Wrapper>
-//       {userType === "Admin" && (
-//         <SurroundingBox>
 async function addUnavailability(ids: string[], unavailableDate: Date) {
   try {
     ids.forEach(async (id) => {
@@ -190,6 +172,7 @@ async function deleteRVBooking(
 // }
 
 export default function TimeSlotConfirmation({
+  onClose,
   status = "",
   date,
 }: TimeSlotProps) {
@@ -220,51 +203,58 @@ export default function TimeSlotConfirmation({
   };
 
   return (
-    <Wrapper>
+    <div>
       {userType === "admin" && (
-        <SurroundingBoxPopup>
-          <Warning src={warning} />
-          <Header>Save changes?</Header>
-          <Description>
-            You are choosing to edit the availability of one or more time slots.
-            Are you sure you want to do this?
-          </Description>
-          <Row>
-            <CancelButton onClick={handleCancel}>Cancel</CancelButton>
-            <ConfirmButton onClick={handleConfirmationAdmin}>
-              Confirm
-            </ConfirmButton>
-          </Row>
-        </SurroundingBoxPopup>
+        <PopupBox>
+          <X src={x} onClick={onClose} />
+          <Wrapper>
+            <Warning src={warning} />
+            <Header>Save changes?</Header>
+            <Description>
+              You are choosing to edit the availability of one or more time
+              slots. Are you sure you want to do this?
+            </Description>
+            <Row>
+              <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
+              <SaveBtn onClick={handleConfirmationAdmin}>Confirm</SaveBtn>
+            </Row>
+          </Wrapper>
+        </PopupBox>
       )}
       {userType !== "Admin" && status === "cancel" && (
-        <SurroundingBoxPopup>
-          <Warning src={warning} />
-          <Header>Confirm cancellation?</Header>
-          <Description>
-            You are choosing to cancel one or more time slots. Are you sure you
-            want to do this?
-          </Description>
-          <Row>
-            <CancelButton onClick={handleCancel}>Cancel</CancelButton>
-            <ConfirmButton onClick={handleBookingCancel}>Confirm</ConfirmButton>
-          </Row>
-        </SurroundingBoxPopup>
+        <PopupBox>
+          <X src={x} onClick={onClose} />
+          <Wrapper>
+            <Warning src={warning} />
+            <Header>Confirm cancellation?</Header>
+            <Description>
+              You are choosing to cancel one or more time slots. Are you sure
+              you want to do this?
+            </Description>
+            <Row>
+              <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
+              <SaveBtn onClick={handleBookingCancel}>Confirm</SaveBtn>
+            </Row>
+          </Wrapper>
+        </PopupBox>
       )}
       {userType !== "admin" && checkedLst.length !== 0 && (
-        <SurroundingBoxPopup>
-          <Warning src={warning} />
-          <Header>Confirm booking?</Header>
-          <Description>
-            You are choosing to book one or more time slots. Are you sure you
-            want to do this?
-          </Description>
-          <Row>
-            <CancelButton onClick={handleCancel}>Cancel</CancelButton>
-            <ConfirmButton onClick={handleConfirmationRV}>Book</ConfirmButton>
-          </Row>
-        </SurroundingBoxPopup>
+        <PopupBox>
+          <X src={x} onClick={onClose} />
+          <Wrapper>
+            <Warning src={warning} />
+            <Header>Confirm booking?</Header>
+            <Description>
+              You are choosing to book one or more time slots. Are you sure you
+              want to do this?
+            </Description>
+            <Row>
+              <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
+              <SaveBtn onClick={handleConfirmationRV}>Book</SaveBtn>
+            </Row>
+          </Wrapper>
+        </PopupBox>
       )}
-    </Wrapper>
+    </div>
   );
 }

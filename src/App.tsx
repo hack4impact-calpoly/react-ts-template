@@ -9,7 +9,6 @@ import Timeslots from "./components/popup/timeslots";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobile/mobileCalendar";
 import TimeslotSuccess from "./components/popup/timeslotSuccess";
-import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
 import UserContext from "./userContext";
 import ForgotPassword from "./components/authentication/forgotPassword";
 import ResetPassword from "./components/resetPassword";
@@ -95,14 +94,14 @@ function App() {
           ) : (
             <Route path="/login" element={<Login />} />
           )}
-          {currentUser ? (
+          {/* {currentUser ? (
             <Route
               path="/timeslot-confirmation"
               element={<TimeSlotConfirmation status="book" date={new Date()} />}
             />
           ) : (
             <Route path="/login" element={<Login />} />
-          )}
+          )} */}
           {currentUser.length > 0 ? (
             <Route path="/timeslot-success" element={<TimeslotSuccess />} />
           ) : (
