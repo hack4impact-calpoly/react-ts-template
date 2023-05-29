@@ -1,10 +1,12 @@
 /* eslint-disable no-param-reassign */
+import { Link } from "react-router-dom";
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import UserContext from "../../userContext";
 import MobileTimeslots from "./mobileTimeslots";
 import MobileWeeklyView from "./mobileWeeklyView";
 import { Dropdown, Option } from "./dropdown";
+import signoutarrow from "../../images/SignOutArrow.png";
 
 const CurrentDate = styled.p`
   font-family: "Rubik";
@@ -16,6 +18,19 @@ const CurrentDate = styled.p`
   color: #1b4c5a;
   display: flex;
   margin-top: 20%;
+`;
+
+const StyledButton = styled(Link)`
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  transform: scale(0.5);
+`;
+
+const StyledImage = styled.img`
+  width: 100%;
 `;
 
 // props used in mobileweeklyview as well
@@ -68,6 +83,10 @@ export default function CalendarMobile({
 
   return (
     <div>
+      <StyledButton to="/logout">
+        <StyledImage src={signoutarrow} alt="Sign Out" />
+      </StyledButton>
+
       {/* renders the calendar  */}
       <MobileWeeklyView
         startDate={new Date()}
