@@ -22,16 +22,7 @@ Amplify.configure(awsconfig);
 function App() {
   const [email, setEmailProp] = useState<string>();
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  // maybe i use this prop to pass into calendar mobile so that
-  // mobile weekly view page will change it onclick which in turn
-  // will change the current date
-
-  const [day, setDayProp] = useState<string>();
-  const [month, setMonthProp] = useState<string>();
-  const [weekday, setWeekdayProp] = useState<string>();
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
-
-  // added additional attributes to the calendarmobile component for props
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,6 +37,7 @@ function App() {
     pullData();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   // setting up context
   const [currentUser, setUser] = useState({} as UserModel[]);
   const userContextFields = useMemo(
@@ -64,17 +56,9 @@ function App() {
               path="/"
               element={
                 isMobile ? (
-                  <CalendarMobile
-                    bookingsFake={0}
-                    day={day!}
-                    setDayProp={setDayProp}
-                    month={month!}
-                    setMonthProp={setMonthProp}
-                    weekday={weekday!}
-                    setWeekdayProp={setWeekdayProp}
-                  />
+                  <CalendarMobile timeslots={timeslots} />
                 ) : (
-                  <Calendar />
+                  <Calendar timeslots={timeslots} />
                 )
               }
             />

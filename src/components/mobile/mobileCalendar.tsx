@@ -5,6 +5,7 @@ import styled from "styled-components";
 import UserContext from "../../userContext";
 import MobileTimeslots from "./mobileTimeslots";
 import MobileWeeklyView from "./mobileWeeklyView";
+import { LazyTimeslot } from "../../models";
 import { Dropdown, Option } from "./dropdown";
 import signoutarrow from "../../images/SignOutArrow.png";
 
@@ -33,26 +34,16 @@ const StyledImage = styled.img`
   width: 100%;
 `;
 
-// props used in mobileweeklyview as well
-type UserType = {
-  bookingsFake: number;
-  day: string;
-  setDayProp: (val: string) => void;
-  month: string;
-  setMonthProp: (val: string) => void;
-  weekday: string;
-  setWeekdayProp: (val: string) => void;
-};
+interface CalendarProps {
+  timeslots: LazyTimeslot[];
+}
 
-export default function CalendarMobile({
-  bookingsFake,
-  day,
-  setDayProp,
-  month,
-  setMonthProp,
-  weekday,
-  setWeekdayProp,
-}: UserType) {
+export default function CalendarMobile({ timeslots }: CalendarProps) {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [day, setDayProp] = useState<string>("");
+  const [month, setMonthProp] = useState<string>("");
+  const [weekday, setWeekdayProp] = useState<string>("");
+  // const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
@@ -60,7 +51,7 @@ export default function CalendarMobile({
   // these values are hardcoded for conditional rendering of showing different slots
   // eslint-disable-next-line no-param-reassign
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  bookingsFake = 1;
+  // bookingsFake = 1;
 
   // this is to create the current selected date string
   const currentTimeString: string[] = [];
@@ -87,13 +78,16 @@ export default function CalendarMobile({
 
       {/* renders the calendar  */}
       <MobileWeeklyView
-        startDate={new Date()}
+        currentDate={currentDate}
+        setCurrentDate={setCurrentDate}
         setDayProp={setDayProp}
         setMonthProp={setMonthProp}
         setWeekdayProp={setWeekdayProp}
       />
+
       {/* creates the current selected date */}
       <CurrentDate>{currentTimeString}</CurrentDate>
+
       {/* this is for the toggle dropdown with different options on different user types */}
       <Dropdown onChange={handleSelect}>
         <Option
@@ -111,8 +105,9 @@ export default function CalendarMobile({
           <div>0</div>
         )}
       </Dropdown>
+
       {/* the timeslots will change depending on the usertype */}
-      <MobileTimeslots />
+      <MobileTimeslots models={timeslots} date={currentDate} />
     </div>
   );
 }

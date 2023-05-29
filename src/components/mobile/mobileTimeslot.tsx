@@ -42,9 +42,14 @@ const Dropdown = styled.section`
 interface TimeslotProps {
   startTime: Date;
   endTime: Date;
+  tsId: string;
 }
 
-export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
+export default function MobileTimeslot({
+  startTime,
+  endTime,
+  tsId,
+}: TimeslotProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // const [user] = useState<string>();
   const [bookingsFakeStart] = useState<number>();
@@ -56,6 +61,8 @@ export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  console.log(tsId);
 
   const formatTime = (time: Date) =>
     time.toLocaleTimeString([], {
