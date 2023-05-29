@@ -291,7 +291,6 @@ export default function Calendar({ timeslots }: CalendarProps) {
     setLogoutPopup(false);
   };
 
-  // console.log(timeslots.length);
   let slots: any[] = [];
 
   for (let dateoffset = 0; dateoffset < 7; dateoffset++) {
@@ -300,7 +299,6 @@ export default function Calendar({ timeslots }: CalendarProps) {
       dateCopy.setDate(dateCopy.getDate() + dateoffset)
     );
 
-    // console.log("~~~~~~~~~ NEW DATE SIRE ~~~~~~~~~~~~~~~~", dateTest);
     const tempSlots = timeslots.map((timeslot: any) => {
       let backgroundColor = "#90BFCC";
 
@@ -311,7 +309,6 @@ export default function Calendar({ timeslots }: CalendarProps) {
           timeslot.startTime
         }:00`
       );
-      // console.log(startingTime);
       const endingTime = new Date(
         `${
           months[dateTest.getMonth()]
@@ -320,13 +317,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
         }:00`
       );
 
-      if (userType === "Rider") {
-        const hasRiderBooking = timeslot.riderBookings.length > 0;
-        if (hasRiderBooking) {
-          backgroundColor = "#E0EFF1";
-        }
-      } else if (userType === "Volunteer") {
-        // console.log("we made it in here ========================");
+      if (userType === "Rider" || userType === "Volunteer") {
         if (
           bookings.some(
             (booking) =>
@@ -363,14 +354,12 @@ export default function Calendar({ timeslots }: CalendarProps) {
   if (toggles === "volunteers") {
     slots = slots.filter(
       (timeslot) =>
-        Number(String(timeslot.start).substring(0, 2)) >= 9 &&
-        Number(String(timeslot.end).substring(0, 2)) <= 17
+        timeslot.start.getHours() >= 9 && timeslot.start.getHours() <= 17
     );
   } else if (toggles === "riders") {
     slots = slots.filter(
       (timeslot) =>
-        Number(String(timeslot.start).substring(0, 2)) >= 10 &&
-        Number(String(timeslot.end).substring(0, 2)) <= 14
+        timeslot.start.getHours() >= 10 && timeslot.end.getHours() <= 14
     );
   } else if (toggles === "slots") {
     slots = slots.filter((timeslot) =>
@@ -379,27 +368,22 @@ export default function Calendar({ timeslots }: CalendarProps) {
           booking.userID === currentUserId && booking.timeslotID === timeslot.id
       )
     );
-  } else if (toggles === "availibility") {
-    if (userType === "rider") {
+  } else if (toggles === "availability") {
+    if (userType === "Rider") {
       slots = slots.filter(
         (timeslot) =>
-          Number(String(timeslot.start).substring(0, 2)) >= 10 &&
-          Number(String(timeslot.end).substring(0, 2)) <= 14
+          timeslot.start.getHours() >= 10 && timeslot.end.getHours() <= 14
       );
     }
 
-    if (userType === "volunteer") {
+    if (userType === "Volunteer") {
       slots = slots.filter(
         (timeslot) =>
-          Number(String(timeslot.start).substring(0, 2)) >= 9 &&
-          Number(String(timeslot.end).substring(0, 2)) <= 17
+          timeslot.start.getHours() >= 9 && timeslot.end.getHours() <= 17
       );
     }
   }
 
-  console.log("============= slots before the return =================", slots);
-
-  console.log(`toggle is ${toggles}`);
   return (
     <div>
       <SignOutLogo>
