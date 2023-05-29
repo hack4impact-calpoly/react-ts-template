@@ -33,16 +33,13 @@ interface TsData {
 
 interface TimeslotsProps {
   models: LazyTimeslot[] | "nothing";
-  date: Date;
 }
 
-export default function Timeslots({ models, date }: TimeslotsProps) {
+export default function Timeslots({ models }: TimeslotsProps) {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { userType } = realUser;
-  console.log(date);
-  console.log(models);
   const timeslots: TsData[] = [];
 
   if (models !== "nothing") {
@@ -59,7 +56,6 @@ export default function Timeslots({ models, date }: TimeslotsProps) {
         });
       }
     });
-    // console.log(timeslots);
   }
 
   function filterTimeSlots(

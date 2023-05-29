@@ -8,8 +8,6 @@ import awsconfig from "./aws-exports";
 import Timeslots from "./components/popup/timeslots";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobile/mobileCalendar";
-import TimeslotSuccess from "./components/popup/timeslotSuccess";
-import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
 import UserContext from "./userContext";
 import ForgotPassword from "./components/authentication/forgotPassword";
 import ResetPassword from "./components/resetPassword";
@@ -33,7 +31,6 @@ function App() {
     const pullData = async () => {
       const ts = await DataStore.query(Timeslot);
       setTs(ts);
-      console.log(ts);
     };
     window.addEventListener("resize", handleResize);
     handleResize();
@@ -47,12 +44,6 @@ function App() {
     () => ({ currentUser, setUser }),
     [currentUser]
   );
-
-  if (currentUser.length > 0) {
-    console.log(
-      `current users name is: ${currentUser[0].firstName} ${currentUser[0].lastName}`
-    );
-  }
 
   return (
     <UserContext.Provider value={userContextFields}>
@@ -74,19 +65,19 @@ function App() {
           ) : (
             <Route path="/login" element={<Login />} />
           )}
-          {currentUser ? (
+          {/* {currentUser ? (
             <Route
               path="/timeslot-confirmation"
               element={<TimeSlotConfirmation status="book" date={new Date()} />}
             />
           ) : (
             <Route path="/login" element={<Login />} />
-          )}
-          {currentUser.length > 0 ? (
+          )} */}
+          {/* {currentUser.length > 0 ? (
             <Route path="/timeslot-success" element={<TimeslotSuccess />} />
           ) : (
             <Route path="/login" element={<Login />} />
-          )}
+          )} */}
 
           {currentUser.length > 0 ? (
             <Route path="/logout" element={<MobileLogout />} />
@@ -109,10 +100,7 @@ function App() {
             path="/reset-password"
             element={<ResetPassword email={email!} />}
           />
-          <Route
-            path="/timeslots"
-            element={<Timeslots models={timeslots} date={new Date()} />}
-          />
+          <Route path="/timeslots" element={<Timeslots models={timeslots} />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>

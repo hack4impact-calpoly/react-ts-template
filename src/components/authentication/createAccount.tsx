@@ -122,7 +122,6 @@ export default function CreateAccount() {
       }
     }
   }
-
   const handleSubmit = () => {
     setError("");
 

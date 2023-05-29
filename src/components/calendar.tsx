@@ -252,6 +252,8 @@ export default function Calendar({ timeslots }: CalendarProps) {
   const [toggles, setToggle] = useState<string>("");
   // const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const [popup, setPopup] = useState(false);
+  const [confirmPopup, setConfirmPopup] = useState(false);
+  const [successPopup, setSuccessPopup] = useState(false);
   const [logoutPopup, setLogoutPopup] = useState(false);
   const [popupDate, setPopupDate] = useState<Date>(new Date());
   const currentUserFR = useContext(UserContext);
@@ -272,7 +274,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
       }
     };
     fetchBookings();
-  }, []);
+  }, [popup]);
 
   console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
@@ -285,6 +287,16 @@ export default function Calendar({ timeslots }: CalendarProps) {
 
   const handlePopupClose = () => {
     setPopup(false);
+    setConfirmPopup(false);
+    setSuccessPopup(false);
+  };
+
+  const handleConfirmOpen = () => {
+    setConfirmPopup(true);
+  };
+
+  const handleSuccessOpen = () => {
+    setSuccessPopup(true);
   };
 
   const handleLogoutClose = () => {
@@ -437,15 +449,16 @@ export default function Calendar({ timeslots }: CalendarProps) {
               ref={calRef}
               dayHeaderFormat={{ weekday: "short", day: "numeric" }}
               datesSet={(dateInfo) => {
-                console.log("start of week: ", dateInfo.start);
-                console.log(dateInfo.end);
                 setDateProp(dateInfo.start);
-                console.log("date in weekCal: ", date);
               }}
               eventClick={handleEventClick}
             />
             <Popup
-              o={popup}
+              popup={popup}
+              confirmPopup={confirmPopup}
+              handleConfirmOpen={handleConfirmOpen}
+              successPopup={successPopup}
+              handleSuccessOpen={handleSuccessOpen}
               onClose={handlePopupClose}
               date={popupDate}
               toggleProp={toggles!}

@@ -4,8 +4,8 @@ import { useState, useContext } from "react";
 import Horse from "../../images/horseRider.svg";
 import Dude from "../../images/person.svg";
 import Bookmark from "../../images/bookmark.svg";
-import OnSlide from "../../images/onslider.png";
-import OffSlide from "../../images/offslider.png";
+import OnSlide from "../../images/OnSlider.png";
+import OffSlide from "../../images/OffSlider.png";
 import UserContext from "../../userContext";
 
 const RiderInfo = styled.div`
@@ -100,12 +100,7 @@ export default function TimeslotMobileContent({ bookingsfake }: UserType) {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
-  const { bookings, userType } = realUser;
-  if (realUser !== null) {
-    console.log("mobiletimeslot content just needs bookings and usertype");
-    console.log(bookings);
-    console.log(userType);
-  }
+  const { userType } = realUser;
   // const { userType } = currentUser;
 
   // eslint-disable-next-line no-param-reassign
