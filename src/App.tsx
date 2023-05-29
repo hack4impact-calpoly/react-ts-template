@@ -24,16 +24,7 @@ Amplify.configure(awsconfig);
 function App() {
   const [email, setEmailProp] = useState<string>();
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  // maybe i use this prop to pass into calendar mobile so that
-  // mobile weekly view page will change it onclick which in turn
-  // will change the current date
-
-  const [day, setDayProp] = useState<string>();
-  const [month, setMonthProp] = useState<string>();
-  const [weekday, setWeekdayProp] = useState<string>();
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
-
-  // added additional attributes to the calendarmobile component for props
 
   useEffect(() => {
     const handleResize = () => {
@@ -49,6 +40,7 @@ function App() {
     pullData();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   // setting up context
   const [currentUser, setUser] = useState({} as UserModel[]);
   const userContextFields = useMemo(
@@ -58,15 +50,10 @@ function App() {
 
   if (currentUser.length > 0) {
     console.log(
-      `current users name is: ${currentUser[0].firstName}${currentUser[0].lastName}`
+      `current users name is: ${currentUser[0].firstName} ${currentUser[0].lastName}`
     );
   }
 
-  // console statement to test if userName was set in login component
-  // console.log(`from the context stuff ${currentUser.userName}`);
-  // console.log(
-  //   `from the usercontext first name of user is ${currentUser[0].firstName}`
-  // );
   return (
     <UserContext.Provider value={userContextFields}>
       <BrowserRouter>
@@ -78,17 +65,9 @@ function App() {
               path="/"
               element={
                 isMobile ? (
-                  <CalendarMobile
-                    bookingsFake={0}
-                    day={day!}
-                    setDayProp={setDayProp}
-                    month={month!}
-                    setMonthProp={setMonthProp}
-                    weekday={weekday!}
-                    setWeekdayProp={setWeekdayProp}
-                  />
+                  <CalendarMobile timeslots={timeslots} />
                 ) : (
-                  <Calendar />
+                  <Calendar timeslots={timeslots} />
                 )
               }
             />

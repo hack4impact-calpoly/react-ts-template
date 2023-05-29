@@ -122,7 +122,7 @@ export default function CreateAccount() {
       }
     }
   }
-  console.log(DataStore.query(User));
+
   const handleSubmit = () => {
     setError("");
 

@@ -88,19 +88,23 @@ const Month = styled.text`
 
 // setter props for setting the currently selected date to pass into mobile calendar + start date
 interface WeeklyViewMobileProps {
-  startDate: Date;
+  // startDate: Date;
+  currentDate: Date;
+  setCurrentDate: (val: Date) => void;
   setDayProp: (val: string) => void;
   setMonthProp: (val: string) => void;
   setWeekdayProp: (val: string) => void;
 }
 
 export default function WeeklyViewMobile({
-  startDate,
+  // startDate,
+  currentDate,
+  setCurrentDate,
   setDayProp,
   setMonthProp,
   setWeekdayProp,
 }: WeeklyViewMobileProps) {
-  const [currentDate, setCurrentDate] = useState(startDate);
+  // const [currentDate, setCurrentDate] = useState(startDate);
   const days: Date[] = [];
   for (let i = 0; i < 7; i++) {
     days.push(new Date(currentDate.getTime() + i * 24 * 60 * 60 * 1000));
