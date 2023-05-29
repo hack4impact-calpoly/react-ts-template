@@ -1,13 +1,14 @@
 /* eslint-disable no-param-reassign */
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
+import UserContext from "../../userContext";
 import MobileTimeslots from "./mobileTimeslots";
 import MobileWeeklyView from "./mobileWeeklyView";
 import { Dropdown, Option } from "./dropdown";
 import signoutarrow from "../../images/SignOutArrow.png";
 
-const CurrentDate = styled.text`
+const CurrentDate = styled.p`
   font-family: "Rubik";
   font-style: normal;
   font-weight: 500;
@@ -34,8 +35,7 @@ const StyledImage = styled.img`
 
 // props used in mobileweeklyview as well
 type UserType = {
-  user: string;
-  bookings: number;
+  bookingsFake: number;
   day: string;
   setDayProp: (val: string) => void;
   month: string;
@@ -45,8 +45,7 @@ type UserType = {
 };
 
 export default function CalendarMobile({
-  user,
-  bookings,
+  bookingsFake,
   day,
   setDayProp,
   month,
@@ -54,11 +53,15 @@ export default function CalendarMobile({
   weekday,
   setWeekdayProp,
 }: UserType) {
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType, bookings } = realUser;
+  console.log(`gonna need to use bookings from database in future ${bookings}`);
   // these values are hardcoded for conditional rendering of showing different slots
   // eslint-disable-next-line no-param-reassign
-  user = "volunteer"; // hardcoded for now
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  bookings = 1;
+  bookingsFake = 1;
 
   // this is to create the current selected date string
   const currentTimeString: string[] = [];
@@ -80,7 +83,7 @@ export default function CalendarMobile({
 
   return (
     <div>
-      <StyledButton to="/logoutPopup">
+      <StyledButton to="/logout">
         <StyledImage src={signoutarrow} alt="Sign Out" />
       </StyledButton>
 
@@ -95,20 +98,23 @@ export default function CalendarMobile({
       <CurrentDate>{currentTimeString}</CurrentDate>
       {/* this is for the toggle dropdown with different options on different user types */}
       <Dropdown onChange={handleSelect}>
-        <Option selected value={user === "admin" ? "Both" : "Availability"} />
         <Option
-          value={user !== "admin" ? "My Slots" : "Riders"}
+          selected
+          value={userType === "Admin" ? "Both" : "Availability"}
+        />
+        <Option
+          value={userType !== "Admin" ? "My Slots" : "Riders"}
           selected={undefined}
         />
 
-        {user === "admin" ? (
+        {userType === "Admin" ? (
           <Option value="Volunteers" selected={undefined} />
         ) : (
           <div>0</div>
         )}
       </Dropdown>
       {/* the timeslots will change depending on the usertype */}
-      <MobileTimeslots userType={user} />
+      <MobileTimeslots />
     </div>
   );
 }

@@ -45,8 +45,13 @@ const ChevronRight = styled.img`
   display: block;
   transform: scaleX(-1);
 `;
+// inside td
+// flex-direction: column;
+// justify-content: space-between;
+//
 const WeekDates = styled.table`
   @media (max-width: 500px) {
+    table-layout: fixed;
     width: 100%;
     padding-top: 5%;
     font-weight: lighter;
@@ -54,7 +59,7 @@ const WeekDates = styled.table`
     td {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: space-evenly;
     }
   }
 `;
@@ -166,14 +171,15 @@ export default function WeeklyViewMobile({
           <tr>
             {days.map((day, i) => (
               <th
-                // right now the styling is messing up the other days near the currently selected one but the functionality works
                 // eslint-disable-next-line react/no-array-index-key
                 key={i}
                 style={{
-                  borderRadius: i === selected ? "100%" : "initial",
-                  width: i === selected ? "22px" : "initial",
-                  height: i === selected ? "22px" : "initial",
+                  clipPath:
+                    i === selected ? "circle(13px at 50% 50%)" : "initial",
+                  color: "#000000",
                   background: i === selected ? "#e0eff1" : "initial",
+                  paddingTop: "10px",
+                  paddingBottom: "10px",
                 }}
                 onClick={() => setSelected(i)}
               >

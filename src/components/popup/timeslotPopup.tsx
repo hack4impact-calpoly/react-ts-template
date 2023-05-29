@@ -8,6 +8,7 @@ import Monthly from "../monthlyView";
 import AptInfo from "../appointmentInfo";
 import Timeslots from "./timeslots";
 import { LazyTimeslot, Timeslot } from "../../models";
+import { checkedLst } from "./timeslot";
 
 const Wrapper = styled.div`
   display: flex;
@@ -61,22 +62,17 @@ const AptHeader = styled.h1`
 
 interface PopupProps {
   o: boolean;
-  onData: () => void;
+  onClose: () => void;
   date: Date;
   toggleProp: string;
 }
 
-export default function Popup({ o, onData, date, toggleProp }: PopupProps) {
+export default function Popup({ o, onClose, date, toggleProp }: PopupProps) {
   // eslint-disable-next-line
   const [open, setOpen] = useState<boolean>(o);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/");
-    setOpen(false);
-    onData();
-  };
 
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
@@ -105,6 +101,15 @@ export default function Popup({ o, onData, date, toggleProp }: PopupProps) {
     pullData();
   }, []);
 
+  const handleConfirmation = async () => {
+    navigate("/timeslot-confirmation", {
+      state: {
+        timeslotID: checkedLst,
+        date,
+      },
+    });
+  };
+
   useEffect(() => {
     setOpen(o);
   }, [o]);
@@ -113,12 +118,12 @@ export default function Popup({ o, onData, date, toggleProp }: PopupProps) {
     <div>
       <PopupDiv
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={onClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <PopupBox>
-          <X src={x} onClick={handleClick} />
+          <X src={x} onClick={onClose} />
           <Wrapper>
             <LeftColumn>
               <Monthly />
@@ -127,14 +132,10 @@ export default function Popup({ o, onData, date, toggleProp }: PopupProps) {
             </LeftColumn>
             <RightColumn>
               <DateHeader>{formattedDate}</DateHeader>
-              <Timeslots
-                userType="rider"
-                models={timeslots}
-                date={new Date()}
-              />
+              <Timeslots models={timeslots} date={new Date()} />
               <BtnContainer>
-                <CancelBtn>Cancel</CancelBtn>
-                <SaveBtn>Save</SaveBtn>
+                <CancelBtn onClick={onClose}>Cancel</CancelBtn>
+                <SaveBtn onClick={handleConfirmation}>Save</SaveBtn>
               </BtnContainer>
             </RightColumn>
           </Wrapper>

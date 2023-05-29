@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import caretDown from "../../images/CaretDown.svg";
+import UserContext from "../../userContext";
 import MobileTimeslotContent from "./mobileTimeslotContent";
 
 const Caret = styled.img`
@@ -41,18 +42,20 @@ const Dropdown = styled.section`
 interface TimeslotProps {
   startTime: Date;
   endTime: Date;
-  user: string;
 }
 
-export default function MobileTimeslot({
-  startTime,
-  endTime,
-  user,
-}: TimeslotProps) {
+export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // const [user] = useState<string>();
-  const [bookings] = useState<number>();
-
+  const [bookingsFakeStart] = useState<number>();
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { bookings } = realUser;
+  if (realUser !== null) {
+    console.log("for mobile timeslot we just need bookings");
+    console.log(bookings);
+  }
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -71,7 +74,7 @@ export default function MobileTimeslot({
       </Slot>
       <Dropdown>
         {isDropdownOpen && (
-          <MobileTimeslotContent user={user} bookings={bookings!} />
+          <MobileTimeslotContent bookingsfake={bookingsFakeStart!} />
         )}
       </Dropdown>
     </div>

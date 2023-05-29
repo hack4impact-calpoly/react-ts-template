@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import "@fontsource/roboto";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Horse from "../../images/horseRider.svg";
 import Dude from "../../images/person.svg";
 import Bookmark from "../../images/bookmark.svg";
-import OnSlide from "../../images/OnSlider.png";
-import OffSlide from "../../images/OffSlider.png";
+import OnSlide from "../../images/onslider.png";
+import OffSlide from "../../images/offslider.png";
+import UserContext from "../../userContext";
 
 const RiderInfo = styled.div`
   display: flex;
@@ -87,18 +88,28 @@ const OnOffSlide = styled.img`
 `;
 
 type UserType = {
-  user: string;
-  bookings: number;
+  bookingsfake: number;
 };
 // READ: bookings prop will always be 1 or -1 cause I hardcoded the initial value of bookings
 // (line 103) so it turns back to 0 every run. Hopefully this logic works once we get the
 // props working on the other pages.
-export default function TimeslotMobileContent({ user, bookings }: UserType) {
+// export default function TimeslotMobileContent({ user, bookings }: UserType) {
+export default function TimeslotMobileContent({ bookingsfake }: UserType) {
   const [booked, setBooked] = useState(true);
   const [onOff, setOnOff] = useState(true);
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { bookings, userType } = realUser;
+  if (realUser !== null) {
+    console.log("mobiletimeslot content just needs bookings and usertype");
+    console.log(bookings);
+    console.log(userType);
+  }
+  // const { userType } = currentUser;
 
   // eslint-disable-next-line no-param-reassign
-  bookings = 0;
+  // bookings = 0;
   const handleSlide = () => {
     setOnOff(!onOff);
   };
@@ -108,16 +119,16 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
     if (booked === false) {
       // add one from bookings if they add their booking
       // eslint-disable-next-line no-param-reassign
-      bookings += 1;
+      bookingsfake += 1;
       setBooked(!booked);
-    } else if (user === "rider" && bookings === 1) {
+    } else if (userType === "Rider" && bookingsfake === 1) {
       // if they're a rider and already have a booking don't add more
       // eslint-disable-next-line no-param-reassign
-      bookings = 1;
+      bookingsfake = 1;
     } else {
       // minus one from bookings if they cancel
       // eslint-disable-next-line no-param-reassign
-      bookings -= 1;
+      bookingsfake -= 1;
       setBooked(!booked);
     }
     // eslint-disable-next-line no-console
@@ -141,9 +152,9 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
           <RiderInfo
             style={{
               display:
-                (user === "admin" && onOff === true) ||
-                user === "rider" ||
-                user === "volunteer"
+                (userType === "Admin" && onOff === true) ||
+                userType === "Rider" ||
+                userType === "Volunteer"
                   ? "block"
                   : "none",
             }}
@@ -155,7 +166,8 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
           <RiderInfo
             style={{
               display:
-                user === "rider" || (user === "admin" && onOff === false)
+                userType === "Rider" ||
+                (userType === "Admin" && onOff === false)
                   ? "none"
                   : "block",
             }}
@@ -164,12 +176,16 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
             <RiderContent>Volunteers: Jane Doe, John Smith</RiderContent>
           </RiderInfo>
           {booked === false ? (
-            <RiderInfo style={{ display: user === "admin" ? "none" : "block" }}>
+            <RiderInfo
+              style={{ display: userType === "Admin" ? "none" : "block" }}
+            >
               <LogoBookmark src={Bookmark} />{" "}
               <RiderContent>Status: Booked</RiderContent>
             </RiderInfo>
           ) : (
-            <RiderInfo style={{ display: user === "admin" ? "none" : "block" }}>
+            <RiderInfo
+              style={{ display: userType === "Admin" ? "none" : "block" }}
+            >
               <LogoBookmark src={Bookmark} />{" "}
               <RiderContent>Status: Unbooked</RiderContent>
             </RiderInfo>
@@ -181,7 +197,8 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
             <TimeslotButton
               style={{
                 display:
-                  user === "admin" || (user === "rider" && bookings === 1)
+                  userType === "Admin" ||
+                  (userType === "Rider" && bookingsfake === 1)
                     ? "none"
                     : "block",
               }}
@@ -193,7 +210,8 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
             <TimeslotButton
               style={{
                 display:
-                  user === "admin" || (user === "rider" && bookings === 1)
+                  userType === "Admin" ||
+                  (userType === "Rider" && bookingsfake === 1)
                     ? "none"
                     : "block",
               }}
@@ -204,13 +222,13 @@ export default function TimeslotMobileContent({ user, bookings }: UserType) {
           )}
           {onOff === true ? (
             <OnOffSlide
-              style={{ display: user === "admin" ? "block" : "none" }}
+              style={{ display: userType === "Admin" ? "block" : "none" }}
               onClick={handleSlide}
               src={OnSlide}
             />
           ) : (
             <OnOffSlide
-              style={{ display: user === "admin" ? "block" : "none" }}
+              style={{ display: userType === "Admin" ? "block" : "none" }}
               onClick={handleSlide}
               src={OffSlide}
             />

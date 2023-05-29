@@ -1,25 +1,23 @@
+/* eslint-disable react/button-has-type */
 import React, { useState, useEffect, useMemo } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import { Amplify, DataStore } from "aws-amplify";
-// import { DataStore } from "@aws-amplify/datastore";
-import { LazyTimeslot, Timeslot } from "./models";
+import { LazyTimeslot, Timeslot, User as UserModel } from "./models";
 import awsconfig from "./aws-exports";
-import Success from "./components/authentication/success";
-import ResetPassword from "./components/authentication/resetPassword";
-import CreateAccount from "./components/authentication/createAccount";
-import EnterCode from "./components/authentication/enterCode";
-import Login from "./components/authentication/login";
-import ForgotPassword from "./components/authentication/forgotPassword";
 import Timeslots from "./components/popup/timeslots";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobile/mobileCalendar";
-import MobileTimeslots from "./components/mobile/mobileTimeslots";
 import TimeslotSuccess from "./components/popup/timeslotSuccess";
 import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
-import LogoutPopup from "./components/popup/logoutPopup";
 import UserContext from "./userContext";
-import { User } from "./types";
+import ForgotPassword from "./components/authentication/forgotPassword";
+import ResetPassword from "./components/resetPassword";
+import Login from "./components/authentication/login";
+import CreateAccount from "./components/authentication/createAccount";
+import EnterCode from "./components/authentication/enterCode";
+import Success from "./components/authentication/success";
+import MobileLogout from "./components/mobile/mobileLogout";
 
 Amplify.configure(awsconfig);
 
@@ -35,60 +33,95 @@ function App() {
   const [weekday, setWeekdayProp] = useState<string>();
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
 
+  // added additional attributes to the calendarmobile component for props
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.outerWidth <= 500);
     };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  // added additional attributes to the calendarmobile component for props
-
-  useEffect(() => {
     const pullData = async () => {
       const ts = await DataStore.query(Timeslot);
       setTs(ts);
       console.log(ts);
     };
-
+    window.addEventListener("resize", handleResize);
+    handleResize();
     pullData();
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
   // setting up context
-  const [currentUser, setUser] = useState({} as User);
+  const [currentUser, setUser] = useState({} as UserModel[]);
   const userContextFields = useMemo(
     () => ({ currentUser, setUser }),
     [currentUser]
   );
+
+  if (currentUser.length > 0) {
+    console.log(
+      `current users name is: ${currentUser[0].firstName}${currentUser[0].lastName}`
+    );
+  }
+
   // console statement to test if userName was set in login component
-  console.log(`from the context stuff ${currentUser.userName}`);
+  // console.log(`from the context stuff ${currentUser.userName}`);
+  // console.log(
+  //   `from the usercontext first name of user is ${currentUser[0].firstName}`
+  // );
   return (
     <UserContext.Provider value={userContextFields}>
       <BrowserRouter>
         <Routes>
-          {/* /, /login, /create-account, /forgot-password, /enter-code, /reset-password, /success */}
-          <Route
-            path="/"
-            element={
-              isMobile ? (
-                <CalendarMobile
-                  user=""
-                  bookings={0}
-                  day={day!}
-                  setDayProp={setDayProp}
-                  month={month!}
-                  setMonthProp={setMonthProp}
-                  weekday={weekday!}
-                  setWeekdayProp={setWeekdayProp}
-                />
-              ) : (
-                <Calendar userType="rider" />
-              )
-            }
-          />
+          {/* Starting Protected Routes */}
+          {/* If not logged in when trying to access below route, redirect to login */}
+          {currentUser.length > 0 ? (
+            <Route
+              path="/"
+              element={
+                isMobile ? (
+                  <CalendarMobile
+                    bookingsFake={0}
+                    day={day!}
+                    setDayProp={setDayProp}
+                    month={month!}
+                    setMonthProp={setMonthProp}
+                    weekday={weekday!}
+                    setWeekdayProp={setWeekdayProp}
+                  />
+                ) : (
+                  <Calendar />
+                )
+              }
+            />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+          {currentUser ? (
+            <Route
+              path="/timeslot-confirmation"
+              element={<TimeSlotConfirmation status="book" date={new Date()} />}
+            />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+          {currentUser.length > 0 ? (
+            <Route path="/timeslot-success" element={<TimeslotSuccess />} />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+
+          {currentUser.length > 0 ? (
+            <Route path="/logout" element={<MobileLogout />} />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+
+          {/* Starting Public Routes */}
+          {/* Can access regardless of login status */}
+
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/enter-code" element={<EnterCode />} />
+          <Route path="/success/:id" element={<Success />} />
           <Route
             path="/forgot-password"
             element={<ForgotPassword setEmailProp={setEmailProp} />}
@@ -97,27 +130,11 @@ function App() {
             path="/reset-password"
             element={<ResetPassword email={email!} />}
           />
-          <Route path="/success/:id" element={<Success />} />
           <Route
             path="/timeslots"
-            element={
-              <Timeslots
-                userType="rider"
-                models={timeslots}
-                date={new Date()}
-              />
-            }
+            element={<Timeslots models={timeslots} date={new Date()} />}
           />
-          <Route
-            path="/mobile-timeslots"
-            element={<MobileTimeslots userType="rider" />}
-          />
-          <Route path="/timeslot-success" element={<TimeslotSuccess />} />
-          <Route
-            path="/timeslot-confirmation"
-            element={<TimeSlotConfirmation userType="rider" status="book" />}
-          />
-          <Route path="/logoutPopup" element={<LogoutPopup />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

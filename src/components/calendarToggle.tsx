@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import "@fontsource/roboto";
+import UserContext from "../userContext";
 
 const CheckBox = styled.div`
   border-radius: 4px;
@@ -53,8 +54,10 @@ type ToggleProps = {
 };
 
 export default function AdminToggle({ setToggleProp }: ToggleProps) {
-  // Initialize a boolean state
-  const isAdmin = true; // delete later
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType } = realUser;
   const [showVolunteers, setShowVolunteers] = useState(false);
   const [showRiders, setShowRiders] = useState(false);
   const [showBoth, setShowBoth] = useState(true);
@@ -87,11 +90,11 @@ export default function AdminToggle({ setToggleProp }: ToggleProps) {
     // inverse the boolean state of passwordShown
     setShowAvailability(!showAvailability);
   };
-  if (showBoth && isAdmin) {
+  if (showBoth && userType === "Admin") {
     setToggleProp("both");
-  } else if (showAvailability && !isAdmin) {
+  } else if (showAvailability && userType !== "Admin") {
     setToggleProp("availability");
-  } else if (!showAvailability && !isAdmin) {
+  } else if (!showAvailability && userType !== "Admin") {
     setToggleProp("slots");
   } else if (showRiders) {
     setToggleProp("riders");
@@ -104,7 +107,7 @@ export default function AdminToggle({ setToggleProp }: ToggleProps) {
   return (
     <div>
       <ViewingText>Viewing:</ViewingText>
-      {isAdmin ? (
+      {userType === "Admin" ? (
         <div>
           <Row>
             <CheckBox onClick={toggleBoth}>

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-duplicates */
 import styled from "styled-components";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { DataStore } from "@aws-amplify/datastore";
 import MonthCalendar from "react-calendar";
 import WeekCalendar from "@fullcalendar/react";
@@ -8,13 +8,16 @@ import FullCalendarRef from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import interactionPlugin from "@fullcalendar/interaction";
+import UserContext from "../userContext";
 import { LazyTimeslot, Timeslot } from "../models";
 // import Monthly from "./monthlyView";
-// import Weekly from "./weeklyView";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
 import Popup from "./popup/timeslotPopup";
 // import FullCalendar from "@fullcalendar/react";
+import signout from "../images/SignOut.png";
+import LogoutPopup from "./popup/logoutPopup";
+import { Booking } from "../models";
 
 const CalDiv = styled.div`
   font-family: "Rubik", sans-serif;
@@ -54,6 +57,9 @@ const CalDiv = styled.div`
   .fc-today-button {
     display: none;
   }
+  .fc-event {
+    cursor: pointer;
+  }
 `;
 
 const Logo = styled.img`
@@ -64,7 +70,7 @@ const Logo = styled.img`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding-top: 130px;
+  padding-top: 60px;
 `;
 const LeftColumn = styled.div`
   display: flex;
@@ -77,6 +83,27 @@ const LeftColumn = styled.div`
 const RightColumn = styled.div`
   padding-right: 50px;
   width: 100%;
+`;
+
+const SignOutLogo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledButton = styled.button`
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  transform: scale(1.2);
+  padding-top: 20px;
+  background: none;
+  border: none;
+`;
+
+const StyledImage = styled.img`
+  width: 100%;
+  padding-top: 30%;
+  padding-left: 40%;
 `;
 
 const CalendarContainer = styled.div`
@@ -199,17 +226,31 @@ const CalendarContainer = styled.div`
   }
 `;
 
-export interface WeeklyViewProps {
-  userType: "volunteer" | "rider" | "admin";
-}
-
-export default function Calendar({ userType }: WeeklyViewProps) {
+export default function Calendar() {
   const [date, setDateProp] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
   const [toggles, setToggle] = useState<string>("");
   const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const [popup, setPopup] = useState(false);
+  const [logoutPopup, setLogoutPopup] = useState(false);
   const [popupDate, setPopupDate] = useState<Date>(new Date());
+  const currentUserFR = useContext(UserContext);
+  const { currentUser } = currentUserFR;
+  const [realUser] = currentUser;
+  const { userType, id: currentUserId } = realUser;
+  const [bookings, setBookings] = useState<Booking[]>([]);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const bookingModels = await DataStore.query(Booking);
+        setBookings(bookingModels);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+    fetchBookings();
+  }, []);
 
   console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
@@ -228,8 +269,12 @@ export default function Calendar({ userType }: WeeklyViewProps) {
     setPopup(true);
   };
 
-  const handleChildData = () => {
+  const handlePopupClose = () => {
     setPopup(false);
+  };
+
+  const handleLogoutClose = () => {
+    setLogoutPopup(false);
   };
 
   console.log(ts.length);
@@ -237,17 +282,17 @@ export default function Calendar({ userType }: WeeklyViewProps) {
   let slots = ts.map((timeslot: any) => {
     let backgroundColor = "#90BFCC";
 
-    if (userType === "rider") {
+    if (userType === "Rider") {
       const hasRiderBooking = timeslot.riderBookings.length > 0;
       if (hasRiderBooking) {
         backgroundColor = "#E0EFF1";
       }
-    } else if (userType === "volunteer") {
+    } else if (userType === "Volunteer") {
       const hasVolunteerBooking = timeslot.volunteerBookings.length > 0;
       if (hasVolunteerBooking) {
         backgroundColor = "#E0EFF1";
       }
-    } else if (userType === "admin") {
+    } else if (userType === "Admin") {
       if (
         timeslot.unavailableDates.includes(timeslot.startTime.toDateString())
       ) {
@@ -261,6 +306,7 @@ export default function Calendar({ userType }: WeeklyViewProps) {
       endTime: timeslot.endTime,
       backgroundColor,
       textColor: "black",
+      id: timeslot.id,
     };
   });
   if (toggles === "volunteers") {
@@ -275,12 +321,45 @@ export default function Calendar({ userType }: WeeklyViewProps) {
         Number(String(timeslot.startTime).substring(0, 2)) >= 10 &&
         Number(String(timeslot.endTime).substring(0, 2)) <= 14
     );
+  } else if (toggles === "slots") {
+    slots = slots.filter((timeslot) =>
+      bookings.some(
+        (booking) =>
+          booking.userID === currentUserId && booking.timeslotID === timeslot.id
+      )
+    );
+  } else if (toggles === "availibility") {
+    if (userType === "rider") {
+      slots = slots.filter(
+        (timeslot) =>
+          Number(String(timeslot.startTime).substring(0, 2)) >= 10 &&
+          Number(String(timeslot.endTime).substring(0, 2)) <= 14
+      );
+    }
+
+    if (userType === "volunteer") {
+      slots = slots.filter(
+        (timeslot) =>
+          Number(String(timeslot.startTime).substring(0, 2)) >= 9 &&
+          Number(String(timeslot.endTime).substring(0, 2)) <= 17
+      );
+    }
   }
 
   console.log(`toggle is ${toggles}`);
   return (
     <div>
-      <Logo src={logo} />
+      <SignOutLogo>
+        <StyledButton
+          onClick={() => {
+            setLogoutPopup(true);
+          }}
+        >
+          <StyledImage src={signout} alt="Sign Out" />
+        </StyledButton>
+        <Logo src={logo} />
+        <LogoutPopup openProp={logoutPopup} onClose={handleLogoutClose} />
+      </SignOutLogo>
       <Wrapper>
         <LeftColumn>
           <CalendarContainer>
@@ -322,7 +401,7 @@ export default function Calendar({ userType }: WeeklyViewProps) {
               dayHeaderFormat={{ weekday: "short", day: "numeric" }}
               datesSet={(dateInfo) => {
                 console.log("start of week: ", dateInfo.start);
-                // console.log(dateInfo.end);
+                console.log(dateInfo.end);
                 setDateProp(dateInfo.start);
                 console.log("date in weekCal: ", date);
               }}
@@ -330,14 +409,13 @@ export default function Calendar({ userType }: WeeklyViewProps) {
             />
             <Popup
               o={popup}
-              onData={handleChildData}
+              onClose={handlePopupClose}
               date={popupDate}
               toggleProp={toggles!}
             />
           </CalDiv>
         </RightColumn>
       </Wrapper>
-      {/* <Popup  /> */}
     </div>
   );
 }

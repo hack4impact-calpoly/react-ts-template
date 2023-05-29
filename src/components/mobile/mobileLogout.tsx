@@ -1,64 +1,61 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Auth } from "aws-amplify";
 import { User } from "../../models";
 import warning from "../../images/warning.svg";
 import {
-  // Wrapper,
+  Wrapper,
+  BackArrow,
   Box,
-  Description,
   Header,
   Button,
   Row,
-  PopupDiv,
-  // PopupBox,
 } from "../styledComponents";
+import backArrow from "../../images/backArrow.png";
 import UserContext from "../../userContext";
 
 const Warning = styled.img`
-  position: relative;
-  width: 80px;
+  @media (max-width: 500px) {
+    position: relative;
+    width: 80px;
+  }
+`;
+
+const Description = styled.text`
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  color: #000d26;
+  text-align: left;
+  padding-bottom: 20px;
 `;
 
 const SurroundingBox = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-left: 15%;
-  padding-right: 15%;
-  padding-top: 10%;
-  padding-bottom: 10%;
+  @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 15%;
+    padding-right: 15%;
+    padding-top: 10%;
+    padding-bottom: 10%;
+  }
 `;
 
 const ConfirmButton = styled(Button)`
-  width: 11rem;
-  height: 3rem;
-  margin-left: 1rem;
+  @media (max-width: 500px) {
+    width: 11rem;
+    height: 3rem;
+    margin-left: 1rem;
+  }
 `;
 
-const CancelButton = styled(Button)`
-  width: 11rem;
-  height: 3rem;
-  background: white;
-  color: #1b4c5a;
-  margin-right: 1rem;
-`;
-
-interface PopupProps {
-  openProp: boolean;
-  onClose: () => void;
-}
-
-export default function LogoutPopup({ openProp, onClose }: PopupProps) {
-  const [open, setOpen] = useState<boolean>(openProp);
+export default function MobileLogout() {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setOpen(openProp);
-  }, [openProp]);
 
   const handleLogout = async () => {
     try {
@@ -72,7 +69,14 @@ export default function LogoutPopup({ openProp, onClose }: PopupProps) {
   };
 
   return (
-    <PopupDiv open={open} onClose={onClose}>
+    <Wrapper>
+      <BackArrow
+        src={backArrow}
+        alt="didn't work"
+        onClick={() => {
+          navigate("/");
+        }}
+      />
       <SurroundingBox>
         <Warning src={warning} />
         <Header>Signing Out?</Header>
@@ -81,10 +85,9 @@ export default function LogoutPopup({ openProp, onClose }: PopupProps) {
           back to the sign in page.
         </Description>
         <Row>
-          <CancelButton onClick={onClose}>Cancel</CancelButton>
           <ConfirmButton onClick={handleLogout}>Logout</ConfirmButton>
         </Row>
       </SurroundingBox>
-    </PopupDiv>
+    </Wrapper>
   );
 }
