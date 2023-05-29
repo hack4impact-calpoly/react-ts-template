@@ -274,7 +274,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
       }
     };
     fetchBookings();
-  }, []);
+  }, [popup]);
 
   console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
