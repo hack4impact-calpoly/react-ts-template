@@ -384,7 +384,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
     if (userType === "Rider") {
       slots = slots.filter(
         (timeslot) =>
-          timeslot.start.getHours() >= 10 && timeslot.end.getHours() <= 14
+          timeslot.start.getHours() >= 10 && timeslot.start.getHours() < 14
       );
     }
 
