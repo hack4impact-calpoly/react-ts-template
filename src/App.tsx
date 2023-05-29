@@ -63,7 +63,13 @@ function App() {
           {currentUser.length > 0 ? (
             <Route
               path="/"
-              element={isMobile ? <CalendarMobile /> : <Calendar />}
+              element={
+                isMobile ? (
+                  <CalendarMobile timeslots={timeslots} />
+                ) : (
+                  <Calendar timeslots={timeslots} />
+                )
+              }
             />
           ) : (
             <Route path="/login" element={<Login />} />

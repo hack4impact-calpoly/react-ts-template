@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable import/no-duplicates */
 import styled from "styled-components";
 import { useEffect, useState, useRef, useContext } from "react";
@@ -9,7 +10,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import interactionPlugin from "@fullcalendar/interaction";
 import UserContext from "../userContext";
-import { LazyTimeslot, Timeslot } from "../models";
+import { LazyTimeslot } from "../models";
 // import Monthly from "./monthlyView";
 import logo from "../images/PETlogo2.svg";
 import Toggle from "./calendarToggle";
@@ -226,11 +227,15 @@ const CalendarContainer = styled.div`
   }
 `;
 
-export default function Calendar() {
+interface CalendarProps {
+  timeslots: LazyTimeslot[];
+}
+
+export default function Calendar({ timeslots }: CalendarProps) {
   const [date, setDateProp] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
   const [toggles, setToggle] = useState<string>("");
-  const [ts, setTs] = useState<LazyTimeslot[]>([]);
+  // const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const [popup, setPopup] = useState(false);
   const [logoutPopup, setLogoutPopup] = useState(false);
   const [popupDate, setPopupDate] = useState<Date>(new Date());
@@ -255,14 +260,6 @@ export default function Calendar() {
   console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
   console.log(`userType${userType}`);
-  useEffect(() => {
-    const pullData = async () => {
-      const models = await DataStore.query(Timeslot);
-      console.log(models);
-      setTs(models);
-    };
-    pullData();
-  }, []);
 
   const handleEventClick = (eventClickInfo: any) => {
     setPopupDate(eventClickInfo.event.start);
@@ -277,9 +274,9 @@ export default function Calendar() {
     setLogoutPopup(false);
   };
 
-  console.log(ts.length);
+  console.log(timeslots.length);
 
-  let slots = ts.map((timeslot: any) => {
+  let slots = timeslots.map((timeslot: any) => {
     let backgroundColor = "#90BFCC";
 
     if (userType === "Rider") {

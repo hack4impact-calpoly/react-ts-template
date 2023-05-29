@@ -44,22 +44,6 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
     "I'm not using the date for now cause I'm tired but it is: ",
     date
   );
-  // if (userType === "Volunteer") {
-  //   // Filter timeslots between 9 AM and 5 PM for volunteers
-  //   filteredTimeslots = timeslots.filter(
-  //     (timeslot) =>
-  //       timeslot.startTime.getHours() >= 9 && timeslot.endTime.getHours() <= 17
-  //   );
-  // } else if (userType === "Rider") {
-  //   // Filter timeslots between 10 AM and 2 PM for riders
-  //   filteredTimeslots = timeslots.filter(
-  //     (timeslot) =>
-  //       timeslot.startTime.getHours() >= 10 && timeslot.endTime.getHours() <= 14
-  //   );
-  // } else if (userType === "Admin") {
-  //   // show's all time slots for admin
-  //   filteredTimeslots = timeslots;
-  // }
 
   if (models !== "nothing") {
     models.forEach((model) => {
@@ -94,12 +78,6 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
 
   return (
     <Slots>
-      {/* {filteredTimeslots.map((timeslot) => (
-        <MobileTimeslot
-          startTime={timeslot.startTime}
-          endTime={timeslot.endTime}
-        />
-      ))} */}
       {timeslots
         .filter((ts) => filterTimeSlots(userType === "Volunteer", ts))
         .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))

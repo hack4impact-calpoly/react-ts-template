@@ -1,12 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { Link } from "react-router-dom";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import { DataStore } from "@aws-amplify/datastore";
 import UserContext from "../../userContext";
 import MobileTimeslots from "./mobileTimeslots";
 import MobileWeeklyView from "./mobileWeeklyView";
-import { LazyTimeslot, Timeslot } from "../../models";
+import { LazyTimeslot } from "../../models";
 import { Dropdown, Option } from "./dropdown";
 import signoutarrow from "../../images/SignOutArrow.png";
 
@@ -35,23 +34,16 @@ const StyledImage = styled.img`
   width: 100%;
 `;
 
-// props used in mobileweeklyview as well
-// type UserType = {
-//   // bookingsFake: number;
-//   // day: string;
-//   // setDayProp: (val: string) => void;
-//   // month: string;
-//   // setMonthProp: (val: string) => void;
-//   // weekday: string;
-//   // setWeekdayProp: (val: string) => void;
-// };
+interface CalendarProps {
+  timeslots: LazyTimeslot[];
+}
 
-export default function CalendarMobile() {
+export default function CalendarMobile({ timeslots }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [day, setDayProp] = useState<string>("");
   const [month, setMonthProp] = useState<string>("");
   const [weekday, setWeekdayProp] = useState<string>("");
-  const [ts, setTs] = useState<LazyTimeslot[]>([]);
+  // const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
@@ -79,15 +71,6 @@ export default function CalendarMobile() {
     console.log(optionValue);
     setOptionValue(e.target.value);
   };
-
-  useEffect(() => {
-    const pullData = async () => {
-      const models = await DataStore.query(Timeslot);
-      console.log(models);
-      setTs(models);
-    };
-    pullData();
-  }, []);
 
   return (
     <div>
@@ -126,7 +109,7 @@ export default function CalendarMobile() {
       </Dropdown>
 
       {/* the timeslots will change depending on the usertype */}
-      <MobileTimeslots models={ts} date={currentDate} />
+      <MobileTimeslots models={timeslots} date={currentDate} />
     </div>
   );
 }
