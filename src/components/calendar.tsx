@@ -309,6 +309,9 @@ export default function Calendar() {
       id: timeslot.id,
     };
   });
+
+  console.log(slots);
+
   if (toggles === "volunteers") {
     slots = slots.filter(
       (timeslot) =>

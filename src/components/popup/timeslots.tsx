@@ -44,6 +44,7 @@ export default function Timeslots({ models, date }: TimeslotsProps) {
   console.log(date);
   console.log(models);
   const timeslots: TsData[] = [];
+
   if (models !== "nothing") {
     models.forEach((model) => {
       if (
@@ -60,6 +61,7 @@ export default function Timeslots({ models, date }: TimeslotsProps) {
     });
     // console.log(timeslots);
   }
+
   function filterTimeSlots(
     isVolunteers: boolean,
     ts: {
