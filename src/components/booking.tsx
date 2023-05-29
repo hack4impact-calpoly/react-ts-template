@@ -61,8 +61,8 @@ export const bookings = [
   },
   {
     id: "timeslot-4",
-    startTime: new Date("April 25, 2023 11:30:00"),
-    endTime: new Date("April 25, 2023 12:0:00"),
+    startTime: new Date("May 25, 2023 11:30:00"),
+    endTime: new Date("May 25, 2023 12:0:00"),
     unavailableDates: [],
     volunteerBookings: [],
     riderBookings: [],

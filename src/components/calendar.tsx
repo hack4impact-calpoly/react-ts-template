@@ -227,6 +227,21 @@ const CalendarContainer = styled.div`
   }
 `;
 
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 interface CalendarProps {
   timeslots: LazyTimeslot[];
 }
@@ -242,6 +257,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { userType, id: currentUserId } = realUser;
   const [bookings, setBookings] = useState<Booking[]>([]);
 
@@ -249,6 +265,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
     const fetchBookings = async () => {
       try {
         const bookingModels = await DataStore.query(Booking);
+        console.log("BOOKINGS ---------", bookingModels);
         setBookings(bookingModels);
       } catch (error) {
         console.error("Error fetching bookings:", error);
@@ -259,7 +276,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
 
   console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
-  console.log(`userType${userType}`);
+  console.log(`userType ${userType}`);
 
   const handleEventClick = (eventClickInfo: any) => {
     setPopupDate(eventClickInfo.event.start);
@@ -274,52 +291,75 @@ export default function Calendar({ timeslots }: CalendarProps) {
     setLogoutPopup(false);
   };
 
-  console.log(timeslots.length);
+  let slots: any[] = [];
 
-  let slots = timeslots.map((timeslot: any) => {
-    let backgroundColor = "#90BFCC";
+  for (let dateoffset = 0; dateoffset < 7; dateoffset++) {
+    const dateCopy = new Date(date.getTime());
+    const dateTest = new Date(
+      dateCopy.setDate(dateCopy.getDate() + dateoffset)
+    );
 
-    if (userType === "Rider") {
-      const hasRiderBooking = timeslot.riderBookings.length > 0;
-      if (hasRiderBooking) {
-        backgroundColor = "#E0EFF1";
+    const tempSlots = timeslots.map((timeslot: any) => {
+      let backgroundColor = "#90BFCC";
+
+      const startingTime = new Date(
+        `${
+          months[dateTest.getMonth()]
+        } ${dateTest.getDate()}, ${dateTest.getFullYear()} ${
+          timeslot.startTime
+        }:00`
+      );
+      const endingTime = new Date(
+        `${
+          months[dateTest.getMonth()]
+        } ${dateTest.getDate()}, ${dateTest.getFullYear()} ${
+          timeslot.endTime
+        }:00`
+      );
+
+      if (userType === "Rider" || userType === "Volunteer") {
+        if (
+          bookings.some(
+            (booking) =>
+              booking.timeslotID === timeslot.id &&
+              dateTest.getDate() ===
+                Number(
+                  String(booking.date).substring(
+                    String(booking.date).length - 2,
+                    String(booking.date).length
+                  )
+                )
+          )
+        ) {
+          backgroundColor = "#E0EFF1";
+        }
+      } else if (userType === "Admin") {
+        if (
+          timeslot.unavailableDates.includes(timeslot.startTime.toDateString())
+        ) {
+          backgroundColor = "#E0EFF1";
+        }
       }
-    } else if (userType === "Volunteer") {
-      const hasVolunteerBooking = timeslot.volunteerBookings.length > 0;
-      if (hasVolunteerBooking) {
-        backgroundColor = "#E0EFF1";
-      }
-    } else if (userType === "Admin") {
-      if (
-        timeslot.unavailableDates.includes(timeslot.startTime.toDateString())
-      ) {
-        backgroundColor = "#E0EFF1";
-      }
-    }
 
-    return {
-      startTime: timeslot.startTime,
-      daysOfWeek: ["1", "2", "3", "4", "5"],
-      endTime: timeslot.endTime,
-      backgroundColor,
-      textColor: "black",
-      id: timeslot.id,
-    };
-  });
-
-  console.log(slots);
+      return {
+        start: startingTime,
+        end: endingTime,
+        backgroundColor,
+        textColor: "black",
+      };
+    });
+    slots = slots.concat(tempSlots);
+  }
 
   if (toggles === "volunteers") {
     slots = slots.filter(
       (timeslot) =>
-        Number(String(timeslot.startTime).substring(0, 2)) >= 9 &&
-        Number(String(timeslot.endTime).substring(0, 2)) <= 17
+        timeslot.start.getHours() >= 9 && timeslot.start.getHours() <= 17
     );
   } else if (toggles === "riders") {
     slots = slots.filter(
       (timeslot) =>
-        Number(String(timeslot.startTime).substring(0, 2)) >= 10 &&
-        Number(String(timeslot.endTime).substring(0, 2)) <= 14
+        timeslot.start.getHours() >= 10 && timeslot.end.getHours() <= 14
     );
   } else if (toggles === "slots") {
     slots = slots.filter((timeslot) =>
@@ -328,25 +368,22 @@ export default function Calendar({ timeslots }: CalendarProps) {
           booking.userID === currentUserId && booking.timeslotID === timeslot.id
       )
     );
-  } else if (toggles === "availibility") {
-    if (userType === "rider") {
+  } else if (toggles === "availability") {
+    if (userType === "Rider") {
       slots = slots.filter(
         (timeslot) =>
-          Number(String(timeslot.startTime).substring(0, 2)) >= 10 &&
-          Number(String(timeslot.endTime).substring(0, 2)) <= 14
+          timeslot.start.getHours() >= 10 && timeslot.end.getHours() <= 14
       );
     }
 
-    if (userType === "volunteer") {
+    if (userType === "Volunteer") {
       slots = slots.filter(
         (timeslot) =>
-          Number(String(timeslot.startTime).substring(0, 2)) >= 9 &&
-          Number(String(timeslot.endTime).substring(0, 2)) <= 17
+          timeslot.start.getHours() >= 9 && timeslot.end.getHours() <= 17
       );
     }
   }
 
-  console.log(`toggle is ${toggles}`);
   return (
     <div>
       <SignOutLogo>
@@ -390,7 +427,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
               plugins={[timeGridPlugin, interactionPlugin]}
               initialView="timeGridWeek"
               initialDate={date}
-              events={slots} // changed this from updatedSlots to slots
+              events={slots}
               allDaySlot={false}
               slotMinTime="8:00:00"
               slotMaxTime="18:00:00"
