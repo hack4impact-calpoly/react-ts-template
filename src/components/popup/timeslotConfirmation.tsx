@@ -1,24 +1,16 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { DataStore } from "aws-amplify";
 import UserContext from "../../userContext";
 import { checkedLst, uncheckedLst } from "./timeslot";
 import { Timeslot, User, Booking } from "../../models";
 import warning from "../../images/warning.svg";
-import x from "../../images/X.svg";
-import {
-  PopupBox,
-  X,
-  CancelBtn,
-  SaveBtn,
-  Description,
-  Header,
-  Row,
-} from "../styledComponents";
+import { CancelBtn, SaveBtn, Description, Header } from "../styledComponents";
 
 export type TimeSlotProps = {
-  onClose: () => void;
+  handleClicked: () => void;
+  handleCancelled: () => void;
   status: String;
   date: Date;
 };
@@ -34,6 +26,14 @@ const Wrapper = styled.div`
 const Warning = styled.img`
   position: relative;
   width: 80px;
+`;
+
+const BtnContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 40px;
+  gap: 20px;
 `;
 
 async function addUnavailability(ids: string[], unavailableDate: Date) {
@@ -136,7 +136,6 @@ async function addRVBooking(
         await DataStore.save(booking);
       }
     }
-    console.log(await DataStore.query(Booking));
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log("An error occurred: ", error.message); // eslint-disable-line no-console
@@ -172,7 +171,8 @@ async function deleteRVBooking(
 // }
 
 export default function TimeSlotConfirmation({
-  onClose,
+  handleClicked,
+  handleCancelled,
   status = "",
   date,
 }: TimeSlotProps) {
@@ -180,80 +180,69 @@ export default function TimeSlotConfirmation({
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { userType, id } = realUser;
-  const navigate = useNavigate();
 
   const handleConfirmationAdmin = () => {
+    handleClicked();
     addUnavailability(uncheckedLst, date); // YYYY-MM-DD
     deleteUnavailability(checkedLst, date); // YYYY-MM-DD
-    navigate("/timeslot-success");
   };
 
   const handleConfirmationRV = () => {
+    handleClicked();
     addRVBooking(checkedLst, id, date);
-    navigate("/timeslot-success");
   };
 
   const handleCancel = () => {
-    navigate("/");
+    handleCancelled();
   };
 
   const handleBookingCancel = () => {
     deleteRVBooking(uncheckedLst, id);
-    navigate("/timeslot-success");
   };
 
   return (
     <div>
       {userType === "admin" && (
-        <PopupBox>
-          <X src={x} onClick={onClose} />
-          <Wrapper>
-            <Warning src={warning} />
-            <Header>Save changes?</Header>
-            <Description>
-              You are choosing to edit the availability of one or more time
-              slots. Are you sure you want to do this?
-            </Description>
-            <Row>
-              <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
-              <SaveBtn onClick={handleConfirmationAdmin}>Confirm</SaveBtn>
-            </Row>
-          </Wrapper>
-        </PopupBox>
+        <Wrapper>
+          <Warning src={warning} />
+          <Header>Save changes?</Header>
+          <Description>
+            You are choosing to edit the availability of one or more time slots.
+            Are you sure you want to do this?
+          </Description>
+          <BtnContainer>
+            <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
+            <SaveBtn onClick={handleConfirmationAdmin}>Confirm</SaveBtn>
+          </BtnContainer>
+        </Wrapper>
       )}
       {userType !== "Admin" && status === "cancel" && (
-        <PopupBox>
-          <X src={x} onClick={onClose} />
-          <Wrapper>
-            <Warning src={warning} />
-            <Header>Confirm cancellation?</Header>
-            <Description>
-              You are choosing to cancel one or more time slots. Are you sure
-              you want to do this?
-            </Description>
-            <Row>
-              <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
-              <SaveBtn onClick={handleBookingCancel}>Confirm</SaveBtn>
-            </Row>
-          </Wrapper>
-        </PopupBox>
+        <Wrapper>
+          <Warning src={warning} />
+          <Header>Confirm cancellation?</Header>
+          <Description>
+            You are choosing to cancel one or more time slots. Are you sure you
+            want to do this?
+          </Description>
+          <BtnContainer>
+            <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
+            <SaveBtn onClick={handleBookingCancel}>Confirm</SaveBtn>
+          </BtnContainer>
+        </Wrapper>
       )}
       {userType !== "admin" && checkedLst.length !== 0 && (
-        <PopupBox>
-          <X src={x} onClick={onClose} />
-          <Wrapper>
-            <Warning src={warning} />
-            <Header>Confirm booking?</Header>
-            <Description>
-              You are choosing to book one or more time slots. Are you sure you
-              want to do this?
-            </Description>
-            <Row>
-              <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
-              <SaveBtn onClick={handleConfirmationRV}>Book</SaveBtn>
-            </Row>
-          </Wrapper>
-        </PopupBox>
+        <Wrapper>
+          <Warning src={warning} />
+          <Header>Confirm booking?</Header>
+          <Description>
+            You are choosing to book one or more time slots. Are you sure you
+            want to do this?
+          </Description>
+          <BtnContainer>
+            <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
+            <SaveBtn onClick={handleConfirmationRV}>Book</SaveBtn>
+          </BtnContainer>
+        </Wrapper>
       )}
     </div>
   );

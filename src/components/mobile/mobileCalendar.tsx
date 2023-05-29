@@ -56,8 +56,7 @@ export default function CalendarMobile({
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
-  const { userType, bookings } = realUser;
-  console.log(`gonna need to use bookings from database in future ${bookings}`);
+  const { userType } = realUser;
   // these values are hardcoded for conditional rendering of showing different slots
   // eslint-disable-next-line no-param-reassign
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -72,12 +71,11 @@ export default function CalendarMobile({
   currentTimeString.push(day);
 
   // this is for the toggle dropdown
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [optionValue, setOptionValue] = useState("");
   const handleSelect = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
-    console.log(e.target.value);
-    console.log(optionValue);
     setOptionValue(e.target.value);
   };
 

@@ -8,6 +8,7 @@ import AptInfo from "../appointmentInfo";
 import Timeslots from "./timeslots";
 import { LazyTimeslot, Timeslot } from "../../models";
 import TimeslotConfirmation from "./timeslotConfirmation";
+import TimeslotSuccess from "./timeslotSuccess";
 
 const Wrapper = styled.div`
   display: flex;
@@ -60,16 +61,26 @@ const AptHeader = styled.h1`
 `;
 
 interface PopupProps {
-  o: boolean;
+  popup: boolean;
+  confirmPopup: boolean;
+  handleConfirmOpen: () => void;
+  successPopup: boolean;
+  handleSuccessOpen: () => void;
   onClose: () => void;
   date: Date;
   toggleProp: string;
 }
 
-export default function Popup({ o, onClose, date, toggleProp }: PopupProps) {
-  const [open, setOpen] = useState<boolean>(o);
-  const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+export default function Popup({
+  popup,
+  confirmPopup,
+  handleConfirmOpen,
+  successPopup,
+  handleSuccessOpen,
+  onClose,
+  date,
+  toggleProp,
+}: PopupProps) {
   const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
 
   const options: Intl.DateTimeFormatOptions = {
@@ -80,76 +91,53 @@ export default function Popup({ o, onClose, date, toggleProp }: PopupProps) {
   const formattedDate = date.toLocaleDateString("en-US", options);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.outerWidth <= 500);
-      console.log(isMobile);
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
     const pullData = async () => {
       const ts = await DataStore.query(Timeslot);
       setTs(ts);
-      console.log(ts);
     };
 
     pullData();
   }, []);
 
-  const handleConfirmation = () => {
-    setOpen(false);
-    setConfirmOpen(true);
-  };
-
-  const handleConfirmClose = () => {
-    setConfirmOpen(false);
-  };
-
-  useEffect(() => {
-    setOpen(o);
-  }, [o]);
-
   return (
     <div>
       <PopupDiv
-        open={open}
+        open={popup}
         onClose={onClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <PopupBox>
           <X src={x} onClick={onClose} />
-          <Wrapper>
-            <LeftColumn>
-              <Monthly />
-              <AptHeader>Appointment Info</AptHeader>
-              <AptInfo toggleProp={toggleProp} />
-            </LeftColumn>
-            <RightColumn>
-              <DateHeader>{formattedDate}</DateHeader>
-              <Timeslots models={timeslots} date={new Date()} />
-              <BtnContainer>
-                <CancelBtn onClick={onClose}>Cancel</CancelBtn>
-                <SaveBtn onClick={handleConfirmation}>Save</SaveBtn>
-              </BtnContainer>
-            </RightColumn>
-          </Wrapper>
+          {!confirmPopup && (
+            <Wrapper>
+              <LeftColumn>
+                <Monthly />
+                <AptHeader>Appointment Info</AptHeader>
+                <AptInfo toggleProp={toggleProp} />
+              </LeftColumn>
+              <RightColumn>
+                <DateHeader>{formattedDate}</DateHeader>
+                <Timeslots models={timeslots} />
+                <BtnContainer>
+                  <CancelBtn onClick={onClose}>Cancel</CancelBtn>
+                  <SaveBtn onClick={handleConfirmOpen}>Save</SaveBtn>
+                </BtnContainer>
+              </RightColumn>
+            </Wrapper>
+          )}
+          {confirmPopup && !successPopup && (
+            <TimeslotConfirmation
+              handleClicked={handleSuccessOpen}
+              handleCancelled={onClose}
+              status="book"
+              date={date}
+            />
+          )}
+          {confirmPopup && successPopup && (
+            <TimeslotSuccess handleCancelled={onClose} />
+          )}
         </PopupBox>
-      </PopupDiv>
-      <PopupDiv
-        open={confirmOpen}
-        onClose={handleConfirmClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <TimeslotConfirmation
-          onClose={handleConfirmClose}
-          status="book"
-          date={date}
-        />
       </PopupDiv>
     </div>
   );

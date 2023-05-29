@@ -100,12 +100,7 @@ export default function TimeslotMobileContent({ bookingsfake }: UserType) {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
-  const { bookings, userType } = realUser;
-  if (realUser !== null) {
-    console.log("mobiletimeslot content just needs bookings and usertype");
-    console.log(bookings);
-    console.log(userType);
-  }
+  const { userType } = realUser;
   // const { userType } = currentUser;
 
   // eslint-disable-next-line no-param-reassign

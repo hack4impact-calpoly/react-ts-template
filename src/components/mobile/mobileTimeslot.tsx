@@ -52,10 +52,7 @@ export default function MobileTimeslot({ startTime, endTime }: TimeslotProps) {
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { bookings } = realUser;
-  if (realUser !== null) {
-    console.log("for mobile timeslot we just need bookings");
-    console.log(bookings);
-  }
+  console.log(bookings);
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };

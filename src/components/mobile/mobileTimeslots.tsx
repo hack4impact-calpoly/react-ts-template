@@ -56,10 +56,6 @@ export default function MobileTimeslots() {
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { userType } = realUser;
-  if (realUser !== null) {
-    console.log("mobile timeslots component just needs userType");
-    console.log(userType);
-  }
   if (userType === "Volunteer") {
     // Filter timeslots between 9 AM and 5 PM for volunteers
     filteredTimeslots = timeslots.filter(
