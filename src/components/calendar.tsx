@@ -17,7 +17,6 @@ import Popup from "./popup/timeslotPopup";
 // import FullCalendar from "@fullcalendar/react";
 import signout from "../images/SignOut.png";
 import LogoutPopup from "./popup/logoutPopup";
-// import LogoutPopup from "./popup/logoutPopup";
 import { Booking } from "../models";
 
 const CalDiv = styled.div`

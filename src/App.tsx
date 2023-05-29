@@ -10,7 +10,6 @@ import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobile/mobileCalendar";
 import TimeslotSuccess from "./components/popup/timeslotSuccess";
 import TimeSlotConfirmation from "./components/popup/timeslotConfirmation";
-// import LogoutPopup from "./components/popup/logoutPopup";
 import UserContext from "./userContext";
 import ForgotPassword from "./components/authentication/forgotPassword";
 import ResetPassword from "./components/resetPassword";
@@ -18,6 +17,7 @@ import Login from "./components/authentication/login";
 import CreateAccount from "./components/authentication/createAccount";
 import EnterCode from "./components/authentication/enterCode";
 import Success from "./components/authentication/success";
+import MobileLogout from "./components/mobile/mobileLogout";
 
 Amplify.configure(awsconfig);
 
@@ -105,6 +105,12 @@ function App() {
           )}
           {currentUser.length > 0 ? (
             <Route path="/timeslot-success" element={<TimeslotSuccess />} />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+
+          {currentUser.length > 0 ? (
+            <Route path="/logout" element={<MobileLogout />} />
           ) : (
             <Route path="/login" element={<Login />} />
           )}
