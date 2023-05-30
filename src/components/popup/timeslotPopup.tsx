@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-import { DataStore } from "aws-amplify";
 import x from "../../images/X.svg";
 import { PopupDiv, PopupBox, X, CancelBtn, SaveBtn } from "../styledComponents";
 import Monthly from "../monthlyView";
 import AptInfo from "../appointmentInfo";
 import Timeslots from "./timeslots";
-import { LazyTimeslot, Timeslot } from "../../models";
+import { LazyTimeslot } from "../../models";
 import TimeslotConfirmation from "./timeslotConfirmation";
 import TimeslotSuccess from "./timeslotSuccess";
 import UserContext from "../../userContext";
@@ -69,7 +68,7 @@ interface PopupProps {
   handleSuccessOpen: () => void;
   onClose: () => void;
   date: Date;
-  toggleProp: string;
+  timeslots: LazyTimeslot[];
 }
 
 interface TsData {
@@ -87,14 +86,14 @@ export default function Popup({
   handleSuccessOpen,
   onClose,
   date,
-  toggleProp,
+  timeslots,
 }: PopupProps) {
-  const [timeslots, setTs] = useState<LazyTimeslot[]>([]);
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { userType, id } = realUser;
   const [bookable, setBookable] = useState<TsData[]>([]);
+  const [selected, setSelected] = useState<LazyTimeslot>();
 
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
@@ -104,11 +103,20 @@ export default function Popup({
   const formattedDate = date.toLocaleDateString("en-US", options);
 
   useEffect(() => {
-    const pullData = async () => {
-      const ts = await DataStore.query(Timeslot);
-      setTs(ts);
-    };
     const ts: TsData[] = [];
+    const getSelected = () => {
+      const sel = timeslots.find((timeslot) => {
+        if (timeslot.startTime) {
+          const time = timeslot.startTime.split(":");
+          return (
+            Number(time[0]) === date.getHours() &&
+            Number(time[1]) === date.getMinutes()
+          );
+        }
+        return false;
+      });
+      setSelected(sel);
+    };
     const fetchBookable = async () => {
       if (timeslots.length > 0) {
         timeslots.forEach(async (timeslot) => {
@@ -166,7 +174,7 @@ export default function Popup({
       }
       setBookable(ts);
     };
-    pullData();
+    getSelected();
     fetchBookable();
   }, [popup]);
 
@@ -185,7 +193,7 @@ export default function Popup({
               <LeftColumn>
                 <Monthly />
                 <AptHeader>Appointment Info</AptHeader>
-                <AptInfo toggleProp={toggleProp} />
+                {selected && <AptInfo timeslot={selected} />}
               </LeftColumn>
               <RightColumn>
                 <DateHeader>{formattedDate}</DateHeader>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { DataStore } from "@aws-amplify/datastore";
 import Horse from "../images/horseRider.svg";
 import Dude from "../images/person.svg";
-import { Booking, User } from "../models";
+import { Booking, User, LazyTimeslot } from "../models";
 import "@fontsource/roboto";
 
 const Wrapper = styled.div`
@@ -37,20 +37,18 @@ const RiderContent = styled.text`
   font-weight: 700;
 `;
 type PopupProps = {
-  toggleProp: string;
+  timeslot: LazyTimeslot;
 };
 
-export default function AppointmentInfo({ toggleProp }: PopupProps) {
+export default function AppointmentInfo({ timeslot }: PopupProps) {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [users, setUsers] = useState<User[]>([]);
-  console.log(toggleProp);
   useEffect(() => {
     const pullData = async () => {
       const bookingModels = await DataStore.query(Booking);
       setBookings(bookingModels);
-      console.log(bookingModels);
-      console.log("da bookings:");
     };
+    console.log("selected timeslot", timeslot);
 
     pullData();
   }, []);
@@ -58,8 +56,6 @@ export default function AppointmentInfo({ toggleProp }: PopupProps) {
     const pullData = async () => {
       const userModel = await DataStore.query(User);
       setUsers(userModel);
-      console.log("da users:");
-      console.log(userModel);
     };
 
     pullData();
@@ -75,15 +71,11 @@ export default function AppointmentInfo({ toggleProp }: PopupProps) {
 
   return (
     <Wrapper>
-      <RiderInfo
-        style={{ display: toggleProp === "volunteers" ? "none" : "block" }}
-      >
+      <RiderInfo>
         <Logo src={Horse} />
         <RiderContent>Riders: Jane Doe, John Smith</RiderContent>
       </RiderInfo>
-      <RiderInfo
-        style={{ display: toggleProp === "riders" ? "none" : "block" }}
-      >
+      <RiderInfo>
         <Logo src={Dude} />
         <RiderContent>Volunteers: Jane Doe, John Smith</RiderContent>
       </RiderInfo>

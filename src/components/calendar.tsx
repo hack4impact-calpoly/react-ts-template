@@ -453,7 +453,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
               handleSuccessOpen={handleSuccessOpen}
               onClose={handlePopupClose}
               date={popupDate}
-              toggleProp={toggles!}
+              timeslots={timeslots}
             />
           </CalDiv>
         </RightColumn>
