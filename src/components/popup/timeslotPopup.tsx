@@ -110,52 +110,54 @@ export default function Popup({
     };
     const ts: TsData[] = [];
     const fetchBookable = async () => {
-      // jk logic is flawed look in bookings instead you foole
       if (timeslots.length > 0) {
         timeslots.forEach(async (timeslot) => {
           if (timeslot.startTime && timeslot.endTime) {
-            let bookings;
-            if (userType === "Volunteer") {
-              bookings = await timeslot.volunteerBookings.toArray();
-            } else if (userType === "Rider") {
-              bookings = await timeslot.riderBookings.toArray();
-            } else {
-              bookings = await timeslot.volunteerBookings
-                .toArray()
-                .then(async (volunteerBookings) => {
-                  const riderBookings = await timeslot.riderBookings.toArray();
-                  volunteerBookings.concat(riderBookings);
-                });
-            }
-            let checked = false;
-            let available = true;
-            if (bookings) {
-              checked = bookings.some((booking) => {
-                if (booking.date) {
-                  const dateCopy = new Date(booking.date);
-                  const bookingDate = new Date(
-                    dateCopy.setDate(dateCopy.getDate() + 1)
-                  );
-                  if (
-                    bookingDate.getMonth() === date.getMonth() &&
-                    bookingDate.getDate() === date.getDate() &&
-                    bookingDate.getFullYear() === date.getFullYear()
-                  ) {
-                    if (booking.userID === id) {
-                      return true;
+            if (userType === "Volunteer" || userType === "Rider") {
+              let bookings;
+              if (userType === "Volunteer") {
+                bookings = await timeslot.volunteerBookings.toArray();
+              } else {
+                bookings = await timeslot.riderBookings.toArray();
+              }
+              let checked = false;
+              let available = true;
+              if (bookings) {
+                checked = bookings.some((booking) => {
+                  if (booking.date) {
+                    const dateCopy = new Date(booking.date);
+                    const bookingDate = new Date(
+                      dateCopy.setDate(dateCopy.getDate() + 1)
+                    );
+                    if (
+                      bookingDate.getMonth() === date.getMonth() &&
+                      bookingDate.getDate() === date.getDate() &&
+                      bookingDate.getFullYear() === date.getFullYear()
+                    ) {
+                      if (booking.userID === id) {
+                        return true;
+                      }
+                      available = false;
                     }
-                    available = false;
+                    return false;
                   }
                   return false;
-                }
-                return false;
-              });
-            }
-            if (available) {
+                });
+              }
+              if (available) {
+                ts.push({
+                  startTime: new Date(`July 4 1776 ${timeslot.startTime}`),
+                  endTime: new Date(`July 4 1776 ${timeslot.endTime}`),
+                  checked,
+                  id: timeslot.id,
+                });
+              }
+            } else {
+              // todo: uncheck for unavailable
               ts.push({
                 startTime: new Date(`July 4 1776 ${timeslot.startTime}`),
                 endTime: new Date(`July 4 1776 ${timeslot.endTime}`),
-                checked,
+                checked: true,
                 id: timeslot.id,
               });
             }
