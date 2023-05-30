@@ -18,8 +18,7 @@ const Text = styled.text`
   color: #000000;
 `;
 
-// width was 310px
-const Slot = styled.section`
+const Slot = styled.section<{ backgroundColor: string }>`
   display: flex;
   flex-direction: row;
   font-family: "Rubik", sans-serif;
@@ -32,6 +31,8 @@ const Slot = styled.section`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   width: 80%;
   height: 53px;
+  // Conditional COLORING for timeSlots ->
+  background-color: ${({ backgroundColor }) => backgroundColor};
 `;
 
 const Dropdown = styled.section`
@@ -40,15 +41,15 @@ const Dropdown = styled.section`
 `;
 
 interface TimeslotProps {
-  startTime: Date;
-  endTime: Date;
-  tsId: string;
+  startTime: string;
+  endTime: string;
+  backgroundColor: string;
 }
 
 export default function MobileTimeslot({
   startTime,
   endTime,
-  tsId,
+  backgroundColor,
 }: TimeslotProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // const [user] = useState<string>();
@@ -56,24 +57,16 @@ export default function MobileTimeslot({
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
-  const { bookings } = realUser;
-  console.log(bookings);
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  console.log(tsId);
-
-  const formatTime = (time: Date) =>
-    time.toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-    });
+  console.log(realUser);
 
   return (
     <div>
-      <Slot>
-        <Text>{`${formatTime(startTime)} to ${formatTime(endTime)}`}</Text>
+      <Slot backgroundColor={backgroundColor}>
+        <Text>{`${startTime} to ${endTime}`}</Text>
         <Caret src={caretDown} onClick={toggleDropdown} />
       </Slot>
       <Dropdown>

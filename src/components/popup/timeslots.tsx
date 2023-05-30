@@ -69,7 +69,7 @@ export default function Timeslots({ models }: TimeslotsProps) {
     if (isVolunteers) {
       return ts.startTime.getHours() >= 9 && ts.endTime.getHours() <= 17;
     }
-    return ts.startTime.getHours() >= 10 && ts.endTime.getHours() <= 14;
+    return ts.startTime.getHours() >= 10 && ts.startTime.getHours() < 14;
   }
 
   return (
