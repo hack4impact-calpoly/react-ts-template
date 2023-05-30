@@ -56,13 +56,19 @@ interface TimeslotProps {
   startTime: Date;
   endTime: Date;
   tsId: string;
+  checked: boolean;
 }
 
 export const checkedLst: string[] = [];
 export const uncheckedLst: string[] = [];
 
-export default function Timeslot({ startTime, endTime, tsId }: TimeslotProps) {
-  const [isChecked, setIsChecked] = useState(false);
+export default function Timeslot({
+  startTime,
+  endTime,
+  tsId,
+  checked,
+}: TimeslotProps) {
+  const [isChecked, setIsChecked] = useState(checked);
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;

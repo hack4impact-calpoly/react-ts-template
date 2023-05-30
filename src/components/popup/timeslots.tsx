@@ -3,7 +3,7 @@ import styled from "styled-components";
 import UserContext from "../../userContext";
 // import { Box } from "../styledComponents";
 import Timeslot from "./timeslot";
-import { LazyTimeslot } from "../../models";
+// import { LazyTimeslot } from "../../models";
 
 const Wrapper = styled.section`
   display: flex;
@@ -27,36 +27,19 @@ const Slots = styled.div`
 interface TsData {
   startTime: Date;
   endTime: Date;
-  checked: false;
+  checked: boolean;
   id: string;
 }
 
 interface TimeslotsProps {
-  models: LazyTimeslot[] | "nothing";
+  bookable: TsData[];
 }
 
-export default function Timeslots({ models }: TimeslotsProps) {
+export default function Timeslots({ bookable }: TimeslotsProps) {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { userType } = realUser;
-  const timeslots: TsData[] = [];
-
-  if (models !== "nothing") {
-    models.forEach((model) => {
-      if (
-        typeof model.startTime === "string" &&
-        typeof model.endTime === "string"
-      ) {
-        timeslots.push({
-          startTime: new Date(`July 4 1776 ${model.startTime}`),
-          endTime: new Date(`July 4 1776 ${model.endTime}`),
-          checked: false,
-          id: model.id,
-        });
-      }
-    });
-  }
 
   function filterTimeSlots(
     isVolunteers: boolean,
@@ -67,15 +50,15 @@ export default function Timeslots({ models }: TimeslotsProps) {
     }
   ) {
     if (isVolunteers) {
-      return ts.startTime.getHours() >= 9 && ts.endTime.getHours() <= 17;
+      return ts.startTime.getHours() >= 9 && ts.endTime.getHours() < 17;
     }
-    return ts.startTime.getHours() >= 10 && ts.endTime.getHours() <= 14;
+    return ts.startTime.getHours() >= 10 && ts.startTime.getHours() < 14;
   }
 
   return (
     <Wrapper>
       <Slots>
-        {timeslots
+        {bookable
           .filter((ts) => filterTimeSlots(userType === "Volunteer", ts))
           .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))
           .map((timeslot, i) => (
@@ -84,6 +67,7 @@ export default function Timeslots({ models }: TimeslotsProps) {
               startTime={timeslot.startTime}
               endTime={timeslot.endTime}
               tsId={timeslot.id}
+              checked={timeslot.checked}
             />
           ))}
       </Slots>
