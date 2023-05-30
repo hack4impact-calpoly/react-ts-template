@@ -311,7 +311,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
       dateCopy.setDate(dateCopy.getDate() + dateoffset)
     );
 
-    const tempSlots = timeslots.map((timeslot: any) => {
+    const tempSlots = timeslots.map((timeslot: LazyTimeslot) => {
       let backgroundColor = "#90BFCC";
 
       const startingTime = new Date(
@@ -329,28 +329,20 @@ export default function Calendar({ timeslots }: CalendarProps) {
         }:00`
       );
 
-      if (userType === "Rider" || userType === "Volunteer") {
-        if (
-          bookings.some(
-            (booking) =>
-              booking.timeslotID === timeslot.id &&
-              dateTest.getDate() ===
-                Number(
-                  String(booking.date).substring(
-                    String(booking.date).length - 2,
-                    String(booking.date).length
-                  )
+      if (
+        bookings.some(
+          (booking) =>
+            booking.timeslotID === timeslot.id &&
+            dateTest.getDate() ===
+              Number(
+                String(booking.date).substring(
+                  String(booking.date).length - 2,
+                  String(booking.date).length
                 )
-          )
-        ) {
-          backgroundColor = "#E0EFF1";
-        }
-      } else if (userType === "Admin") {
-        if (
-          timeslot.unavailableDates.includes(timeslot.startTime.toDateString())
-        ) {
-          backgroundColor = "#E0EFF1";
-        }
+              )
+        )
+      ) {
+        backgroundColor = "#E0EFF1";
       }
 
       return {

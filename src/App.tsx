@@ -5,7 +5,6 @@ import "./App.css";
 import { Amplify, DataStore } from "aws-amplify";
 import { LazyTimeslot, Timeslot, User as UserModel } from "./models";
 import awsconfig from "./aws-exports";
-import Timeslots from "./components/popup/timeslots";
 import Calendar from "./components/calendar";
 import CalendarMobile from "./components/mobile/mobileCalendar";
 import UserContext from "./userContext";
@@ -65,20 +64,6 @@ function App() {
           ) : (
             <Route path="/login" element={<Login />} />
           )}
-          {/* {currentUser ? (
-            <Route
-              path="/timeslot-confirmation"
-              element={<TimeSlotConfirmation status="book" date={new Date()} />}
-            />
-          ) : (
-            <Route path="/login" element={<Login />} />
-          )} */}
-          {/* {currentUser.length > 0 ? (
-            <Route path="/timeslot-success" element={<TimeslotSuccess />} />
-          ) : (
-            <Route path="/login" element={<Login />} />
-          )} */}
-
           {currentUser.length > 0 ? (
             <Route path="/logout" element={<MobileLogout />} />
           ) : (
@@ -100,7 +85,6 @@ function App() {
             path="/reset-password"
             element={<ResetPassword email={email!} />}
           />
-          <Route path="/timeslots" element={<Timeslots models={timeslots} />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>

@@ -2,8 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import Checked from "../../images/Checked.png";
 import Unchecked from "../../images/Unchecked.png";
-import On from "../../images/onslider.png";
-import Off from "../../images/offslider.png";
+import On from "../../images/OnSlider.png";
+import Off from "../../images/OffSlider.png";
 import UserContext from "../../userContext";
 
 const ButtonToggle = styled.button`
@@ -56,13 +56,19 @@ interface TimeslotProps {
   startTime: Date;
   endTime: Date;
   tsId: string;
+  checked: boolean;
 }
 
 export const checkedLst: string[] = [];
 export const uncheckedLst: string[] = [];
 
-export default function Timeslot({ startTime, endTime, tsId }: TimeslotProps) {
-  const [isChecked, setIsChecked] = useState(false);
+export default function Timeslot({
+  startTime,
+  endTime,
+  tsId,
+  checked,
+}: TimeslotProps) {
+  const [isChecked, setIsChecked] = useState(checked);
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
