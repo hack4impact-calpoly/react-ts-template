@@ -45,10 +45,7 @@ const ChevronRight = styled.img`
   display: block;
   transform: scaleX(-1);
 `;
-// inside td
-// flex-direction: column;
-// justify-content: space-between;
-//
+
 const WeekDates = styled.table`
   @media (max-width: 500px) {
     table-layout: fixed;
@@ -88,7 +85,6 @@ const Month = styled.text`
 
 // setter props for setting the currently selected date to pass into mobile calendar + start date
 interface WeeklyViewMobileProps {
-  // startDate: Date;
   currentDate: Date;
   setCurrentDate: (val: Date) => void;
   setDayProp: (val: string) => void;
@@ -97,51 +93,64 @@ interface WeeklyViewMobileProps {
 }
 
 export default function WeeklyViewMobile({
-  // startDate,
   currentDate,
   setCurrentDate,
   setDayProp,
   setMonthProp,
   setWeekdayProp,
 }: WeeklyViewMobileProps) {
-  // const [currentDate, setCurrentDate] = useState(startDate);
   const days: Date[] = [];
-  for (let i = 0; i < 7; i++) {
-    days.push(new Date(currentDate.getTime() + i * 24 * 60 * 60 * 1000));
-  }
-
-  const handleNextWeek = () => {
-    setCurrentDate(new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000));
-  };
-
-  const handlePrevWeek = () => {
-    setCurrentDate(new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000));
-  };
-
-  function getStartOfWeek(day: Date): Date {
-    const diff = day.getDate() - day.getDay() + (day.getDay() === -1 ? -7 : 0);
-    return new Date(day.setDate(diff));
-  }
   // for getting todays day
   const currentTime = new Date();
   const currentDay = currentTime.getDay();
   // selected date will start on todays date
   const [selected, setSelected] = useState(currentDay);
 
-  // getting the currently selected month to set
-  const month = getStartOfWeek(currentDate).toLocaleDateString("en-us", {
-    month: "long",
-  });
-  setMonthProp(month);
+  function getStartOfWeek(day: Date): Date {
+    const dateCopy = new Date(day.getTime());
+    const diff = dateCopy.getDate() - dateCopy.getDay();
+    return new Date(dateCopy.setDate(diff));
+  }
 
-  // setting the currently selected day in number
-  setDayProp(days[selected].toLocaleDateString("en-us", { day: "numeric" }));
-  // setting the currently selected day of the week
-  setWeekdayProp(
-    days[selected].toLocaleDateString("en-us", {
-      weekday: "short",
-    })
-  );
+  for (let i = 0; i < 7; i++) {
+    days.push(
+      new Date(getStartOfWeek(currentDate).getTime() + i * 24 * 60 * 60 * 1000)
+    );
+  }
+
+  const handleNextWeek = () => {
+    setCurrentDate(
+      new Date(getStartOfWeek(currentDate).getTime() + 7 * 24 * 60 * 60 * 1000)
+    );
+    setSelected(0);
+  };
+
+  const handlePrevWeek = () => {
+    setCurrentDate(
+      new Date(getStartOfWeek(currentDate).getTime() - 7 * 24 * 60 * 60 * 1000)
+    );
+    setSelected(0);
+  };
+
+  function handleUpdating(i: number) {
+    setSelected(i);
+    setCurrentDate(days[i]);
+    setDayProp(
+      days[i].toLocaleDateString("en-us", {
+        day: "numeric",
+      })
+    );
+    // setting the currently selected day of the week
+    setWeekdayProp(
+      days[i].toLocaleDateString("en-us", {
+        weekday: "short",
+      })
+    );
+    const month = days[i].toLocaleDateString("en-us", {
+      month: "long",
+    });
+    setMonthProp(month);
+  }
 
   return (
     <Wrapper>
@@ -185,7 +194,9 @@ export default function WeeklyViewMobile({
                   paddingTop: "10px",
                   paddingBottom: "10px",
                 }}
-                onClick={() => setSelected(i)}
+                onClick={() => {
+                  handleUpdating(i);
+                }}
               >
                 {day.toLocaleDateString("en-us", { day: "numeric" })}
               </th>

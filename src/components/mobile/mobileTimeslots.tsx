@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import { DataStore } from "@aws-amplify/datastore";
 import UserContext from "../../userContext";
 import MobileTimeslot from "./mobileTimeslot";
-import { LazyTimeslot } from "../../models";
+import { Booking, LazyTimeslot } from "../../models";
 
 // added height and margin-top and changed overflowy to overflow-y
 const Slots = styled.section`
@@ -17,15 +18,16 @@ const Slots = styled.section`
   height: 400px;
 `;
 
-interface TsData {
-  startTime: Date;
-  endTime: Date;
-  checked: false;
-  id: string;
-}
+// interface TsData {
+//   startTime: string;
+//   endTime: string;
+//   unavailableDates: (string | null)[] | null | undefined;
+//   checked: false;
+//   id: string;
+// }
 
 interface TimeslotsProps {
-  models: LazyTimeslot[] | "nothing";
+  models: LazyTimeslot[];
   date: Date;
 }
 
@@ -35,50 +37,105 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { userType } = realUser;
-  const timeslots: TsData[] = [];
-  if (realUser !== null) {
-    console.log("mobile timeslots component just needs userType");
-    console.log(userType);
-  }
-  console.log(
-    "I'm not using the date for now cause I'm tired but it is: ",
-    date
-  );
+  // const timeslots: TsData[] = [];
+  const [timeslots, setTimeslots] = useState(models);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  // if (realUser !== null) {
+  //   console.log("mobile timeslots component just needs userType");
+  //   console.log(userType);
+  // }
+  // console.log(
+  //   "I'm not using the date for now cause I'm tired but it is: ",
+  //   date
+  // );
 
-  if (models !== "nothing") {
-    models.forEach((model) => {
-      if (
-        typeof model.startTime === "string" &&
-        typeof model.endTime === "string"
-      ) {
-        timeslots.push({
-          startTime: new Date(`July 4 1776 ${model.startTime}`),
-          endTime: new Date(`July 4 1776 ${model.endTime}`),
-          checked: false,
-          id: model.id,
-        });
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const bookingModels = await DataStore.query(Booking);
+        // console.log("BOOKINGS ---------", bookingModels);
+        setBookings(bookingModels);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
       }
-    });
-    // console.log(timeslots);
+    };
+    fetchBookings();
+  }, []);
+
+  useEffect(() => {
+    const update = async () => {
+      try {
+        // console.log("WE IN HERE UPDATING", date);
+        await setTimeslots(timeslots);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+    update();
+  }, [date]);
+
+  function mapTimeslotColors(timeslot: LazyTimeslot) {
+    let backgroundColor = "#90BFCC";
+
+    if (userType === "Rider" || userType === "Volunteer") {
+      if (
+        bookings.some(
+          (booking) =>
+            booking.timeslotID === timeslot.id &&
+            date.getDate() ===
+              Number(
+                String(booking.date).substring(
+                  String(booking.date).length - 2,
+                  String(booking.date).length
+                )
+              )
+        )
+      ) {
+        backgroundColor = "#E0EFF1";
+      }
+    } else if (userType === "Admin") {
+      if (
+        timeslot.unavailableDates &&
+        timeslot.unavailableDates.includes(date.toDateString())
+      ) {
+        backgroundColor = "#E0EFF1";
+      }
+    }
+
+    return {
+      startTime: String(timeslot.startTime),
+      endTime: String(timeslot.endTime),
+      backgroundColor,
+      textColor: "black",
+      checked: false,
+      id: timeslot.id,
+    };
   }
 
   function filterTimeSlots(
-    isVolunteers: boolean,
+    isVolunteer: boolean,
     ts: {
-      startTime: Date;
-      endTime: Date;
+      startTime: string;
+      endTime: string;
       checked: boolean;
     }
   ) {
-    if (isVolunteers) {
-      return ts.startTime.getHours() >= 9 && ts.startTime.getHours() < 17;
+    if (isVolunteer) {
+      return (
+        Number(ts.startTime.substring(0, 2)) >= 9 &&
+        Number(ts.startTime.substring(0, 2)) < 17
+      );
     }
-    return ts.startTime.getHours() >= 10 && ts.startTime.getHours() < 14;
+    return (
+      Number(ts.startTime.substring(0, 2)) >= 10 &&
+      Number(ts.startTime.substring(0, 2)) < 14
+    );
   }
 
   return (
     <Slots>
       {timeslots
+        .map((ts) => mapTimeslotColors(ts))
         .filter((ts) => filterTimeSlots(userType === "Volunteer", ts))
         .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))
         .map((timeslot, i) => (
@@ -86,7 +143,7 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
             key={i}
             startTime={timeslot.startTime}
             endTime={timeslot.endTime}
-            tsId={timeslot.id}
+            backgroundColor={timeslot.backgroundColor}
           />
         ))}
     </Slots>

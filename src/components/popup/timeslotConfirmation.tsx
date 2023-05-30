@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useContext } from "react";
 import styled from "styled-components";
 // import { useNavigate } from "react-router-dom";
