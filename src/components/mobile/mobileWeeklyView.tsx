@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import chevronLeft from "../../images/chevronLeft.svg";
 
@@ -46,10 +45,7 @@ const ChevronRight = styled.img`
   display: block;
   transform: scaleX(-1);
 `;
-// inside td
-// flex-direction: column;
-// justify-content: space-between;
-//
+
 const WeekDates = styled.table`
   @media (max-width: 500px) {
     table-layout: fixed;
@@ -136,12 +132,9 @@ export default function WeeklyViewMobile({
     setSelected(0);
   };
 
-  async function handleUpdating(i: number) {
-    const dateCopy = new Date(days[0].getTime());
-    const dateTest = new Date(dateCopy.setDate(dateCopy.getDate() + i));
+  function handleUpdating(i: number) {
     setSelected(i);
-    setCurrentDate(dateTest);
-    const dateTestCopy = new Date(days[0].getTime());
+    setCurrentDate(days[i]);
     setDayProp(
       days[i].toLocaleDateString("en-us", {
         day: "numeric",
@@ -153,32 +146,11 @@ export default function WeeklyViewMobile({
         weekday: "short",
       })
     );
-    const month = getStartOfWeek(dateTestCopy).toLocaleDateString("en-us", {
+    const month = days[i].toLocaleDateString("en-us", {
       month: "long",
     });
     setMonthProp(month);
   }
-
-  useEffect(() => {
-    setDayProp(
-      currentDate.toLocaleDateString("en-us", {
-        day: "numeric",
-      })
-    );
-    // setting the currently selected day of the week
-    setWeekdayProp(
-      currentDate.toLocaleDateString("en-us", {
-        weekday: "short",
-      })
-    );
-
-    const month = currentDate.toLocaleDateString("en-us", {
-      month: "long",
-    });
-    console.log("CURRENT DATE", currentDate);
-    console.log("THE MONTH IS ", month);
-    setMonthProp(month);
-  }, [currentDate]);
 
   return (
     <Wrapper>
