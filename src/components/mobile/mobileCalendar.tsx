@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { Link } from "react-router-dom";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import UserContext from "../../userContext";
 import MobileTimeslots from "./mobileTimeslots";
@@ -40,9 +40,19 @@ interface CalendarProps {
 
 export default function CalendarMobile({ timeslots }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [day, setDayProp] = useState<string>("");
-  const [month, setMonthProp] = useState<string>("");
-  const [weekday, setWeekdayProp] = useState<string>("");
+  const [day, setDayProp] = useState<string>(String(currentDate.getDate()));
+  const [month, setMonthProp] = useState<string>(
+    String(
+      currentDate.toLocaleDateString("en-us", {
+        month: "long",
+      })
+    )
+  );
+  const [weekday, setWeekdayProp] = useState<string>(
+    currentDate.toLocaleDateString("en-us", {
+      weekday: "short",
+    })
+  );
   // const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
@@ -60,6 +70,14 @@ export default function CalendarMobile({ timeslots }: CalendarProps) {
   currentTimeString.push(month);
   currentTimeString.push(" ");
   currentTimeString.push(day);
+
+  useEffect(() => {
+    currentTimeString.push(weekday);
+    currentTimeString.push(", ");
+    currentTimeString.push(month);
+    currentTimeString.push(" ");
+    currentTimeString.push(day);
+  }, [month, weekday, day]);
 
   // this is for the toggle dropdown
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

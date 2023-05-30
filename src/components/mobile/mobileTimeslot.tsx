@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import caretDown from "../../images/CaretDown.svg";
-import UserContext from "../../userContext";
+// import UserContext from "../../userContext";
 import MobileTimeslotContent from "./mobileTimeslotContent";
 
 const Caret = styled.img`
@@ -54,14 +54,12 @@ export default function MobileTimeslot({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // const [user] = useState<string>();
   const [bookingsFakeStart] = useState<number>();
-  const currentUserFR = useContext(UserContext);
-  const { currentUser } = currentUserFR;
-  const [realUser] = currentUser;
+  // const currentUserFR = useContext(UserContext);
+  // const { currentUser } = currentUserFR;
+  // const [realUser] = currentUser;
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-
-  console.log(realUser);
 
   return (
     <div>

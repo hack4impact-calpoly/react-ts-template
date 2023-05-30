@@ -18,13 +18,13 @@ const Slots = styled.section`
   height: 400px;
 `;
 
-interface TsData {
-  startTime: string;
-  endTime: string;
-  unavailableDates: (string | null)[] | null | undefined;
-  checked: false;
-  id: string;
-}
+// interface TsData {
+//   startTime: string;
+//   endTime: string;
+//   unavailableDates: (string | null)[] | null | undefined;
+//   checked: false;
+//   id: string;
+// }
 
 interface TimeslotsProps {
   models: LazyTimeslot[];
@@ -37,22 +37,23 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { userType } = realUser;
-  const timeslots: TsData[] = [];
+  // const timeslots: TsData[] = [];
+  const [timeslots, setTimeslots] = useState(models);
   const [bookings, setBookings] = useState<Booking[]>([]);
-  if (realUser !== null) {
-    console.log("mobile timeslots component just needs userType");
-    console.log(userType);
-  }
-  console.log(
-    "I'm not using the date for now cause I'm tired but it is: ",
-    date
-  );
+  // if (realUser !== null) {
+  //   console.log("mobile timeslots component just needs userType");
+  //   console.log(userType);
+  // }
+  // console.log(
+  //   "I'm not using the date for now cause I'm tired but it is: ",
+  //   date
+  // );
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         const bookingModels = await DataStore.query(Booking);
-        console.log("BOOKINGS ---------", bookingModels);
+        // console.log("BOOKINGS ---------", bookingModels);
         setBookings(bookingModels);
       } catch (error) {
         console.error("Error fetching bookings:", error);
@@ -61,18 +62,19 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
     fetchBookings();
   }, []);
 
-  models.forEach((model) => {
-    console.log("HERE's THE MODEL:", model);
-    timeslots.push({
-      startTime: String(model.startTime),
-      endTime: String(model.endTime),
-      unavailableDates: model.unavailableDates,
-      checked: false,
-      id: model.id,
-    });
-  });
+  useEffect(() => {
+    const update = async () => {
+      try {
+        // console.log("WE IN HERE UPDATING", date);
+        await setTimeslots(timeslots);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+    update();
+  }, [date]);
 
-  const tempSlots = timeslots.map((timeslot: TsData) => {
+  function mapTimeslotColors(timeslot: LazyTimeslot) {
     let backgroundColor = "#90BFCC";
 
     if (userType === "Rider" || userType === "Volunteer") {
@@ -101,14 +103,14 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
     }
 
     return {
-      startTime: timeslot.startTime,
-      endTime: timeslot.endTime,
+      startTime: String(timeslot.startTime),
+      endTime: String(timeslot.endTime),
       backgroundColor,
       textColor: "black",
       checked: false,
       id: timeslot.id,
     };
-  });
+  }
 
   function filterTimeSlots(
     isVolunteer: boolean,
@@ -132,7 +134,8 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
 
   return (
     <Slots>
-      {tempSlots
+      {timeslots
+        .map((ts) => mapTimeslotColors(ts))
         .filter((ts) => filterTimeSlots(userType === "Volunteer", ts))
         .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))
         .map((timeslot, i) => (
