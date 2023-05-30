@@ -113,10 +113,7 @@ export default function Popup({
       // jk logic is flawed look in bookings instead you foole
       if (timeslots.length > 0) {
         timeslots.forEach(async (timeslot) => {
-          if (
-            typeof timeslot.startTime === "string" &&
-            typeof timeslot.endTime === "string"
-          ) {
+          if (timeslot.startTime && timeslot.endTime) {
             let bookings;
             if (userType === "Volunteer") {
               bookings = await timeslot.volunteerBookings.toArray();
@@ -131,6 +128,7 @@ export default function Popup({
                 });
             }
             let checked = false;
+            let available = true;
             if (bookings) {
               checked = bookings.some((booking) => {
                 if (booking.date) {
@@ -143,19 +141,24 @@ export default function Popup({
                     bookingDate.getDate() === date.getDate() &&
                     bookingDate.getFullYear() === date.getFullYear()
                   ) {
-                    return booking.userID === id;
+                    if (booking.userID === id) {
+                      return true;
+                    }
+                    available = false;
                   }
                   return false;
                 }
                 return false;
               });
             }
-            ts.push({
-              startTime: new Date(`July 4 1776 ${timeslot.startTime}`),
-              endTime: new Date(`July 4 1776 ${timeslot.endTime}`),
-              checked,
-              id: timeslot.id,
-            });
+            if (available) {
+              ts.push({
+                startTime: new Date(`July 4 1776 ${timeslot.startTime}`),
+                endTime: new Date(`July 4 1776 ${timeslot.endTime}`),
+                checked,
+                id: timeslot.id,
+              });
+            }
           }
         });
       }
