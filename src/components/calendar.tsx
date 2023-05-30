@@ -311,7 +311,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
       dateCopy.setDate(dateCopy.getDate() + dateoffset)
     );
 
-    const tempSlots = timeslots.map((timeslot: any) => {
+    const tempSlots = timeslots.map((timeslot: LazyTimeslot) => {
       let backgroundColor = "#90BFCC";
 
       const startingTime = new Date(
@@ -346,10 +346,10 @@ export default function Calendar({ timeslots }: CalendarProps) {
           backgroundColor = "#E0EFF1";
         }
       } else if (userType === "Admin") {
-        if (
-          timeslot.unavailableDates.includes(timeslot.startTime.toDateString())
-        ) {
-          backgroundColor = "#E0EFF1";
+        if (timeslot.unavailableDates) {
+          if (timeslot.unavailableDates.includes(startingTime.toDateString())) {
+            backgroundColor = "#E0EFF1";
+          }
         }
       }
 
