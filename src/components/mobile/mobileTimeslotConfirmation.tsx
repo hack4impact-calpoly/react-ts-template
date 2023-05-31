@@ -42,6 +42,7 @@ const Box = styled.section`
   font-family: "Rubik", sans-serif;
   background: white;
   width: 35%;
+  height: 380px;
   padding: 3rem 5rem;
 
   @media (max-width: 500px) {
@@ -133,17 +134,24 @@ async function addRVBooking(
   bookedDate: Date
 ) {
   try {
+    console.log("THE DATE SELECTED IS", bookedDate);
     const original = await DataStore.query(User, userID);
     if (
       original !== null &&
       original !== undefined &&
       (original.userType === "Volunteer" || original.userType === "Rider")
     ) {
-      const isoDate = new Date(bookedDate).toISOString().split("T")[0];
-      const descriptionStr: string = `User: ${userID} Booked Time: ${isoDate}`;
+      console.log("THE DATE SELECTED IS", bookedDate);
+      const tempDate = new Date(bookedDate).toLocaleDateString();
+      const formattedDate = `${tempDate.split("/")[2]}-0${
+        tempDate.split("/")[0]
+      }-${tempDate.split("/")[1]}`;
+      console.log("THE DATE SELECTED IS", bookedDate);
+      const descriptionStr: string = `User: ${userID} Booked Time: ${formattedDate}`;
+      console.log("THE formatted DATE IS", formattedDate);
       const booking = new Booking({
         title: `New Booking -- ${original.userType}`,
-        date: isoDate,
+        date: formattedDate,
         description: descriptionStr,
         timeslotID: TimeslotID,
         userID,
@@ -219,30 +227,34 @@ export default function MobileTimeSlotConfirmation({
     <div>
       {userType === "admin" && (
         <Wrapper>
-          <Warning src={warning} />
-          <CenteredHeader>Save changes?</CenteredHeader>
-          <CenteredDescription>
-            You are choosing to edit the availability of one or more time slots.
-            Are you sure you want to do this?
-          </CenteredDescription>
-          <BtnContainer>
-            <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
-            <SaveBtn onClick={handleConfirmationAdmin}>Confirm</SaveBtn>
-          </BtnContainer>
+          <Box>
+            <Warning src={warning} />
+            <CenteredHeader>Save changes?</CenteredHeader>
+            <CenteredDescription>
+              You are choosing to edit the availability of one or more time
+              slots. Are you sure you want to do this?
+            </CenteredDescription>
+            <BtnContainer>
+              <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
+              <SaveBtn onClick={handleConfirmationAdmin}>Confirm</SaveBtn>
+            </BtnContainer>
+          </Box>
         </Wrapper>
       )}
       {userType !== "Admin" && status === "cancel" && (
         <Wrapper>
-          <Warning src={warning} />
-          <CenteredHeader>Confirm cancellation?</CenteredHeader>
-          <CenteredDescription>
-            You are choosing to cancel one or more time slots. Are you sure you
-            want to do this?
-          </CenteredDescription>
-          <BtnContainer>
-            <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
-            <SaveBtn onClick={handleBookingCancel}>Confirm</SaveBtn>
-          </BtnContainer>
+          <Box>
+            <Warning src={warning} />
+            <CenteredHeader>Confirm cancellation?</CenteredHeader>
+            <CenteredDescription>
+              You are choosing to cancel one or more time slots. Are you sure
+              you want to do this?
+            </CenteredDescription>
+            <BtnContainer>
+              <CancelBtn onClick={handleCancel}>Cancel</CancelBtn>
+              <SaveBtn onClick={handleBookingCancel}>Confirm</SaveBtn>
+            </BtnContainer>
+          </Box>
         </Wrapper>
       )}
       {userType !== "admin" && tId && (

@@ -42,6 +42,7 @@ const BoxMobile = styled.div`
   width: 80%;
   margin-left: -12%;
 `;
+
 const HeaderMobile = styled.h1`
   color: #1b4c5a;
   font-family: "Rubik";
@@ -52,18 +53,21 @@ const HeaderMobile = styled.h1`
   margin-bottom: 13%;
   margin-left: 2%;
 `;
+
 const WrapperMobile = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 `;
+
 const BoxMobileContent = styled.div`
   display: flex;
   flex-direction: column;
   margin: 4%;
-  width: 310px;
+  width: 300px;
 `;
+
 const RiderContent = styled.text`
   flex-direction: row;
   width: 100%;
