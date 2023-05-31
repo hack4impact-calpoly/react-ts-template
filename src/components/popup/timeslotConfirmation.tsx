@@ -107,12 +107,15 @@ async function addRVBooking(
       original !== undefined &&
       original.userType === "Volunteer"
     ) {
-      const isoDate = new Date(bookedDate).toISOString().split("T")[0];
-      const descriptionStr: string = `User: ${userID} Booked Time: ${isoDate}`;
+      const tempDate = new Date(bookedDate).toLocaleDateString();
+      const formattedDate = `${tempDate.split("/")[2]}-0${
+        tempDate.split("/")[0]
+      }-${tempDate.split("/")[1]}`;
+      const descriptionStr: string = `User: ${userID} Booked Time: ${formattedDate}`;
       TimeslotIDs.forEach(async (TimeslotID) => {
         const booking = new Booking({
           title: "New Booking -- Volunteer",
-          date: isoDate,
+          date: formattedDate,
           description: descriptionStr,
           timeslotID: TimeslotID,
           userID,
