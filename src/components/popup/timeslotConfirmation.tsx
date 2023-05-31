@@ -128,11 +128,14 @@ async function addRVBooking(
       original.userType === "Rider"
     ) {
       if (TimeslotIDs.length === 1) {
-        const isoDate = new Date(bookedDate).toISOString().split("T")[0];
-        const descriptionStr: string = `User: ${userID} Booked Time: ${isoDate}`;
+        const tempDate = new Date(bookedDate).toLocaleDateString();
+        const formattedDate = `${tempDate.split("/")[2]}-0${
+          tempDate.split("/")[0]
+        }-${tempDate.split("/")[1]}`;
+        const descriptionStr: string = `User: ${userID} Booked Time: ${formattedDate}`;
         const booking = new Booking({
           title: "New Booking -- Rider",
-          date: isoDate,
+          date: formattedDate,
           description: descriptionStr,
           timeslotID: TimeslotIDs[0],
           userID,
