@@ -7,6 +7,8 @@ import Bookmark from "../../images/bookmark.svg";
 import OnSlide from "../../images/onslider.png";
 import OffSlide from "../../images/offslider.png";
 import UserContext from "../../userContext";
+import MobileTimeSlotConfirmation from "./mobileTimeslotConfirmation";
+import TimeslotSuccess from "../popup/timeslotSuccess";
 
 const RiderInfo = styled.div`
   display: flex;
@@ -89,14 +91,22 @@ const OnOffSlide = styled.img`
 
 type UserType = {
   bookingsfake: number;
+  date: Date;
+  tId: string;
 };
 // READ: bookings prop will always be 1 or -1 cause I hardcoded the initial value of bookings
 // (line 103) so it turns back to 0 every run. Hopefully this logic works once we get the
 // props working on the other pages.
 // export default function TimeslotMobileContent({ user, bookings }: UserType) {
-export default function TimeslotMobileContent({ bookingsfake }: UserType) {
+export default function TimeslotMobileContent({
+  bookingsfake,
+  date,
+  tId,
+}: UserType) {
   const [booked, setBooked] = useState(true);
   const [onOff, setOnOff] = useState(true);
+  const [confirmationShown, setConfirmationShown] = useState(false);
+  const [successShown, setSuccessShown] = useState(false);
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
@@ -108,6 +118,20 @@ export default function TimeslotMobileContent({ bookingsfake }: UserType) {
   const handleSlide = () => {
     setOnOff(!onOff);
   };
+
+  const handleConfirmationShown = () => {
+    setConfirmationShown(true);
+  };
+
+  const handleSuccessShown = () => {
+    setSuccessShown(true);
+  };
+
+  const handleCancelled = () => {
+    setSuccessShown(false);
+    setConfirmationShown(false);
+  };
+
   const handleClick = () => {
     // Keeping track of the bookings for the user type because rider can't book
     // more than one sesh
@@ -130,105 +154,112 @@ export default function TimeslotMobileContent({ bookingsfake }: UserType) {
     // console.log(bookings);
   };
 
-  // HARD CODED
-  // eslint-disable-next-line no-param-reassign
-  // user = "admin";
-  // eslint-disable-next-line no-console
-  // console.log(user);
-  // eslint-disable-next-line no-console
-  // console.log(booked);
-  // eslint-disable-next-line no-console
-  // console.log("onOff", onOff);
   return (
     <WrapperMobile>
       <BoxMobile style={{ display: "block" }}>
-        <BoxMobileContent>
-          <HeaderMobile>Appointment Info</HeaderMobile>
-          <RiderInfo
-            style={{
-              display:
-                (userType === "Admin" && onOff === true) ||
-                userType === "Rider" ||
-                userType === "Volunteer"
-                  ? "block"
-                  : "none",
-            }}
-          >
-            <LogoRider src={Horse} />{" "}
-            <RiderContent> Riders: Jane Doe, John Smith</RiderContent>
-          </RiderInfo>
+        {!confirmationShown && (
+          <BoxMobileContent>
+            <HeaderMobile>Appointment Info</HeaderMobile>
+            <RiderInfo
+              style={{
+                display:
+                  (userType === "Admin" && onOff === true) ||
+                  userType === "Rider" ||
+                  userType === "Volunteer"
+                    ? "block"
+                    : "none",
+              }}
+            >
+              <LogoRider src={Horse} />{" "}
+              <RiderContent> Riders: Jane Doe, John Smith</RiderContent>
+            </RiderInfo>
 
-          <RiderInfo
-            style={{
-              display:
-                userType === "Rider" ||
-                (userType === "Admin" && onOff === false)
-                  ? "none"
-                  : "block",
-            }}
-          >
-            <LogoDude src={Dude} />{" "}
-            <RiderContent>Volunteers: Jane Doe, John Smith</RiderContent>
-          </RiderInfo>
-          {booked === false ? (
             <RiderInfo
-              style={{ display: userType === "Admin" ? "none" : "block" }}
+              style={{
+                display:
+                  userType === "Rider" ||
+                  (userType === "Admin" && onOff === false)
+                    ? "none"
+                    : "block",
+              }}
             >
-              <LogoBookmark src={Bookmark} />{" "}
-              <RiderContent>Status: Booked</RiderContent>
+              <LogoDude src={Dude} />{" "}
+              <RiderContent>Volunteers: Jane Doe, John Smith</RiderContent>
             </RiderInfo>
-          ) : (
-            <RiderInfo
-              style={{ display: userType === "Admin" ? "none" : "block" }}
-            >
-              <LogoBookmark src={Bookmark} />{" "}
-              <RiderContent>Status: Unbooked</RiderContent>
-            </RiderInfo>
-          )}
-          {/* don't have a way of counting number of bookings for people across multiple sessions yet 
+            {booked === false ? (
+              <RiderInfo
+                style={{ display: userType === "Admin" ? "none" : "block" }}
+              >
+                <LogoBookmark src={Bookmark} />{" "}
+                <RiderContent>Status: Booked</RiderContent>
+              </RiderInfo>
+            ) : (
+              <RiderInfo
+                style={{ display: userType === "Admin" ? "none" : "block" }}
+              >
+                <LogoBookmark src={Bookmark} />{" "}
+                <RiderContent>Status: Unbooked</RiderContent>
+              </RiderInfo>
+            )}
+            {/* don't have a way of counting number of bookings for people across multiple sessions yet 
               because I am only making the appt pop up. Will probably have to add more functionality
               when implementing the pop up in the calendar */}
-          {booked === true ? (
-            <TimeslotButton
-              style={{
-                display:
-                  userType === "Admin" ||
-                  (userType === "Rider" && bookingsfake === 1)
-                    ? "none"
-                    : "block",
-              }}
-              onClick={handleClick}
-            >
-              Book time slot
-            </TimeslotButton>
-          ) : (
-            <TimeslotButton
-              style={{
-                display:
-                  userType === "Admin" ||
-                  (userType === "Rider" && bookingsfake === 1)
-                    ? "none"
-                    : "block",
-              }}
-              onClick={handleClick}
-            >
-              Cancel time slot
-            </TimeslotButton>
-          )}
-          {onOff === true ? (
-            <OnOffSlide
-              style={{ display: userType === "Admin" ? "block" : "none" }}
-              onClick={handleSlide}
-              src={OnSlide}
+            {booked === true ? (
+              <TimeslotButton
+                style={{
+                  display:
+                    userType === "Admin" ||
+                    (userType === "Rider" && bookingsfake === 1)
+                      ? "none"
+                      : "block",
+                }}
+                onClick={handleConfirmationShown}
+              >
+                Book time slot
+              </TimeslotButton>
+            ) : (
+              <TimeslotButton
+                style={{
+                  display:
+                    userType === "Admin" ||
+                    (userType === "Rider" && bookingsfake === 1)
+                      ? "none"
+                      : "block",
+                }}
+                onClick={handleClick}
+              >
+                Cancel time slot
+              </TimeslotButton>
+            )}
+            {onOff === true ? (
+              <OnOffSlide
+                style={{ display: userType === "Admin" ? "block" : "none" }}
+                onClick={handleSlide}
+                src={OnSlide}
+              />
+            ) : (
+              <OnOffSlide
+                style={{ display: userType === "Admin" ? "block" : "none" }}
+                onClick={handleSlide}
+                src={OffSlide}
+              />
+            )}
+          </BoxMobileContent>
+        )}
+        {confirmationShown && !successShown && (
+          <BoxMobileContent>
+            <MobileTimeSlotConfirmation
+              handleClicked={handleSuccessShown}
+              handleCancelled={handleCancelled}
+              status="book"
+              date={date}
+              tId={tId}
             />
-          ) : (
-            <OnOffSlide
-              style={{ display: userType === "Admin" ? "block" : "none" }}
-              onClick={handleSlide}
-              src={OffSlide}
-            />
-          )}
-        </BoxMobileContent>
+          </BoxMobileContent>
+        )}
+        {confirmationShown && successShown && (
+          <TimeslotSuccess handleCancelled={handleCancelled} />
+        )}
       </BoxMobile>
     </WrapperMobile>
   );

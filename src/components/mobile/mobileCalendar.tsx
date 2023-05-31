@@ -18,7 +18,9 @@ const CurrentDate = styled.p`
   margin-left: 12%;
   color: #1b4c5a;
   display: flex;
+  align-items: center;
   margin-top: 20%;
+  // padding-top: 10%;
 `;
 
 const StyledButton = styled(Link)`
