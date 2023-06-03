@@ -34,10 +34,10 @@ const SliderImg = styled.img`
   padding-right: 20px;
 `;
 
-const Slot = styled.div`
+const Slot = styled.div<{ border: string }>`
   align-items: center;
   justify-content: center;
-  border: 1px solid #c4c4c4;
+  border: ${({ border }) => border};
   display: flex;
   flex-direction: row;
   padding: 3%;
@@ -57,6 +57,7 @@ interface TimeslotProps {
   endTime: Date;
   tsId: string;
   checked: boolean;
+  border: string;
 }
 
 export const checkedLst: string[] = [];
@@ -67,12 +68,15 @@ export default function Timeslot({
   endTime,
   tsId,
   checked,
+  border,
 }: TimeslotProps) {
   const [isChecked, setIsChecked] = useState(checked);
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { userType } = realUser;
+
+  // console.log("The timeslot is: ", startTime, "THE BORDER IS: ", border);
 
   const toggleChecked = () => {
     setIsChecked(!isChecked);
@@ -93,7 +97,7 @@ export default function Timeslot({
     }
   }, [isChecked, tsId]);
   return (
-    <Slot>
+    <Slot border={border}>
       {/* <TimeBox> */}
       <TimeslotText>
         {`${formatTime(startTime)} to ${formatTime(endTime)}`}
