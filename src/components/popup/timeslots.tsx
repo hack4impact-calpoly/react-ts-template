@@ -33,9 +33,10 @@ interface TsData {
 
 interface TimeslotsProps {
   bookable: TsData[];
+  selectedDate: Date;
 }
 
-export default function Timeslots({ bookable }: TimeslotsProps) {
+export default function Timeslots({ bookable, selectedDate }: TimeslotsProps) {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
@@ -50,7 +51,7 @@ export default function Timeslots({ bookable }: TimeslotsProps) {
     }
   ) {
     if (isVolunteers) {
-      return ts.startTime.getHours() >= 9 && ts.endTime.getHours() < 17;
+      return ts.startTime.getHours() >= 9 && ts.startTime.getHours() < 17;
     }
     return ts.startTime.getHours() >= 10 && ts.startTime.getHours() < 14;
   }
@@ -68,6 +69,12 @@ export default function Timeslots({ bookable }: TimeslotsProps) {
               endTime={timeslot.endTime}
               tsId={timeslot.id}
               checked={timeslot.checked}
+              border={
+                timeslot.startTime.getHours() === selectedDate.getHours() &&
+                timeslot.startTime.getMinutes() === selectedDate.getMinutes()
+                  ? "2px solid #000000"
+                  : "1px solid #c4c4c4"
+              }
             />
           ))}
       </Slots>

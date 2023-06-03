@@ -197,7 +197,7 @@ export default function Popup({
               </LeftColumn>
               <RightColumn>
                 <DateHeader>{formattedDate}</DateHeader>
-                <Timeslots bookable={bookable} />
+                <Timeslots bookable={bookable} selectedDate={date} />
                 <BtnContainer>
                   <CancelBtn onClick={onClose}>Cancel</CancelBtn>
                   <SaveBtn onClick={handleConfirmOpen}>Save</SaveBtn>

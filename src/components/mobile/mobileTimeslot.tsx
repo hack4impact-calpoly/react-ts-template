@@ -43,13 +43,17 @@ const Dropdown = styled.section`
 interface TimeslotProps {
   startTime: string;
   endTime: string;
+  date: Date;
   backgroundColor: string;
+  tId: string;
 }
 
 export default function MobileTimeslot({
   startTime,
   endTime,
+  date,
   backgroundColor,
+  tId,
 }: TimeslotProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // const [user] = useState<string>();
@@ -69,7 +73,11 @@ export default function MobileTimeslot({
       </Slot>
       <Dropdown>
         {isDropdownOpen && (
-          <MobileTimeslotContent bookingsfake={bookingsFakeStart!} />
+          <MobileTimeslotContent
+            bookingsfake={bookingsFakeStart!}
+            date={date}
+            tId={tId}
+          />
         )}
       </Dropdown>
     </div>
