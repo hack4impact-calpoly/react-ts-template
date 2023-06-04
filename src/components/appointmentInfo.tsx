@@ -36,6 +36,17 @@ const RiderContent = styled.text`
   font-size: 16px;
   font-weight: 700;
 `;
+
+const AptHeader = styled.h1`
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 125%;
+  line-height: 200%;
+  background: white;
+  color: #1b4c5a;
+`;
+
 type PopupProps = {
   timeslot: LazyTimeslot;
   date: Date;
@@ -86,6 +97,9 @@ export default function AppointmentInfo({ timeslot, date }: PopupProps) {
 
   return (
     <Wrapper>
+      {(riderBookings.length > 0 || volunteerBookings.length > 0) && (
+        <AptHeader>Appointment Info</AptHeader>
+      )}
       {riderBookings.length > 0 && (
         <RiderInfo>
           <Logo src={Horse} />

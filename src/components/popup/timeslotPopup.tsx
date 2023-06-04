@@ -50,16 +50,6 @@ const DateHeader = styled.p`
   padding-bottom: 10px;
 `;
 
-const AptHeader = styled.h1`
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 125%;
-  line-height: 200%;
-  background: white;
-  color: #1b4c5a;
-`;
-
 interface PopupProps {
   popup: boolean;
   confirmPopup: boolean;
@@ -192,7 +182,6 @@ export default function Popup({
             <Wrapper>
               <LeftColumn>
                 <Monthly />
-                <AptHeader>Appointment Info</AptHeader>
                 {selected && <AptInfo timeslot={selected} date={date} />}
               </LeftColumn>
               <RightColumn>
