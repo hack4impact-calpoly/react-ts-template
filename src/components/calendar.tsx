@@ -267,7 +267,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
     const fetchBookings = async () => {
       try {
         const bookingModels = await DataStore.query(Booking);
-        console.log("BOOKINGS ---------", bookingModels);
+        // console.log("BOOKINGS ---------", bookingModels);
         setBookings(bookingModels);
       } catch (error) {
         console.error("Error fetching bookings:", error);
@@ -276,9 +276,9 @@ export default function Calendar({ timeslots }: CalendarProps) {
     fetchBookings();
   }, [popup]);
 
-  console.log("setdate: ", date);
+  // console.log("setdate: ", date);
   // const tileDisabled = (thedate: any) => thedate < new Date();
-  console.log(`userType ${userType}`);
+  // console.log(`userType ${userType}`);
 
   const handleEventClick = (eventClickInfo: any) => {
     setPopupDate(eventClickInfo.event.start);

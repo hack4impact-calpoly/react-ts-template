@@ -193,7 +193,7 @@ export default function Popup({
               <LeftColumn>
                 <Monthly />
                 <AptHeader>Appointment Info</AptHeader>
-                {selected && <AptInfo timeslot={selected} />}
+                {selected && <AptInfo timeslot={selected} date={date} />}
               </LeftColumn>
               <RightColumn>
                 <DateHeader>{formattedDate}</DateHeader>

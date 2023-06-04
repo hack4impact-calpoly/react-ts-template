@@ -98,11 +98,9 @@ export default function Timeslot({
   }, [isChecked, tsId]);
   return (
     <Slot border={border}>
-      {/* <TimeBox> */}
       <TimeslotText>
         {`${formatTime(startTime)} to ${formatTime(endTime)}`}
       </TimeslotText>
-      {/* </TimeBox> */}
       {userType === "Volunteer" ? (
         <ButtonToggle onClick={toggleChecked}>
           {isChecked ? (
