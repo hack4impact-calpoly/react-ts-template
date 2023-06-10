@@ -246,6 +246,22 @@ interface CalendarProps {
   timeslots: LazyTimeslot[];
 }
 
+function convertToYMD(date: Date) {
+  const localString = date.toLocaleDateString();
+  const splitDate = localString.split("/");
+  let retString = `${localString.split("/")[2]}-`;
+
+  if (splitDate[0].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[0]}-`;
+  if (splitDate[1].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[1]}`;
+  return retString;
+}
+
 export default function Calendar({ timeslots }: CalendarProps) {
   const [date, setDateProp] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
@@ -350,6 +366,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
         end: endingTime,
         backgroundColor,
         textColor: "black",
+        timeslotId: timeslot.id,
       };
     });
     slots = slots.concat(tempSlots);
@@ -369,7 +386,9 @@ export default function Calendar({ timeslots }: CalendarProps) {
     slots = slots.filter((timeslot) =>
       bookings.some(
         (booking) =>
-          booking.userID === currentUserId && booking.timeslotID === timeslot.id
+          booking.userID === currentUserId &&
+          booking.timeslotID === timeslot.timeslotId &&
+          booking.date === convertToYMD(timeslot.start)
       )
     );
   } else if (toggles === "availability") {
