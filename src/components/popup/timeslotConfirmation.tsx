@@ -37,6 +37,22 @@ const BtnContainer = styled.div`
   gap: 20px;
 `;
 
+function convertToYMD(date: Date) {
+  const localString = date.toLocaleDateString();
+  const splitDate = localString.split("/");
+  let retString = `${localString.split("/")[2]}-`;
+
+  if (splitDate[0].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[0]}-`;
+  if (splitDate[1].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[1]}`;
+  return retString;
+}
+
 async function addUnavailability(ids: string[], unavailableDate: Date) {
   try {
     ids.forEach(async (id) => {
@@ -46,10 +62,10 @@ async function addUnavailability(ids: string[], unavailableDate: Date) {
         original !== undefined &&
         Array.isArray(original.unavailableDates)
       ) {
-        const isoDate = new Date(unavailableDate).toISOString().split("T")[0];
+        const ymdDate = convertToYMD(new Date(unavailableDate));
         const updatedList = new Set(original.unavailableDates);
-        if (!updatedList.has(isoDate)) {
-          updatedList.add(isoDate);
+        if (!updatedList.has(ymdDate)) {
+          updatedList.add(ymdDate);
           await DataStore.save(
             Timeslot.copyOf(original, (updated) => {
               // eslint-disable-next-line no-param-reassign
@@ -71,11 +87,11 @@ async function deleteUnavailability(ids: string[], availableDate: Date) {
     ids.forEach(async (id) => {
       const original = await DataStore.query(Timeslot, id);
       if (original && Array.isArray(original.unavailableDates)) {
-        const date = new Date(availableDate).toISOString().split("T")[0];
+        const date = convertToYMD(new Date(availableDate));
 
         const updatedList = original.unavailableDates.filter((dateString) => {
           if (dateString !== null) {
-            const isoDate = new Date(dateString).toISOString().split("T")[0];
+            const isoDate = convertToYMD(new Date(dateString));
             return date !== isoDate;
           }
           return false;
@@ -93,22 +109,6 @@ async function deleteUnavailability(ids: string[], availableDate: Date) {
       console.log("An error occurred: ", error.message); // eslint-disable-line no-console
     }
   }
-}
-
-function convertToYMD(date: Date) {
-  const localString = date.toLocaleDateString();
-  const splitDate = localString.split("/");
-  let retString = `${localString.split("/")[2]}-`;
-
-  if (splitDate[0].length === 1) {
-    retString += `0`;
-  }
-  retString += `${localString.split("/")[0]}-`;
-  if (splitDate[1].length === 1) {
-    retString += `0`;
-  }
-  retString += `${localString.split("/")[1]}`;
-  return retString;
 }
 
 async function addRVBooking(
