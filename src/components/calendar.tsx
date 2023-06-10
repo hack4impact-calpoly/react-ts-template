@@ -246,14 +246,21 @@ interface CalendarProps {
   timeslots: LazyTimeslot[];
 }
 
-// function convertToYMD(date: Date) {
-//   const localString = date.toLocaleDateString();
-//   const splitDate = localString.split("/");
-//   if splitDate[0]
-//   return `${localString.split("/")[2]}-0${localString.split("/")[0]}-${
-//     localString.split("/")[1]
-//   }`;
-// }
+function convertToYMD(date: Date) {
+  const localString = date.toLocaleDateString();
+  const splitDate = localString.split("/");
+  let retString = `${localString.split("/")[2]}-`;
+
+  if (splitDate[0].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[0]}-`;
+  if (splitDate[1].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[1]}`;
+  return retString;
+}
 
 export default function Calendar({ timeslots }: CalendarProps) {
   const [date, setDateProp] = useState(new Date());
@@ -376,13 +383,12 @@ export default function Calendar({ timeslots }: CalendarProps) {
         timeslot.start.getHours() >= 10 && timeslot.end.getHours() <= 14
     );
   } else if (toggles === "slots") {
-    console.log("the toggle value is correct");
     slots = slots.filter((timeslot) =>
       bookings.some(
         (booking) =>
           booking.userID === currentUserId &&
           booking.timeslotID === timeslot.timeslotId &&
-          booking.date === timeslot.start.toLocaleDateString()
+          booking.date === convertToYMD(timeslot.start)
       )
     );
   } else if (toggles === "availability") {

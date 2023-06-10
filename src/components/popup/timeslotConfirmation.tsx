@@ -95,6 +95,22 @@ async function deleteUnavailability(ids: string[], availableDate: Date) {
   }
 }
 
+function convertToYMD(date: Date) {
+  const localString = date.toLocaleDateString();
+  const splitDate = localString.split("/");
+  let retString = `${localString.split("/")[2]}-`;
+
+  if (splitDate[0].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[0]}-`;
+  if (splitDate[1].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[1]}`;
+  return retString;
+}
+
 async function addRVBooking(
   TimeslotIDs: string[],
   userID: string,
@@ -107,10 +123,8 @@ async function addRVBooking(
       original !== undefined &&
       original.userType === "Volunteer"
     ) {
-      const tempDate = new Date(bookedDate).toLocaleDateString();
-      const formattedDate = `${tempDate.split("/")[2]}-0${
-        tempDate.split("/")[0]
-      }-${tempDate.split("/")[1]}`;
+      const tempDate = new Date(bookedDate);
+      const formattedDate = convertToYMD(tempDate);
       const descriptionStr: string = `User: ${userID} Booked Time: ${formattedDate}`;
       TimeslotIDs.forEach(async (TimeslotID) => {
         const booking = new Booking({
