@@ -142,10 +142,8 @@ async function addRVBooking(
       original.userType === "Rider"
     ) {
       if (TimeslotIDs.length === 1) {
-        const tempDate = new Date(bookedDate).toLocaleDateString();
-        const formattedDate = `${tempDate.split("/")[2]}-0${
-          tempDate.split("/")[0]
-        }-${tempDate.split("/")[1]}`;
+        const tempDate = new Date(bookedDate);
+        const formattedDate = convertToYMD(tempDate);
         const descriptionStr: string = `User: ${userID} Booked Time: ${formattedDate}`;
         const booking = new Booking({
           title: "New Booking -- Rider",
