@@ -246,6 +246,15 @@ interface CalendarProps {
   timeslots: LazyTimeslot[];
 }
 
+interface Timeslot {
+  start: Date;
+  end: Date;
+  backgroundColor: string;
+  textColor: string;
+  enabled: boolean;
+  timeslotId: string;
+}
+
 function convertToYMD(date: Date) {
   const localString = date.toLocaleDateString();
   const splitDate = localString.split("/");
@@ -266,7 +275,6 @@ export default function Calendar({ timeslots }: CalendarProps) {
   const [date, setDateProp] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
   const [toggles, setToggle] = useState<string>("");
-  // const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const [popup, setPopup] = useState(false);
   const [confirmPopup, setConfirmPopup] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
@@ -319,7 +327,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
     setLogoutPopup(false);
   };
 
-  let slots: any[] = [];
+  let slots: Timeslot[] = [];
 
   for (let dateoffset = 0; dateoffset < 7; dateoffset++) {
     const dateCopy = new Date(date.getTime());

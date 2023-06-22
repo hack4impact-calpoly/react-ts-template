@@ -16,10 +16,20 @@ const Slots = styled.section`
   height: 400px;
 `;
 
-interface TimeslotsProps {
+interface MobileTimeslotsProps {
   models: LazyTimeslot[];
   date: Date;
   toggleValue: string;
+}
+
+interface Timeslot {
+  startTime: string;
+  endTime: string;
+  backgroundColor: string;
+  textColor: string;
+  checked: boolean;
+  enabled: boolean;
+  timeslotId: string;
 }
 
 function convertToYMD(date: Date) {
@@ -42,7 +52,7 @@ export default function MobileTimeslots({
   models,
   date,
   toggleValue,
-}: TimeslotsProps) {
+}: MobileTimeslotsProps) {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
@@ -104,14 +114,8 @@ export default function MobileTimeslots({
     };
   }
 
-  function filterTimeSlots(timeslot: {
-    startTime: string;
-    endTime: string;
-    checked: boolean;
-    timeslotId: string;
-    enabled: boolean;
-  }) {
-    if (toggleValue === "riders" || userType === "Rider") {
+  function filterTimeSlots(timeslot: Timeslot) {
+    if (toggleValue === "Riders" || userType === "Rider") {
       return (
         Number(timeslot.startTime.substring(0, 2)) >= 10 &&
         Number(timeslot.startTime.substring(0, 2)) < 14 &&
@@ -128,18 +132,14 @@ export default function MobileTimeslots({
         ) && timeslot.enabled
       );
     }
-    return (
-      Number(timeslot.startTime.substring(0, 2)) >= 9 &&
-      Number(timeslot.startTime.substring(0, 2)) < 17 &&
-      timeslot.enabled
-    );
+    return timeslot.enabled;
   }
 
   return (
     <Slots>
       {models
-        .map((ts) => mapTimeslotColors(ts))
-        .filter((ts) => filterTimeSlots(ts))
+        .map((timeslot) => mapTimeslotColors(timeslot))
+        .filter((timeslot) => filterTimeSlots(timeslot))
         .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))
         .map((timeslot, i) => (
           <MobileTimeslot // eslint-disable-next-line react/no-array-index-key
