@@ -60,6 +60,7 @@ export default function CalendarMobile({ timeslots }: CalendarProps) {
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { userType } = realUser;
+  const [toggleValue, setToggleValue] = useState("");
   // these values are hardcoded for conditional rendering of showing different slots
   // eslint-disable-next-line no-param-reassign
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -83,11 +84,10 @@ export default function CalendarMobile({ timeslots }: CalendarProps) {
 
   // this is for the toggle dropdown
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [optionValue, setOptionValue] = useState("");
   const handleSelect = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
-    setOptionValue(e.target.value);
+    setToggleValue(e.target.value);
   };
 
   return (
@@ -127,7 +127,11 @@ export default function CalendarMobile({ timeslots }: CalendarProps) {
       </Dropdown>
 
       {/* the timeslots will change depending on the usertype */}
-      <MobileTimeslots models={timeslots} date={currentDate} />
+      <MobileTimeslots
+        models={timeslots}
+        date={currentDate}
+        toggleValue={toggleValue}
+      />
     </div>
   );
 }

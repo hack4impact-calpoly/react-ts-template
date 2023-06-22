@@ -19,13 +19,34 @@ const Slots = styled.section`
 interface TimeslotsProps {
   models: LazyTimeslot[];
   date: Date;
+  toggleValue: string;
 }
 
-export default function MobileTimeslots({ models, date }: TimeslotsProps) {
+function convertToYMD(date: Date) {
+  const localString = date.toLocaleDateString();
+  const splitDate = localString.split("/");
+  let retString = `${localString.split("/")[2]}-`;
+
+  if (splitDate[0].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[0]}-`;
+  if (splitDate[1].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[1]}`;
+  return retString;
+}
+
+export default function MobileTimeslots({
+  models,
+  date,
+  toggleValue,
+}: TimeslotsProps) {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
-  const { userType } = realUser;
+  const { userType, id: currentUserId } = realUser;
   // const [timeslots, setTimeslots] = useState(models);
   const [bookings, setBookings] = useState<Booking[]>([]);
 
@@ -43,29 +64,32 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
 
   function mapTimeslotColors(timeslot: LazyTimeslot) {
     let backgroundColor = "#90BFCC";
+    let enabled = true;
 
-    if (userType === "Rider" || userType === "Volunteer") {
-      if (
-        bookings.some(
-          (booking) =>
-            booking.timeslotID === timeslot.id &&
-            date.getDate() ===
-              Number(
-                String(booking.date).substring(
-                  String(booking.date).length - 2,
-                  String(booking.date).length
-                )
+    if (
+      bookings.some(
+        (booking) =>
+          booking.timeslotID === timeslot.id &&
+          date.getDate() ===
+            Number(
+              String(booking.date).substring(
+                String(booking.date).length - 2,
+                String(booking.date).length
               )
-        )
-      ) {
-        backgroundColor = "#E0EFF1";
-      }
-    } else if (userType === "Admin") {
-      if (
-        timeslot.unavailableDates &&
-        timeslot.unavailableDates.includes(date.toDateString())
-      ) {
-        backgroundColor = "#E0EFF1";
+            )
+      )
+    ) {
+      backgroundColor = "#E0EFF1";
+    }
+
+    if (
+      timeslot.unavailableDates &&
+      timeslot.unavailableDates.includes(convertToYMD(date))
+    ) {
+      if (userType === "Admin") {
+        backgroundColor = "#C1C1C1";
+      } else {
+        enabled = false;
       }
     }
 
@@ -75,27 +99,39 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
       backgroundColor,
       textColor: "black",
       checked: false,
-      id: timeslot.id,
+      enabled,
+      timeslotId: timeslot.id,
     };
   }
 
-  function filterTimeSlots(
-    isVolunteer: boolean,
-    ts: {
-      startTime: string;
-      endTime: string;
-      checked: boolean;
-    }
-  ) {
-    if (isVolunteer) {
+  function filterTimeSlots(timeslot: {
+    startTime: string;
+    endTime: string;
+    checked: boolean;
+    timeslotId: string;
+    enabled: boolean;
+  }) {
+    if (toggleValue === "riders" || userType === "Rider") {
       return (
-        Number(ts.startTime.substring(0, 2)) >= 9 &&
-        Number(ts.startTime.substring(0, 2)) < 17
+        Number(timeslot.startTime.substring(0, 2)) >= 10 &&
+        Number(timeslot.startTime.substring(0, 2)) < 14 &&
+        timeslot.enabled
+      );
+    }
+    if (toggleValue === "My Slots") {
+      return (
+        bookings.some(
+          (booking) =>
+            booking.userID === currentUserId &&
+            booking.timeslotID === timeslot.timeslotId &&
+            booking.date === convertToYMD(date)
+        ) && timeslot.enabled
       );
     }
     return (
-      Number(ts.startTime.substring(0, 2)) >= 10 &&
-      Number(ts.startTime.substring(0, 2)) < 14
+      Number(timeslot.startTime.substring(0, 2)) >= 9 &&
+      Number(timeslot.startTime.substring(0, 2)) < 17 &&
+      timeslot.enabled
     );
   }
 
@@ -103,7 +139,7 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
     <Slots>
       {models
         .map((ts) => mapTimeslotColors(ts))
-        .filter((ts) => filterTimeSlots(userType === "Volunteer", ts))
+        .filter((ts) => filterTimeSlots(ts))
         .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))
         .map((timeslot, i) => (
           <MobileTimeslot // eslint-disable-next-line react/no-array-index-key
@@ -112,7 +148,7 @@ export default function MobileTimeslots({ models, date }: TimeslotsProps) {
             endTime={timeslot.endTime}
             date={date}
             backgroundColor={timeslot.backgroundColor}
-            tId={timeslot.id}
+            tId={timeslot.timeslotId}
           />
         ))}
     </Slots>
