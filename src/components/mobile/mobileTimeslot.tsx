@@ -1,7 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
 import caretDown from "../../images/CaretDown.svg";
-// import UserContext from "../../userContext";
 import MobileTimeslotContent from "./mobileTimeslotContent";
 
 const Caret = styled.img`
@@ -46,6 +45,7 @@ interface TimeslotProps {
   date: Date;
   backgroundColor: string;
   tId: string;
+  setRequery: (requery: boolean) => void;
 }
 
 export default function MobileTimeslot({
@@ -54,13 +54,10 @@ export default function MobileTimeslot({
   date,
   backgroundColor,
   tId,
+  setRequery,
 }: TimeslotProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const [user] = useState<string>();
   const [bookingsFakeStart] = useState<number>();
-  // const currentUserFR = useContext(UserContext);
-  // const { currentUser } = currentUserFR;
-  // const [realUser] = currentUser;
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -77,6 +74,7 @@ export default function MobileTimeslot({
             bookingsfake={bookingsFakeStart!}
             date={date}
             tId={tId}
+            setRequery={setRequery}
           />
         )}
       </Dropdown>

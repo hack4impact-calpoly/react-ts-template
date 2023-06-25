@@ -93,20 +93,19 @@ const OnOffSlide = styled.img`
   margin-top: 20%;
 `;
 
-type UserType = {
+type TimeslotMobileContentProps = {
   bookingsfake: number;
   date: Date;
   tId: string;
+  setRequery: (requery: boolean) => void;
 };
-// READ: bookings prop will always be 1 or -1 cause I hardcoded the initial value of bookings
-// (line 103) so it turns back to 0 every run. Hopefully this logic works once we get the
-// props working on the other pages.
-// export default function TimeslotMobileContent({ user, bookings }: UserType) {
+
 export default function TimeslotMobileContent({
   bookingsfake,
   date,
   tId,
-}: UserType) {
+  setRequery,
+}: TimeslotMobileContentProps) {
   const [booked, setBooked] = useState(true);
   const [onOff, setOnOff] = useState(true);
   const [confirmationShown, setConfirmationShown] = useState(false);
@@ -115,7 +114,6 @@ export default function TimeslotMobileContent({
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { userType } = realUser;
-  // const { userType } = currentUser;
 
   // eslint-disable-next-line no-param-reassign
   // bookings = 0;
@@ -258,6 +256,7 @@ export default function TimeslotMobileContent({
               status="book"
               date={date}
               tId={tId}
+              setRequery={setRequery}
             />
           </BoxMobileContent>
         )}

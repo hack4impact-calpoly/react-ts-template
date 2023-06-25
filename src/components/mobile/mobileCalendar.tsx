@@ -175,7 +175,7 @@ export default function CalendarMobile({ timeslots }: CalendarProps) {
 
         {/* the timeslots will change depending on the usertype */}
         <MobileTimeslots
-          models={timeslots}
+          timeslots={timeslots}
           date={currentDate}
           toggleValue={toggleValue}
         />

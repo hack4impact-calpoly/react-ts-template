@@ -17,7 +17,7 @@ const Slots = styled.section`
 `;
 
 interface MobileTimeslotsProps {
-  models: LazyTimeslot[];
+  timeslots: LazyTimeslot[];
   date: Date;
   toggleValue: string;
 }
@@ -49,7 +49,7 @@ function convertToYMD(date: Date) {
 }
 
 export default function MobileTimeslots({
-  models,
+  timeslots,
   date,
   toggleValue,
 }: MobileTimeslotsProps) {
@@ -57,20 +57,21 @@ export default function MobileTimeslots({
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
   const { userType, id: currentUserId } = realUser;
-  // const [timeslots, setTimeslots] = useState(models);
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [requery, setRequery] = useState(true); // indicates whether the bookings need to be requeried from the server
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         const bookingModels = await DataStore.query(Booking);
         setBookings(bookingModels);
+        setRequery(false);
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }
     };
     fetchBookings();
-  }, []);
+  }, [requery]);
 
   function mapTimeslotColors(timeslot: LazyTimeslot) {
     let backgroundColor = "#90BFCC";
@@ -137,7 +138,7 @@ export default function MobileTimeslots({
 
   return (
     <Slots>
-      {models
+      {timeslots
         .map((timeslot) => mapTimeslotColors(timeslot))
         .filter((timeslot) => filterTimeSlots(timeslot))
         .sort((a, b) => (a.startTime < b.startTime ? -1 : 1))
@@ -149,6 +150,7 @@ export default function MobileTimeslots({
             date={date}
             backgroundColor={timeslot.backgroundColor}
             tId={timeslot.timeslotId}
+            setRequery={setRequery}
           />
         ))}
     </Slots>
