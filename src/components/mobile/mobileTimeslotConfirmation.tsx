@@ -1,28 +1,17 @@
 /* eslint-disable no-console */
 import { useContext } from "react";
 import styled from "styled-components";
-// import { useNavigate } from "react-router-dom";
 import { DataStore } from "aws-amplify";
 import UserContext from "../../userContext";
 // import { checkedLst, uncheckedLst } from "./timeslot";
 import { User, Booking } from "../../models";
 import warning from "../../images/warning.svg";
 import {
-  //   Box,
   CancelBtn,
   SaveBtn,
   CenteredDescription,
   CenteredHeader,
-  //   Wrapper,
 } from "../styledComponents";
-
-export type TimeSlotProps = {
-  handleClicked: () => void;
-  handleCancelled: () => void;
-  status: String;
-  date: Date;
-  tId: string;
-};
 
 const Wrapper = styled.div`
   display: flex;
@@ -202,13 +191,23 @@ async function addRVBooking(
 //   }
 // }
 
+interface MobileTimeSlotConfirmationProps {
+  handleClicked: () => void;
+  handleCancelled: () => void;
+  status: String;
+  date: Date;
+  tId: string;
+  setRequery: (requery: boolean) => void;
+}
+
 export default function MobileTimeSlotConfirmation({
   handleClicked,
   handleCancelled,
   status = "",
   date,
   tId,
-}: TimeSlotProps) {
+  setRequery,
+}: MobileTimeSlotConfirmationProps) {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
@@ -223,6 +222,7 @@ export default function MobileTimeSlotConfirmation({
   const handleConfirmationRV = () => {
     handleClicked();
     addRVBooking(tId, id, date);
+    setRequery(true);
   };
 
   const handleCancel = () => {
