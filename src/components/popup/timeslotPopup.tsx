@@ -107,6 +107,7 @@ export default function Popup({
       });
       setSelected(sel);
     };
+
     const fetchBookable = async () => {
       if (timeslots.length > 0) {
         timeslots.forEach(async (timeslot) => {
@@ -182,7 +183,13 @@ export default function Popup({
             <Wrapper>
               <LeftColumn>
                 <Monthly />
-                {selected && <AptInfo timeslot={selected} date={date} />}
+                {selected && (
+                  <AptInfo
+                    timeslot={selected}
+                    date={date}
+                    // setTimeslot={setSelected}
+                  />
+                )}
               </LeftColumn>
               <RightColumn>
                 <DateHeader>{formattedDate}</DateHeader>

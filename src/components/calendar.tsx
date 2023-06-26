@@ -280,8 +280,10 @@ export default function Calendar({ timeslots }: CalendarProps) {
   // const tileDisabled = (thedate: any) => thedate < new Date();
   // console.log(`userType ${userType}`);
 
-  const handleEventClick = (eventClickInfo: any) => {
+  const handleEventClick = async (eventClickInfo: any) => {
     setPopupDate(eventClickInfo.event.start);
+    // eslint-disable-next-line no-promise-executor-return
+    await new Promise((r) => setTimeout(r, 200));
     setPopup(true);
   };
 
@@ -328,6 +330,9 @@ export default function Calendar({ timeslots }: CalendarProps) {
           timeslot.endTime
         }:00`
       );
+      // const string = "2023-06-25";
+
+      // console.log("DATE TEST WOOOOOOOOOOOOOOOOOOOO", string.substring(5, 7));
 
       if (
         bookings.some(
@@ -339,7 +344,9 @@ export default function Calendar({ timeslots }: CalendarProps) {
                   String(booking.date).length - 2,
                   String(booking.date).length
                 )
-              )
+              ) &&
+            dateTest.getMonth() + 1 ===
+              Number(String(booking.date).substring(5, 7))
         )
       ) {
         backgroundColor = "#E0EFF1";

@@ -56,53 +56,139 @@ export default function AppointmentInfo({ timeslot, date }: PopupProps) {
   const [volunteerBookings, setVolBookings] = useState<LazyUser[]>([]);
   const [riderBookings, setRidBookings] = useState<LazyUser[]>([]);
 
+  // const getUsers = async (bookings: LazyBooking[]) => {
+  //   // console.log("IN GET USERS TIMESLOT =", timeslot);
+  //   const volUsers: User[] = [];
+  //   const ridUsers: User[] = []; // eslint-disable-next-line no-restricted-syntax
+  //   for await (const booking of bookings) {
+  //     if (booking.date) {
+  //       if (
+  //         Number(booking.date.substring(0, 4)) === date.getFullYear() &&
+  //         Number(booking.date.substring(5, 7)) === date.getMonth() + 1 &&
+  //         Number(booking.date.substring(8, 10)) === date.getDate() &&
+  //         booking.timeslotID === timeslot.id
+  //       ) {
+  //         // console.log(booking);
+  //         // console.log(timeslot);
+  //         // console.log(booking.date);
+  //         // console.log(date.getFullYear());
+  //         // console.log(date.getMonth() + 1);
+  //         // console.log(date.getDate());
+  //         // console.log("bookings");
+  //         // console.log(Number(booking.date.substring(5, 7)));
+  //         // console.log("[[[[[[[[[[[[[[[[[[[[[[[[[[[[[");
+  //         const user = await DataStore.query(User, booking.userID);
+  //         // console.log("USER HAS BEEN FETCHED", timeslot);
+  //         if (user) {
+  //           if (user.userType === "Volunteer") {
+  //             // console.log("VOLLLLLLLLLLLLLLLLLL", timeslot);
+  //             volUsers.push(user);
+  //           } else if (user.userType === "Rider") {
+  //             // console.log("RIDDDDDDDDDDDDDDDDDD");
+  //             ridUsers.push(user);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   // console.log("VOLUSERS", volUsers);
+  //   // console.log("RIDUSERS", ridUsers);
+  //   return { volUsers, ridUsers };
+  // };
+  // const pullData = async () => {
+  //   const volBookingsArray = await timeslot.volunteerBookings.toArray(); // turns out the volunteer and rider booking arrays
+  //   // in our objects just return the same thing so there's not really a point to them
+  //   // console.log("IN PULL DATA", volBookingsArray);
+  //   // console.log("IN PULL DATA TIMESLOT =", timeslot);
+  //   // console.log("HOW MANY TIMES ARE YOU CALLED DAMNIT");
+  //   // console.log();
+  //   // console.log();
+  //   // console.log();
+  //   // console.log();
+  //   const bookings = await getUsers(volBookingsArray);
+  //   // console.log(":::::: Bookings ::::::", bookings);
+  //   setVolBookings(bookings.volUsers);
+  //   setRidBookings(bookings.ridUsers);
+  // };
+  // console.log(initialTimeslot);
+  // console.log(timeslot);
+  // if (initialTimeslot !== timeslot) {
+  //   console.log("WE IN HERE");
+  //   pullData();
+  //   initialTimeslot = timeslot;
+  // }
+  // pullData();
+
+  // useEffect(() => {
+  //   pullData();
+  // }, [timeslot]);
+
   useEffect(() => {
+    console.log("TRIGGERED USEEFFECT TIMESLOT = ", timeslot);
     const getUsers = async (bookings: LazyBooking[]) => {
-      const users: User[] = []; // eslint-disable-next-line no-restricted-syntax
+      // console.log("IN GET USERS TIMESLOT =", timeslot);
+      const volUsers: User[] = [];
+      const ridUsers: User[] = [];
+      let thereWasOne = false; // eslint-disable-next-line no-restricted-syntax
       for await (const booking of bookings) {
         if (booking.date) {
-          const bookingDate = new Date(booking.date);
           if (
-            bookingDate.getFullYear() === date.getFullYear() &&
-            bookingDate.getMonth() === date.getMonth() &&
-            bookingDate.getDay() === date.getDay()
+            Number(booking.date.substring(0, 4)) === date.getFullYear() &&
+            Number(booking.date.substring(5, 7)) === date.getMonth() + 1 &&
+            Number(booking.date.substring(8, 10)) === date.getDate() &&
+            booking.timeslotID === timeslot.id
           ) {
+            // console.log(booking);
+            // console.log(timeslot);
+            // console.log(booking.date);
+            // console.log(date.getFullYear());
+            // console.log(date.getMonth() + 1);
+            // console.log(date.getDate());
+            // console.log("bookings");
+            // console.log(Number(booking.date.substring(5, 7)));
+            // console.log("[[[[[[[[[[[[[[[[[[[[[[[[[[[[[");
+            thereWasOne = true;
             const user = await DataStore.query(User, booking.userID);
+            // console.log("USER HAS BEEN FETCHED", timeslot);
             if (user) {
-              users.push(user);
+              if (user.userType === "Volunteer") {
+                // console.log("VOLLLLLLLLLLLLLLLLLL", timeslot);
+                volUsers.push(user);
+              } else if (user.userType === "Rider") {
+                // console.log("RIDDDDDDDDDDDDDDDDDD");
+                ridUsers.push(user);
+              }
             }
           }
         }
       }
-      return users;
+      if (thereWasOne === false) {
+        // eslint-disable-next-line no-promise-executor-return
+        await new Promise((r) => setTimeout(r, 500));
+      }
+      // console.log("VOLUSERS", volUsers);
+      // console.log("RIDUSERS", ridUsers);
+      return { volUsers, ridUsers };
     };
     const pullData = async () => {
-      const volBookings = await timeslot.volunteerBookings
-        .toArray()
-        .then((bookings) => getUsers(bookings));
-      const ridBookings = await timeslot.riderBookings
-        .toArray()
-        .then((bookings) => getUsers(bookings));
-      setVolBookings(volBookings);
-      setRidBookings(ridBookings);
+      const volBookingsArray = await timeslot.volunteerBookings.toArray(); // turns out the volunteer and rider booking arrays
+      // in our objects just return the same thing so there's not really a point to them
+      // console.log("IN PULL DATA", volBookingsArray);
+      // console.log("IN PULL DATA TIMESLOT =", timeslot);
+      const bookings = await getUsers(volBookingsArray);
+      // console.log(":::::: Bookings ::::::", bookings);
+      setVolBookings(bookings.volUsers);
+      setRidBookings(bookings.ridUsers);
     };
     pullData();
-  }, []);
-
-  useEffect(() => {
-    console.log("selected timeslot", timeslot);
-    console.log("volunteer bookings", volunteerBookings);
-    console.log("rider bookings", riderBookings);
-  }, [volunteerBookings, riderBookings]);
+  }, [timeslot]);
 
   return (
     <Wrapper>
-      {(riderBookings.length > 0 || volunteerBookings.length > 0) && (
-        <AptHeader>Appointment Info</AptHeader>
-      )}
-      {riderBookings.length > 0 && (
-        <RiderInfo>
-          <Logo src={Horse} />
+      <AptHeader>Appointment Info</AptHeader>
+      <RiderInfo>
+        <Logo src={Horse} />
+        {riderBookings.length > 0 && (
           <RiderContent>
             Riders:
             {riderBookings
@@ -114,11 +200,13 @@ export default function AppointmentInfo({ timeslot, date }: PopupProps) {
               })
               .join()}
           </RiderContent>
-        </RiderInfo>
-      )}
-      {volunteerBookings.length > 0 && (
-        <RiderInfo>
-          <Logo src={Dude} />
+        )}
+      </RiderInfo>
+
+      {/* {volunteerBookings.length > 0 && ( */}
+      <RiderInfo>
+        <Logo src={Dude} />
+        {volunteerBookings.length > 0 && (
           <RiderContent>
             Volunteers:
             {volunteerBookings
@@ -130,8 +218,9 @@ export default function AppointmentInfo({ timeslot, date }: PopupProps) {
               })
               .join()}
           </RiderContent>
-        </RiderInfo>
-      )}
+        )}
+      </RiderInfo>
+      {/* )} */}
     </Wrapper>
   );
 }
