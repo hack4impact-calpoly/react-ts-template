@@ -11,8 +11,9 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 8%;
-    padding-top: 10%;
+    padding-top: 0%;
   }
+  margin-bottom: 16%;
 `;
 
 const Head = styled.div`
@@ -58,17 +59,6 @@ const WeekDates = styled.table`
       flex-direction: column;
       justify-content: space-evenly;
     }
-  }
-`;
-
-const Header1 = styled.text`
-  display: none;
-  @media (max-width: 500px) {
-    display: flex;
-    align-self: left;
-    font-size: 140%;
-    padding-bottom: 8%;
-    color: #1b4c5a;
   }
 `;
 
@@ -155,7 +145,6 @@ export default function WeeklyViewMobile({
   return (
     <Wrapper>
       <Head>
-        <Header1>Schedule</Header1>
         <WeeklySwitch>
           <Arrow type="button" onClick={handlePrevWeek}>
             <ChevronLeft src={chevronLeft} />

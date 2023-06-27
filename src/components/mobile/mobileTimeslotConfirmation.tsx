@@ -1,28 +1,17 @@
 /* eslint-disable no-console */
 import { useContext } from "react";
 import styled from "styled-components";
-// import { useNavigate } from "react-router-dom";
 import { DataStore } from "aws-amplify";
 import UserContext from "../../userContext";
 // import { checkedLst, uncheckedLst } from "./timeslot";
 import { User, Booking } from "../../models";
 import warning from "../../images/warning.svg";
 import {
-  //   Box,
   CancelBtn,
   SaveBtn,
   CenteredDescription,
   CenteredHeader,
-  //   Wrapper,
 } from "../styledComponents";
-
-export type TimeSlotProps = {
-  handleClicked: () => void;
-  handleCancelled: () => void;
-  status: String;
-  date: Date;
-  tId: string;
-};
 
 const Wrapper = styled.div`
   display: flex;
@@ -127,6 +116,21 @@ const BtnContainer = styled.div`
 //     }
 //   }
 // }
+function convertToYMD(date: Date) {
+  const localString = date.toLocaleDateString();
+  const splitDate = localString.split("/");
+  let retString = `${localString.split("/")[2]}-`;
+
+  if (splitDate[0].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[0]}-`;
+  if (splitDate[1].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[1]}`;
+  return retString;
+}
 
 async function addRVBooking(
   TimeslotID: string,
@@ -141,14 +145,9 @@ async function addRVBooking(
       original !== undefined &&
       (original.userType === "Volunteer" || original.userType === "Rider")
     ) {
-      console.log("THE DATE SELECTED IS", bookedDate);
-      const tempDate = new Date(bookedDate).toLocaleDateString();
-      const formattedDate = `${tempDate.split("/")[2]}-0${
-        tempDate.split("/")[0]
-      }-${tempDate.split("/")[1]}`;
-      console.log("THE DATE SELECTED IS", bookedDate);
+      const tempDate = new Date(bookedDate);
+      const formattedDate = convertToYMD(tempDate);
       const descriptionStr: string = `User: ${userID} Booked Time: ${formattedDate}`;
-      console.log("THE formatted DATE IS", formattedDate);
       const booking = new Booking({
         title: `New Booking -- ${original.userType}`,
         date: formattedDate,
@@ -192,13 +191,23 @@ async function addRVBooking(
 //   }
 // }
 
+interface MobileTimeSlotConfirmationProps {
+  handleClicked: () => void;
+  handleCancelled: () => void;
+  status: String;
+  date: Date;
+  tId: string;
+  setRequery: (requery: boolean) => void;
+}
+
 export default function MobileTimeSlotConfirmation({
   handleClicked,
   handleCancelled,
   status = "",
   date,
   tId,
-}: TimeSlotProps) {
+  setRequery,
+}: MobileTimeSlotConfirmationProps) {
   const currentUserFR = useContext(UserContext);
   const { currentUser } = currentUserFR;
   const [realUser] = currentUser;
@@ -213,6 +222,7 @@ export default function MobileTimeSlotConfirmation({
   const handleConfirmationRV = () => {
     handleClicked();
     addRVBooking(tId, id, date);
+    setRequery(true);
   };
 
   const handleCancel = () => {

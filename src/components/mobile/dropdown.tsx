@@ -7,29 +7,13 @@ export const DropdownWrapper = styled.form`
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
+  padding-top: 12px;
+  padding-right: 2rem;
 `;
 
-// padding: 0.3rem;
-// box-sizing: border-box;
-// background: #ffffff;
-// border: 1px solid #bababa;
-// border-radius: 7px;
-// width: 41%;
-// height: 30px;
-// font-family: "Rubik";
-// font-style: normal;
-// font-weight: 500;
-// font-size: 16px;
-// line-height: 19px;
-// color: #1b4c5a;
-// margin-top: -9%;
-// vertical-align: bottom;
-// margin-left: 50%;
-// display: inline-block;
-
 export const StyledSelect = styled.select`
-  max-width: 50%;
-  width: 41%;
+  // max-width: 50%;
+  width: 130px;
   box-sizing: border-box;
   background: #ffffff;
   border: 1px solid #bababa;
@@ -40,18 +24,18 @@ export const StyledSelect = styled.select`
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
-  margin-bottom: 1rem;
-  margin-left: 50%;
-  margin-top: -10%;
+  // margin-left: 50%;
   color: #1b4c5a;
 `;
 
 export const StyledOption = styled.option`
   color: ${(props) => (props.selected ? "lightgrey" : "black")};
+  // width: 41%;
 `;
 
 export const StyledLabel = styled.label`
-  margin-bottom: 1rem;
+  // margin-bottom: 1rem;
+  // width: 41%;
 `;
 
 // export const StyledButton = styled.input`

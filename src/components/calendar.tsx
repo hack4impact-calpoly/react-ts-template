@@ -246,11 +246,35 @@ interface CalendarProps {
   timeslots: LazyTimeslot[];
 }
 
+interface Timeslot {
+  start: Date;
+  end: Date;
+  backgroundColor: string;
+  textColor: string;
+  enabled: boolean;
+  timeslotId: string;
+}
+
+function convertToYMD(date: Date) {
+  const localString = date.toLocaleDateString();
+  const splitDate = localString.split("/");
+  let retString = `${localString.split("/")[2]}-`;
+
+  if (splitDate[0].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[0]}-`;
+  if (splitDate[1].length === 1) {
+    retString += `0`;
+  }
+  retString += `${localString.split("/")[1]}`;
+  return retString;
+}
+
 export default function Calendar({ timeslots }: CalendarProps) {
   const [date, setDateProp] = useState(new Date());
   const calRef = useRef<FullCalendarRef>(null);
   const [toggles, setToggle] = useState<string>("");
-  // const [ts, setTs] = useState<LazyTimeslot[]>([]);
   const [popup, setPopup] = useState(false);
   const [confirmPopup, setConfirmPopup] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
@@ -305,7 +329,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
     setLogoutPopup(false);
   };
 
-  let slots: any[] = [];
+  let slots: Timeslot[] = [];
 
   for (let dateoffset = 0; dateoffset < 7; dateoffset++) {
     const dateCopy = new Date(date.getTime());
@@ -315,6 +339,7 @@ export default function Calendar({ timeslots }: CalendarProps) {
 
     const tempSlots = timeslots.map((timeslot: LazyTimeslot) => {
       let backgroundColor = "#90BFCC";
+      let enabled = true;
 
       const startingTime = new Date(
         `${
@@ -352,47 +377,46 @@ export default function Calendar({ timeslots }: CalendarProps) {
         backgroundColor = "#E0EFF1";
       }
 
+      if (
+        timeslot.unavailableDates &&
+        timeslot.unavailableDates.includes(convertToYMD(dateTest))
+      ) {
+        if (userType === "Admin") {
+          backgroundColor = "#C1C1C1";
+        } else {
+          enabled = false;
+        }
+      }
+
       return {
         start: startingTime,
         end: endingTime,
         backgroundColor,
         textColor: "black",
+        timeslotId: timeslot.id,
+        enabled,
       };
     });
     slots = slots.concat(tempSlots);
   }
 
-  if (toggles === "volunteers") {
-    slots = slots.filter(
-      (timeslot) =>
-        timeslot.start.getHours() >= 9 && timeslot.start.getHours() <= 17
-    );
-  } else if (toggles === "riders") {
+  slots = slots.filter((timeslot) => timeslot.enabled);
+
+  if (toggles === "riders" || userType === "Rider") {
     slots = slots.filter(
       (timeslot) =>
         timeslot.start.getHours() >= 10 && timeslot.end.getHours() <= 14
     );
-  } else if (toggles === "slots") {
+  }
+  if (toggles === "slots") {
     slots = slots.filter((timeslot) =>
       bookings.some(
         (booking) =>
-          booking.userID === currentUserId && booking.timeslotID === timeslot.id
+          booking.userID === currentUserId &&
+          booking.timeslotID === timeslot.timeslotId &&
+          booking.date === convertToYMD(timeslot.start)
       )
     );
-  } else if (toggles === "availability") {
-    if (userType === "Rider") {
-      slots = slots.filter(
-        (timeslot) =>
-          timeslot.start.getHours() >= 10 && timeslot.start.getHours() < 14
-      );
-    }
-
-    if (userType === "Volunteer") {
-      slots = slots.filter(
-        (timeslot) =>
-          timeslot.start.getHours() >= 9 && timeslot.end.getHours() <= 17
-      );
-    }
   }
 
   return (
