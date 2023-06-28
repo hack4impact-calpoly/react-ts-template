@@ -93,17 +93,21 @@ export default function Popup({
     day: "numeric",
   };
   const formattedDate = date.toLocaleDateString("en-US", options);
-  const getSelected = () =>
-    timeslots.find((timeslot) => {
-      if (timeslot.startTime) {
-        const time = timeslot.startTime.split(":");
-        return (
-          Number(time[0]) === date.getHours() &&
-          Number(time[1]) === date.getMinutes()
-        );
-      }
-      return false;
-    });
+  const getSelected = () => {
+    if (popup) {
+      return timeslots.find((timeslot) => {
+        if (timeslot.startTime) {
+          const time = timeslot.startTime.split(":");
+          return (
+            Number(time[0]) === date.getHours() &&
+            Number(time[1]) === date.getMinutes()
+          );
+        }
+        return false;
+      });
+    }
+    return undefined;
+  };
   const selected = useMemo(() => getSelected(), [popup]);
 
   useLayoutEffect(() => {
@@ -199,11 +203,14 @@ export default function Popup({
         const bookings = await getUsers(volBookingsArray);
         setVolBookings(bookings.volUsers);
         setRidBookings(bookings.ridUsers);
+      } else {
+        setVolBookings([]);
+        setRidBookings([]);
       }
     };
     fetchBookable();
     pullData();
-  }, [popup]);
+  }, [popup, selected]);
 
   return (
     <div>
